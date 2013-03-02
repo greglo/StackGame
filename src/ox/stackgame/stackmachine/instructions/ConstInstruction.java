@@ -1,11 +1,12 @@
 package ox.stackgame.stackmachine.instructions;
 
 import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.StackValue;
 
-public class ConstInstruction<E> extends Instruction<E> {
-    private final E value;
+public class ConstInstruction extends Instruction {
+    private final StackValue<?> value;
     
-    public ConstInstruction(E value) {
+    public ConstInstruction(StackValue<?> value) {
 	this.value = value;
 	
 	if (value == null)
@@ -13,14 +14,14 @@ public class ConstInstruction<E> extends Instruction<E> {
     }
 
     @Override
-    public void execute(StackMachine<E> machine) {
+    public int execute(StackMachine machine) {
 	machine.getStack().push(value);
-	machine.incrProgramCounter();
+	return machine.nextInstruction();
     }
 
     @Override
-    public Instruction<E> clone() {
-	return new ConstInstruction<E>(value);
+    public Instruction clone() {
+	return new ConstInstruction(value);
     }
     
 }

@@ -1,8 +1,9 @@
 package ox.stackgame.stackmachine.instructions;
 
 import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
-public abstract class Instruction<E> {
-    public abstract void execute(StackMachine<E> machine);
-    public abstract Instruction<E> clone();
+public abstract class Instruction {
+    public abstract int execute(StackMachine machine) throws StackRuntimeException;
+    public abstract Instruction clone();
 }

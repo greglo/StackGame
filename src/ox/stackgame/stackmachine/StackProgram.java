@@ -5,18 +5,18 @@ import java.util.List;
 
 import ox.stackgame.stackmachine.instructions.*;
 
-public class StackProgram<E> {
-    private final List<Instruction<E>> instructions;
+public class StackProgram {
+    private final List<Instruction> instructions;
     
     public StackProgram() {
-	instructions = new ArrayList<Instruction<E>>();
+	instructions = new ArrayList<Instruction>();
     }
     
     public StackProgram(String source) {
-	instructions = new ArrayList<Instruction<E>>();
+	instructions = new ArrayList<Instruction>();
     }
     
-    public StackProgram(List<Instruction<E>> instructions) {
+    public StackProgram(List<Instruction> instructions) {
 	this.instructions = instructions;
     }
     
@@ -24,14 +24,14 @@ public class StackProgram<E> {
 	return instructions.size();
     }
     
-    public Instruction<E> instructionAt(int index) {
+    public Instruction instructionAt(int index) {
 	return instructions.get(index);
     }
     
     public int getLabelPosition(String identifier) {
 	for (int i = 0; i < instructions.size(); i++) {
-	    Instruction<E> instruction = instructions.get(i);
-	    if (instruction instanceof LabelInstruction<?> && ((LabelInstruction<E>) instruction).getIdentifier().equals(identifier))
+	    Instruction instruction = instructions.get(i);
+	    if (instruction instanceof LabelInstruction && ((LabelInstruction) instruction).getIdentifier().equals(identifier))
 		return i;
 	}
 	return -1;

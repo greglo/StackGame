@@ -1,8 +1,9 @@
 package ox.stackgame.stackmachine.instructions;
 
 import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
-public abstract class AbstractBranchInstruction<E> extends Instruction<E> {
+public abstract class AbstractBranchInstruction extends Instruction {
     private final String label;
     
     public AbstractBranchInstruction(String label) {
@@ -10,18 +11,18 @@ public abstract class AbstractBranchInstruction<E> extends Instruction<E> {
     }
     
     @Override
-    public void execute(StackMachine<E> machine) {
+    public int execute(StackMachine machine) throws StackRuntimeException {
 	if (p(machine))
-	    machine.jumpToLabel(label);
+	    return machine.getLabelLine(label);
 	else
-	    machine.incrProgramCounter();
+	    return machine.nextInstruction();
     }
 
     @Override
-    public Instruction<E> clone() {
+    public Instruction clone() {
 	return this;
     }
     
-    protected abstract boolean p(StackMachine<E> machine);
+    protected abstract boolean p(StackMachine machine);
 
 }

@@ -2,7 +2,7 @@ package ox.stackgame.stackmachine.instructions;
 
 import ox.stackgame.stackmachine.StackMachine;
 
-public class LabelInstruction<E> extends Instruction<E> {
+public class LabelInstruction extends Instruction {
     private final String identifier;
     
     public LabelInstruction(String identifier) {
@@ -16,12 +16,12 @@ public class LabelInstruction<E> extends Instruction<E> {
     }
     
     @Override
-    public void execute(StackMachine<E> machine) {
-	machine.incrProgramCounter();
+    public int execute(StackMachine machine) {
+	return machine.nextInstruction();
     }
 
     @Override
-    public Instruction<E> clone() {
+    public Instruction clone() {
 	return this;
     }
 

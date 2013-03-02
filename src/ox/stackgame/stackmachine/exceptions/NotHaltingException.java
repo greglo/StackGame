@@ -1,4 +1,4 @@
-package ox.stackgame.stackmachine;
+package ox.stackgame.stackmachine.exceptions;
 
 /**
  * Thrown by the stack machine when the number of run instructions

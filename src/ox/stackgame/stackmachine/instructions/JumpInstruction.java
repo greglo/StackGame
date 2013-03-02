@@ -2,14 +2,14 @@ package ox.stackgame.stackmachine.instructions;
 
 import ox.stackgame.stackmachine.StackMachine;
 
-public class JumpInstruction<E> extends AbstractBranchInstruction<E> {
+public class JumpInstruction extends AbstractBranchInstruction {
 
     public JumpInstruction(String label) {
 	super(label);
     }
 
     @Override
-    protected boolean p(StackMachine<E> machine) {
+    protected boolean p(StackMachine machine) {
 	return true;
     }
     
