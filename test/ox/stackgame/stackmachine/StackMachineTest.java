@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import ox.stackgame.stackmachine.exceptions.EmptyStackException;
 import ox.stackgame.stackmachine.exceptions.NotHaltingException;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.instructions.AddInstruction;
@@ -27,7 +28,7 @@ public class StackMachineTest {
     }
 
     @Test
-    public void testIntStackEvaluation() {
+    public void testIntStackEvaluation() throws EmptyStackException {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new ConstInstruction(new IntStackValue(2)));
 	instructions.add(new ConstInstruction(new IntStackValue(3)));
@@ -47,7 +48,7 @@ public class StackMachineTest {
     }
 
     @Test
-    public void testCharStackEvaluation() {
+    public void testCharStackEvaluation() throws EmptyStackException {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new ConstInstruction(new CharStackValue('A')));
 	instructions.add(new ConstInstruction(new CharStackValue('B')));
