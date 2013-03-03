@@ -12,4 +12,9 @@ public class InvalidAddressException extends StackRuntimeException {
     public int getAddress() {
 	return address;
     }
+
+    @Override
+    public String toString() {
+	return "Line " + this.getLine() + ": Address '" + address + "' is not valid";
+    }
 }

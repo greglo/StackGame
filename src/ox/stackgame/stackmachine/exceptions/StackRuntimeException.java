@@ -11,4 +11,7 @@ public abstract class StackRuntimeException extends Exception {
     public int getLine() {
 	return offendingLine;
     }
+    
+    @Override
+    public abstract String toString();
 }
