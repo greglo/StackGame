@@ -160,8 +160,11 @@ public class StackMachine {
 	    return val;
 	}
 	
-	public void push(StackValue<?> val) {
-	    internalStack.push(val);
+	public void push(StackValue<?> val) throws FullStackException {
+	    if (internalStack.size() < STACK_SIZE)
+		internalStack.push(val);
+	    else
+		throw new FullStackException(programCounter);
 	}
 	
 	public void clear() {

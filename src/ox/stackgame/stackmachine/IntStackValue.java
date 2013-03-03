@@ -3,7 +3,7 @@ package ox.stackgame.stackmachine;
 public class IntStackValue extends StackValue<Integer> {
     private final Integer value;
     
-    IntStackValue(int value) {
+    public IntStackValue(int value) {
 	this.value = value;
     }
     

@@ -56,4 +56,29 @@ public class StackMachineTest {
 	machine.step();
     }
     
+    public void testAlmostFullStack() throws StackRuntimeException {
+	// We will push until the stack is full, but push no more
+	// (No exception expected)
+	List<Instruction> instructions = new ArrayList<Instruction>();
+	for (int i = 0; i < StackMachine.STACK_SIZE; i++)
+	    instructions.add(new ConstInstruction(0));
+	StackProgram program = new StackProgram(instructions);
+	StackMachine machine = new StackMachine(program);
+	for (int i = 0; i < StackMachine.STACK_SIZE; i++)
+	    machine.step();
+    }
+    
+    @Test(expected = FullStackException.class)
+    public void testFullStackException() throws StackRuntimeException {
+	// We will push until the stack is full, and push again
+	// (Exception expected)
+	List<Instruction> instructions = new ArrayList<Instruction>();
+	for (int i = 0; i <= StackMachine.STACK_SIZE; i++)
+	    instructions.add(new ConstInstruction(0));
+	StackProgram program = new StackProgram(instructions);
+	StackMachine machine = new StackMachine(program);
+	for (int i = 0; i <= StackMachine.STACK_SIZE; i++)
+	    machine.step();
+    }
+    
 }

@@ -3,7 +3,7 @@ package ox.stackgame.stackmachine;
 public class CharStackValue extends StackValue<Character> {
     private final int charCode;
     
-    CharStackValue(int charCode) {
+    public CharStackValue(int charCode) {
 	this.charCode = intToCharCode(charCode);
     }
     

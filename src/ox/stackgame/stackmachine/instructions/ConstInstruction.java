@@ -1,7 +1,10 @@
 package ox.stackgame.stackmachine.instructions;
 
+import ox.stackgame.stackmachine.CharStackValue;
+import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackValue;
+import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
 public class ConstInstruction extends Instruction {
     private final StackValue<?> value;
@@ -12,9 +15,17 @@ public class ConstInstruction extends Instruction {
 	if (value == null)
 	    throw new IllegalArgumentException("You may not load null into the machine");
     }
+    
+    public ConstInstruction(int i) {
+	this.value = new IntStackValue(i);
+    }
+    
+    public ConstInstruction(char ch) {
+	this.value = new CharStackValue(ch);
+    }
 
     @Override
-    public int execute(StackMachine machine) {
+    public int execute(StackMachine machine) throws StackRuntimeException {
 	machine.getStack().push(value);
 	return machine.nextInstruction();
     }
