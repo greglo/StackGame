@@ -174,6 +174,10 @@ public class StackMachine {
 		throw new FullStackException(programCounter);
 	}
 	
+	public int size() {
+	    return internalStack.size();
+	}
+	
 	public void clear() {
 	    internalStack.clear();
 	}

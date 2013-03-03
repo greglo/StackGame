@@ -8,8 +8,8 @@ import ox.stackgame.stackmachine.exceptions.TypeException;
 public abstract class BinopInstruction extends Instruction {
     @Override
     public int execute(StackMachine machine) throws StackRuntimeException {
-	StackValue<?> x = machine.getStack().pop();
 	StackValue<?> y = machine.getStack().pop();
+	StackValue<?> x = machine.getStack().pop();
 	try {
 	    machine.getStack().push(binop(x, y));
 	}
