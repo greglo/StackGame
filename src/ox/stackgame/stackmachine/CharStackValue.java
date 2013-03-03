@@ -19,6 +19,10 @@ public class CharStackValue extends StackValue<Character> {
     public Character getValue() {
 	return new Character((char)(charCode + 65));
     }
+    
+    public int getCharCode() {
+	return charCode;
+    }
 
     private int intToCharCode(int i) {
 	return i % 26;

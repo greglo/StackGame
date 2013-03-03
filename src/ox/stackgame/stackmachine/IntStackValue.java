@@ -1,5 +1,7 @@
 package ox.stackgame.stackmachine;
 
+import ox.stackgame.stackmachine.exceptions.TypeException;
+
 public class IntStackValue extends StackValue<Integer> {
     private final Integer value;
     
@@ -13,31 +15,41 @@ public class IntStackValue extends StackValue<Integer> {
     }
 
     @Override
-    public StackValue<?> add(StackValue<?> y) {
-	if (y.getClass() == IntStackValue.class)
+    public StackValue<?> add(StackValue<?> y) throws TypeException {
+	if (y instanceof IntStackValue)
 	    return new IntStackValue(this.getValue() + (Integer)y.getValue());
-	else if (y.getClass() == CharStackValue.class)
+	else if (y instanceof CharStackValue)
 	    return y.add(this);
 	else
-	    return null;
+	    throw new TypeException(0, y.getClass());
     }
 
     @Override
-    public StackValue<Integer> sub(StackValue<?> y) {
-	// TODO Auto-generated method stub
-	return null;
+    public StackValue<?> sub(StackValue<?> y) throws TypeException {
+	if (y instanceof IntStackValue)
+	    return new IntStackValue(this.getValue() - (Integer)y.getValue());
+	else if (y instanceof CharStackValue)
+	    return new IntStackValue(this.getValue() - ((CharStackValue)y).getCharCode());
+	else
+	    throw new TypeException(0, y.getClass());
     }
 
     @Override
-    public StackValue<Integer> mul(StackValue<?> y) {
-	// TODO Auto-generated method stub
-	return null;
+    public StackValue<?> mul(StackValue<?> y) throws TypeException {
+	if (y instanceof IntStackValue)
+	    return new IntStackValue(this.getValue() * (Integer)y.getValue());
+	else if (y instanceof CharStackValue)
+	    return y.mul(this);
+	else
+	    throw new TypeException(0, y.getClass());
     }
 
     @Override
-    public StackValue<Integer> div(StackValue<?> y) {
-	// TODO Auto-generated method stub
-	return null;
+    public StackValue<?> div(StackValue<?> y) throws TypeException {
+	if (y instanceof IntStackValue)
+	    return new IntStackValue(this.getValue() / (Integer)y.getValue());
+	else
+	    throw new TypeException(0, y.getClass());
     }
 
 }

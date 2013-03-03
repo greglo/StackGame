@@ -1,5 +1,7 @@
 package ox.stackgame.stackmachine;
 
+import ox.stackgame.stackmachine.exceptions.TypeException;
+
 
 public abstract class StackValue<T> {
     /**
@@ -8,8 +10,8 @@ public abstract class StackValue<T> {
      */
     public abstract T getValue();
     
-    public abstract StackValue<?> add(StackValue<?> y);
-    public abstract StackValue<?> sub(StackValue<?> y);
-    public abstract StackValue<?> mul(StackValue<?> y);
-    public abstract StackValue<?> div(StackValue<?> y);
+    public abstract StackValue<?> add(StackValue<?> y) throws TypeException;
+    public abstract StackValue<?> sub(StackValue<?> y) throws TypeException;
+    public abstract StackValue<?> mul(StackValue<?> y) throws TypeException;
+    public abstract StackValue<?> div(StackValue<?> y) throws TypeException;
 }

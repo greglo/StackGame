@@ -50,6 +50,10 @@ public class StackMachine {
 	return 0 <= programCounter
 		&& programCounter < program.countInstructions();
     }
+    
+    public int getProgramCounter() {
+	return programCounter;
+    }
 
     /**
      * @return The evaluation stack of the machine
