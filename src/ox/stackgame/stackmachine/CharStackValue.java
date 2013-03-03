@@ -1,5 +1,7 @@
 package ox.stackgame.stackmachine;
 
+import ox.stackgame.stackmachine.exceptions.TypeException;
+
 public class CharStackValue extends StackValue<Character> {
     private final int charCode;
     
@@ -25,35 +27,39 @@ public class CharStackValue extends StackValue<Character> {
     }
 
     private int intToCharCode(int i) {
+	while (i < 0)
+	    i += 26;
 	return i % 26;
     }
 
     @Override
-    public StackValue<?> add(StackValue<?> y) {
+    public StackValue<?> add(StackValue<?> y) throws TypeException {
 	if (y.getClass() == CharStackValue.class)
 	    return new CharStackValue(this.charCode + ((CharStackValue)y).charCode);
 	else if (y.getClass() == IntStackValue.class)
 	    return new CharStackValue(this.charCode + ((IntStackValue)y).getValue());
 	else
-	    return null;
+	    throw new TypeException(0, y.getClass());
     }
 
     @Override
-    public StackValue<Character> sub(StackValue<?> y) {
-	// TODO Auto-generated method stub
-	return null;
+    public StackValue<?> sub(StackValue<?> y) throws TypeException {
+	if (y.getClass() == CharStackValue.class)
+	    return new CharStackValue(this.charCode - ((CharStackValue)y).charCode);
+	else if (y.getClass() == IntStackValue.class)
+	    return new CharStackValue(this.charCode - ((IntStackValue)y).getValue());
+	else
+	    throw new TypeException(0, y.getClass());
     }
 
     @Override
-    public StackValue<Character> mul(StackValue<?> y) {
-	// TODO Auto-generated method stub
-	return null;
+    public StackValue<?> mul(StackValue<?> y) throws TypeException {
+	throw new TypeException(0, this.getClass());
     }
 
     @Override
-    public StackValue<Character> div(StackValue<?> y) {
-	// TODO Auto-generated method stub
-	return null;
+    public StackValue<?> div(StackValue<?> y) throws TypeException {
+	throw new TypeException(0, this.getClass());
     }
 
 }

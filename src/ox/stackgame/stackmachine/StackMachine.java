@@ -42,7 +42,6 @@ public class StackMachine {
     }
 
     /**
-     * 
      * @return Whether there is at least one more instruction for the machine to
      *         execute
      */
@@ -51,6 +50,10 @@ public class StackMachine {
 		&& programCounter < program.countInstructions();
     }
     
+    /**
+     * Get the current instruction being pointed to by programCounter
+     * @return
+     */
     public int getProgramCounter() {
 	return programCounter;
     }
