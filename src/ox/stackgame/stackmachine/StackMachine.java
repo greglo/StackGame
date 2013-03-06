@@ -1,5 +1,7 @@
 package ox.stackgame.stackmachine;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import ox.stackgame.stackmachine.exceptions.*;
@@ -19,7 +21,13 @@ public class StackMachine {
     private int programCounter; 		
     private final EvaluationStack stack; 
     private final StackValue<?>[] store; 		
-    private int numInstructions;		
+    private int numInstructions;	
+    
+    private final List<StackValue<?>> input;
+    private int inputIndex;
+    private final List<StackValue<?>> output;
+    
+    private final List<StackMachineListener> listeners;
 
     /**
      * Class constructor
@@ -29,12 +37,17 @@ public class StackMachine {
      *            program after passing it to the machine produces undefined
      *            behaviour
      */
-    public StackMachine(StackProgram program) {
+    public StackMachine(StackProgram program, List<StackValue<?>> input) {
 	this.program = program;
 	this.programCounter = 0;
 	this.stack = new EvaluationStack();
 	this.numInstructions = 0;
 	this.store = new StackValue<?>[STORE_SIZE];
+	this.input = input;
+	this.inputIndex = 0;
+	this.output = new ArrayList<StackValue<?>>();
+	
+	this.listeners = new ArrayList<StackMachineListener>();
 
 	if (program == null)
 	    throw new IllegalArgumentException(
@@ -51,11 +64,46 @@ public class StackMachine {
     }
     
     /**
+     * Sets the program counter to the next instruction to be executed
+     * @param programCounter	The line of the next instruction
+     */
+    private void setProgramCounter(int programCounter) {
+	this.programCounter = programCounter;
+	for (StackMachineListener l : listeners)
+	    l.programCounterChanged(programCounter);
+    }
+    
+    /**
      * Get the current instruction being pointed to by programCounter
      * @return
      */
     public int getProgramCounter() {
 	return programCounter;
+    }
+    
+    /**
+     * Consume a word of input (presumably to push on to the evaluation stack)
+     * @return	The word of input
+     */
+    public StackValue<?> consumeInput() {
+	if (inputIndex < input.size()) {
+	    for (StackMachineListener l : listeners)
+		l.inputConsumed(inputIndex);
+	    return input.get(inputIndex++);
+	}
+	else
+	    return null;
+	// TODO
+    }
+    
+    /**
+     * Append a value to the output buffer
+     * @param value
+     */
+    public void output(StackValue<?> value) {
+	output.add(value);
+	for (StackMachineListener l : listeners)
+	    l.outputChanged();
     }
 
     /**
@@ -74,8 +122,11 @@ public class StackMachine {
      */
     public void setStore(int address, StackValue<?> value)
 	    throws InvalidAddressException {
-	if (0 <= address && address < STORE_SIZE)
+	if (0 <= address && address < STORE_SIZE) {
 	    store[address] = value;
+	    for (StackMachineListener l : listeners)
+		l.storeChanged(address);
+	}
 	else
 	    throw new InvalidAddressException(address, programCounter);
     }
@@ -123,7 +174,7 @@ public class StackMachine {
     public void step() throws StackRuntimeException {
 	if (isRunning()) {
 	    Instruction nextInstruction = program.instructionAt(programCounter);
-	    programCounter = nextInstruction.execute(this);
+	    setProgramCounter(nextInstruction.execute(this));
 	    numInstructions++;
 	}
     }
@@ -140,6 +191,22 @@ public class StackMachine {
 
 	if (isRunning())
 	    throw new NotHaltingException(numInstructions);
+    }
+    
+    /**
+     * Add a listener to the stack machine
+     * @param l
+     */
+    public void addListener(StackMachineListener l) {
+	listeners.add(l);
+    }
+    
+    /**
+     * Remove a listener from the stack machine
+     * @param l
+     */
+    public void removeListener(StackMachineListener l) {
+	listeners.remove(l);
     }
 
     /**
