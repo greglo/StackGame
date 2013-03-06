@@ -29,6 +29,10 @@ public class StackMachine {
     
     private final List<StackMachineListener> listeners;
 
+    public StackMachine(StackProgram program) {
+	this(program, new ArrayList<StackValue<?>>());
+    }
+    
     /**
      * Class constructor
      * 
