@@ -9,6 +9,7 @@ import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
  * Implementation of a simple stack machine
+ * TODO For subroutines, read the wikipedia page on Forth
  * 
  * @author Greg
  */
