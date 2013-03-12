@@ -9,7 +9,7 @@ public class Lexer {
 		ArrayList< Value > args = new ArrayList< Value >();
 
 		Pattern linesPattern = Pattern.compile( "[^\n]+" );
-		Pattern commentPattern = Pattern.compile( "\\s*\".*$" );
+		Pattern commentPattern = Pattern.compile( "\".*$" );
 		Pattern trimlPattern = Pattern.compile( "^\\s*" );
 		Pattern trimrPattern = Pattern.compile( "\\s*$" );
 		Pattern wordsPattern = Pattern.compile( "[^\\s]+" );
