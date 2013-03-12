@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 public class Lexer {
 	public static Program lex( String program ) {
 		ArrayList< Instruction > ops = new ArrayList< Instruction >();
-		ArrayList< Value > args = new ArrayList< Value >();
+		ArrayList< ArrayList< Value > > args = new ArrayList< ArrayList< Value > >();
 
 		Pattern linesPattern = Pattern.compile( "[^\n]+" );
 		Pattern commentPattern = Pattern.compile( "\".*$" );
@@ -32,6 +32,8 @@ public class Lexer {
 
 			Matcher words = wordsPattern.matcher( trimmed );
 
+			ArrayList< Value > params = new ArrayList< Value >();
+
 			for( int i = 0; words.find(); i++ ) {
 				String word = trimmed.substring( words.start(), words.end() );
 
@@ -39,9 +41,11 @@ public class Lexer {
 					ops.add( Instruction.valueOf( word.toUpperCase() ) );
 				}
 				else {
-					args.add( GoodLanguage.ivalueOf( word ) );
+					params.add( GoodLanguage.ivalueOf( word ) );
 				}
 			}
+
+			args.add( params );
 		}
 
 		return new Program( ops, args );
