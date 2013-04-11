@@ -80,7 +80,7 @@ public class StackMachine {
     
     /**
      * Get the current instruction being pointed to by programCounter
-     * @return
+     * @return index of the instruction that will be executed next time step() is called
      */
     public int getProgramCounter() {
 	return programCounter;
