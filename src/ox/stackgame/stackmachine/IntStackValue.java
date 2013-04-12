@@ -52,4 +52,13 @@ public class IntStackValue extends StackValue<Integer> {
 	    throw new TypeException(0, y.getClass());
     }
 
+	@Override
+	public boolean equals(Object other) {
+		return false;
+	}
+	
+	public boolean equals(IntStackValue other){
+		return (value == other.value);
+	}
+
 }

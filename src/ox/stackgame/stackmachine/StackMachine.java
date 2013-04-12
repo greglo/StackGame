@@ -253,5 +253,13 @@ public class StackMachine {
 	public void clear() {
 	    internalStack.clear();
 	}
+	
+	public boolean equals(Object other){
+		return false;
+	}
+	
+	public boolean equals(EvaluationStack other){
+		return internalStack.equals(other.internalStack);
+	}
     }
 }

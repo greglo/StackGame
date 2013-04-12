@@ -62,4 +62,13 @@ public class CharStackValue extends StackValue<Character> {
 	throw new TypeException(0, this.getClass());
     }
 
+	@Override
+	public boolean equals(Object other) {
+		return false;
+	}
+	
+	public boolean equals(CharStackValue other){
+		return (charCode == other.charCode);
+	}
+
 }
