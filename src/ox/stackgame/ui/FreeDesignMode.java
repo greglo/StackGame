@@ -8,6 +8,6 @@ package ox.stackgame.ui;
  * @author danfox
  *
  */
-public class FreeDesignMode extends Mode {
+public class FreeDesignMode extends DesignMode {
 
 }

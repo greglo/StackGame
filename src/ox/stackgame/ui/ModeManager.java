@@ -12,14 +12,16 @@ public class ModeManager {
 	public void setActiveMode(Mode newMode){
 		// TODO check new mode is allowed?
 		if (newMode!=null){
-			// allow each ControllerComponent to react to the deactivation of the current activeMode
-			if(activeMode!=null){
-				for (ModeVisitor v : modeDeactivationVisitors)	activeMode.accept(v);			
+			if (newMode != activeMode){
+				// allow each ControllerComponent to react to the imminent deactivation of the current activeMode
+				if(activeMode!=null){
+					for (ModeVisitor v : modeDeactivationVisitors)	activeMode.accept(v);			
+				}
+				// activate new mode
+				activeMode = newMode;
+				// allow each ControllerComponent to react to the activation of the newMode
+				for (ModeVisitor v : modeActivationVisitors)	activeMode.accept(v);
 			}
-			// activate new mode
-			activeMode = newMode;
-			// allow each ControllerComponent to react to the activation of the newMode
-			for (ModeVisitor v : modeActivationVisitors)	activeMode.accept(v);
 		} else {
 			throw new RuntimeException("setActiveMode(null) not allowed");
 		}
@@ -33,7 +35,7 @@ public class ModeManager {
 		modeActivationVisitors.add(v);
 	}
 	
-	public void registerModeDectivationVisitor(ModeVisitor v){
+	public void registerModeDeactivationVisitor(ModeVisitor v){
 		modeDeactivationVisitors.add(v);
 	}
 	
@@ -41,7 +43,7 @@ public class ModeManager {
 		return modeActivationVisitors.remove(v);
 	}
 
-	public Boolean removeModeDectivationVisitor(ModeVisitor v){
+	public Boolean removeModeDeactivationVisitor(ModeVisitor v){
 		return modeDeactivationVisitors.remove(v);
 	}
 }

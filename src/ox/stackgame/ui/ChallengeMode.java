@@ -9,6 +9,6 @@ package ox.stackgame.ui;
  * @author danfox
  * 
  */
-public class ChallengeMode extends Mode {
-
+public class ChallengeMode extends DesignMode {
+	// TODO store current challenge
 }

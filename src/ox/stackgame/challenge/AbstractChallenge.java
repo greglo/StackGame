@@ -4,7 +4,6 @@
 package ox.stackgame.challenge;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import ox.stackgame.stackmachine.*;
 import ox.stackgame.stackmachine.instructions.Instruction;
