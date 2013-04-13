@@ -7,20 +7,26 @@ import javax.swing.*;
 
 
 public class ApplicationFrame {
+	final static int h = 660;
+	final static int p =15;
+	final static Color codeacademyBlue = new Color(35,44,49);
+	final static Color caBlueL = new Color(50,57,60);
+	final static Color caBlue2L = new Color(82,88,92);
+	final static Color codeacademyBlack = new Color(33,33,33);
 	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		
-		int h = 660;
-		int p =15;
-		Color codeacademyBlue = new Color(35,44,49);
-		Color caBlueL = new Color(50,57,60);
-		Color caBlue2L = new Color(82,88,92);
-		Color codeacademyBlack = new Color(33,33,33);
+		// initialise modes
+		ModeManager modeManager = new ModeManager();
+		Mode runMode = new RunMode();
+		Mode freeDesignMode = new FreeDesignMode();
+		Mode challengeMode = new ChallengeMode();
+		modeManager.setActiveMode(challengeMode);
 		
-		
+		// setup window to display
 		JFrame frame = new JFrame("Stack Game");
 		frame.setBounds(200, 100, 1000, h);
 		frame.setResizable(false);
@@ -28,18 +34,12 @@ public class ApplicationFrame {
 		
 		// window contents
 		JPanel contentPane = new JPanel();
-		contentPane.setBackground(Color.magenta);
-		
-		LayoutManager ol = new OverlayLayout(contentPane){
-			public void layoutContainer(Container target) {  
-		        for (int i = 0; i < target.getComponentCount(); i++){  
-		            Component c = target.getComponent(i);  
-		            c.setBounds(c.getLocation().x, c.getLocation().y, c.getPreferredSize().width, c.getPreferredSize().height);  
-		        }  
+		contentPane.setLayout(new OverlayLayout(contentPane){
+			public void layoutContainer(Container target) { 
+				for (Component c : target.getComponents())
+		            c.setBounds(c.getLocation().x, c.getLocation().y, c.getPreferredSize().width, c.getPreferredSize().height);   
 		    }  
-		};
-		contentPane.setLayout(ol);
-		
+		});
 		frame.add(contentPane);
 		
 		// fake ChallengeUI
@@ -51,11 +51,11 @@ public class ApplicationFrame {
 		
 		
 		// fake StoreUI
-		JPanel storeui = new JPanel();
-		storeui.setBackground(caBlue2L);
-		storeui.setPreferredSize(new Dimension(50,200));
-		storeui.setLocation(950-p,p);
-		contentPane.add(storeui);
+		{
+			JPanel u = new StoreUI(modeManager);
+			u.setLocation(1000-u.getPreferredSize().width-p,p);
+			contentPane.add(u);
+		}
 		
 		// fake StackUI
 		JPanel stackUI = new JPanel();

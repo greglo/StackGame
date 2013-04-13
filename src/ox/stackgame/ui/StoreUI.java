@@ -25,8 +25,9 @@ public class StoreUI extends JPanel {
 	
 	private JLabel label;
 	private StackMachine activeMachine = null;
+	private static int boxSize = 50;
 	
-	private ModeVisitor modeActivationListener = new ModeVisitor(){
+	private ModeVisitor modeActivationVisitor = new ModeVisitor(){
 		public void visit(Mode m) {	}		
 		
 		public void visit(RunMode m){
@@ -38,7 +39,7 @@ public class StoreUI extends JPanel {
 		}
 	};
 	
-	private ModeVisitor modeDeactivationListener = new ModeVisitor(){
+	private ModeVisitor modeDeactivationVisitor = new ModeVisitor(){
 		public void visit(Mode m) {}
 		
 		public void visit(RunMode m){
@@ -68,16 +69,16 @@ public class StoreUI extends JPanel {
 		label.setText(s);
 	}
 	
+	// override painting?
 	
 	public StoreUI(ModeManager m){
 		
 		// pay attention to mode changes
-		m.registerModeActivationVisitor(modeActivationListener);
-		m.registerModeDeactivationVisitor(modeDeactivationListener);
+		m.registerModeActivationVisitor(modeActivationVisitor);
+		m.registerModeDeactivationVisitor(modeDeactivationVisitor);
 		
-		// TODO sort out appearance based on StackMachine.STORE_SIZE 
-		this.setPreferredSize(new Dimension(100,100));
-		this.setBackground(Color.WHITE);
+		this.setBackground(ApplicationFrame.caBlue2L);
+		this.setPreferredSize(new Dimension(boxSize,boxSize * StackMachine.STORE_SIZE));
 		
 		label = new JLabel("[store stuff goes here]");
 		this.add(label);
