@@ -59,19 +59,12 @@ public class ApplicationFrame {
 			contentPane.add(u, new Integer(0));
 		}
 		
-		// fake TapeUI
-		JPanel tape = new JPanel();
-		tape.setBackground(caBlue2L);
-		tape.setSize(new Dimension(750-2*p,50));
-		tape.setLocation(250+p,h-p -70);
-		contentPane.add(tape, new Integer(1));	// layer 1 is on top of 0	
-		
-		// fake StackUI
-		JPanel u = new JPanel();
-		u.setBackground(caBlueL);
-		u.setSize(new Dimension(300,h));
-		u.setLocation(700,0);
-		contentPane.add(u);
+		// TapeUI	
+		{
+			JComponent u = new TapeUI(modeManager);
+			u.setLocation(250+p,h-p-70); // no idea why this needs a 70.
+			contentPane.add(u, new Integer(1));// layer 1 is on top of 0	
+		}
 		
 		frame.setVisible(true);
 	}
