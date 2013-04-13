@@ -78,7 +78,7 @@ public class StoreUI extends JPanel {
 		m.registerModeDeactivationVisitor(modeDeactivationVisitor);
 		
 		this.setBackground(ApplicationFrame.caBlue2L);
-		this.setPreferredSize(new Dimension(boxSize,boxSize * StackMachine.STORE_SIZE));
+		this.setSize(new Dimension(boxSize,boxSize * StackMachine.STORE_SIZE));
 		
 		label = new JLabel("[store stuff goes here]");
 		this.add(label);

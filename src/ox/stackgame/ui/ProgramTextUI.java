@@ -82,8 +82,8 @@ public class ProgramTextUI extends JPanel {
 		
 		// appearance
 		this.setBackground(Color.red);
-		this.setPreferredSize(new Dimension(450,ApplicationFrame.h));		
-
+		this.setSize(new Dimension(450,ApplicationFrame.h));				
+		
 		// pay attention to mode changes
 		m.registerModeActivationVisitor(modeActivationVisitor);
 		m.registerModeDeactivationVisitor(modeDeactivationVisitor);

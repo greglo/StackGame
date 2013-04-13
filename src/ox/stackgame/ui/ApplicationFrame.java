@@ -33,20 +33,15 @@ public class ApplicationFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// window contents
-		JPanel contentPane = new JPanel();
-		contentPane.setLayout(new OverlayLayout(contentPane){
-			public void layoutContainer(Container target) { 
-				for (Component c : target.getComponents())
-		            c.setBounds(c.getLocation().x, c.getLocation().y, c.getPreferredSize().width, c.getPreferredSize().height);   
-		    }  
-		});
-		frame.add(contentPane);
+		JLayeredPane contentPane = new JLayeredPane();
+		contentPane.setPreferredSize(new Dimension(1000,h));
+		frame.add(contentPane,BorderLayout.CENTER);
 		
 		// fake ChallengeUI
 		JPanel cc = new JPanel();
 		cc.setBackground(Color.white);
-		cc.setPreferredSize(new Dimension(250,h));
-	    	cc.setLocation(0,0);
+		cc.setSize(new Dimension(250,h));
+	    cc.setLocation(0,0);
 		contentPane.add(cc);
 		
 		
@@ -61,23 +56,20 @@ public class ApplicationFrame {
 		{
 			JComponent u = new ProgramTextUI(modeManager);
 			u.setLocation(250,0);
-			contentPane.add(u);
-			contentPane.setComponentZOrder(u, 1);
+			contentPane.add(u, new Integer(0));
 		}
 		
 		// fake TapeUI
 		JPanel tape = new JPanel();
 		tape.setBackground(caBlue2L);
-		tape.setPreferredSize(new Dimension(750-2*p,50));
+		tape.setSize(new Dimension(750-2*p,50));
 		tape.setLocation(250+p,h-p -70);
-		contentPane.add(tape);
-		contentPane.setComponentZOrder(tape, 0);
-		
+		contentPane.add(tape, new Integer(1));		
 		
 		// fake StackUI
 		JPanel u = new JPanel();
 		u.setBackground(caBlueL);
-		u.setPreferredSize(new Dimension(300,h));
+		u.setSize(new Dimension(300,h));
 		u.setLocation(700,0);
 		contentPane.add(u);
 		
