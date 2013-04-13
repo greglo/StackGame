@@ -9,7 +9,7 @@ import javax.swing.*;
 public class ApplicationFrame {
 	final static int h = 660;
 	final static int p =15;
-	final static Color codeacademyBlue = new Color(35,44,49);
+	final static Color caBlue = new Color(35,44,49);
 	final static Color caBlueL = new Color(50,57,60);
 	final static Color caBlue2L = new Color(82,88,92);
 	final static Color codeacademyBlack = new Color(33,33,33);
@@ -21,7 +21,7 @@ public class ApplicationFrame {
 		
 		// initialise modes
 		ModeManager modeManager = new ModeManager();
-		Mode runMode = new RunMode();
+		RunMode runMode = new RunMode();
 		Mode freeDesignMode = new FreeDesignMode();
 		Mode challengeMode = new ChallengeMode();
 		modeManager.setActiveMode(challengeMode);
@@ -48,13 +48,13 @@ public class ApplicationFrame {
 		// StoreUI
 		{
 			JComponent u = new StoreUI(modeManager);
-			u.setLocation(1000-u.getPreferredSize().width-p,p);
+			u.setLocation(1000-u.getWidth()-p,p);
 			contentPane.add(u);
 		}
 		
 		// ProgramUI
 		{
-			JComponent u = new ProgramTextUI(modeManager);
+			JComponent u = new ProgramTextUI(modeManager, runMode);
 			u.setLocation(250,0);
 			contentPane.add(u, new Integer(0));
 		}
@@ -64,7 +64,7 @@ public class ApplicationFrame {
 		tape.setBackground(caBlue2L);
 		tape.setSize(new Dimension(750-2*p,50));
 		tape.setLocation(250+p,h-p -70);
-		contentPane.add(tape, new Integer(1));		
+		contentPane.add(tape, new Integer(1));	// layer 1 is on top of 0	
 		
 		// fake StackUI
 		JPanel u = new JPanel();
