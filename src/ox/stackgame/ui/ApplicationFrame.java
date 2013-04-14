@@ -3,6 +3,9 @@ package ox.stackgame.ui;
 import java.awt.*;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+import sun.tools.jstat.Alignment;
 
 
 
@@ -37,19 +40,26 @@ public class ApplicationFrame {
 		contentPane.setPreferredSize(new Dimension(1000,h));
 		frame.add(contentPane,BorderLayout.CENTER);
 		
-		// fake ChallengeUI
-		JPanel cc = new JPanel();
-		cc.setBackground(Color.white);
-		cc.setSize(new Dimension(250,h));
-	    cc.setLocation(0,0);
-		contentPane.add(cc);
+		// ChallengeUI
+		{
+			JComponent u = new ChallengeUI(modeManager);
+			u.setLocation(0,0);
+			contentPane.add(u,new Integer(0));
+		}
+		
+		// fake StackUI
+		JPanel su = new JPanel();
+		su.setBackground(caBlueL);
+		su.setSize(new Dimension(300,h));
+		su.setLocation(700,0);
+		contentPane.add(su, new Integer(0));
 		
 		
 		// StoreUI
 		{
 			JComponent u = new StoreUI(modeManager);
 			u.setLocation(1000-u.getWidth()-p,p);
-			contentPane.add(u);
+			contentPane.add(u, new Integer(1));
 		}
 		
 		// ProgramUI

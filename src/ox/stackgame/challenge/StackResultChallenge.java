@@ -18,7 +18,7 @@ public class StackResultChallenge extends AbstractChallenge {
 	private final EvaluationStack correctAnswer;
 	
 	public StackResultChallenge(String description, EvaluationStack correctAnswer) {				
-		super(description, new HashSet<Class<? extends Instruction>> (), StackMachine.STACK_SIZE, StackMachine.MAX_INSTRUCTIONS, StackMachine.STORE_SIZE);
+		super(description, new HashSet<Class<? extends Instruction>> (), StackMachine.STACK_SIZE, StackMachine.MAX_INSTRUCTIONS);
 		this.correctAnswer = correctAnswer;
 	}
 

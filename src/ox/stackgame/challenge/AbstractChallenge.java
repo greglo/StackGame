@@ -16,7 +16,6 @@ public abstract class AbstractChallenge {
 	public final String description;
     public final int stackSize; // =200
     public final int maxInstructions; // = 10000;
-    public final int storeSize;// = 4;
     public final Collection<Class<? extends Instruction>> allowedInstructions; 
 	
     /**
@@ -28,13 +27,11 @@ public abstract class AbstractChallenge {
      * @param storeSize
      */
 	AbstractChallenge (String description, Collection<Class<? extends Instruction>> allowedInstructions, 
-			int stackSize, int maxInstructions, int storeSize){
+			int stackSize, int maxInstructions){
 		this.description = description;
 		this.allowedInstructions = allowedInstructions;
-		// TODO add a constuctor to StackMachine that allows these to be set.
 		this.stackSize = stackSize;
 		this.maxInstructions = maxInstructions;
-		this.storeSize = storeSize;
 	}
 	
 	/**
