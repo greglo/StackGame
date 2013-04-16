@@ -4,17 +4,12 @@ import ox.stackgame.stackmachine.ImmutableStackMachine;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
-public class LoadInstruction extends Instruction {
-    private final int address;
-    
-    public LoadInstruction(int address) {
-	this.address = address;
-    }
-    
+public class OutputInstruction extends Instruction {    
+
     @Override
     public int execute(ImmutableStackMachine machine) throws StackRuntimeException {
-	StackValue<?> val = machine.getStore(address);
-	machine.getStack().push(val);
+	StackValue<?> value = machine.getStack().pop();
+	machine.output(value);
 	return machine.nextInstruction();
     }
 
@@ -22,5 +17,5 @@ public class LoadInstruction extends Instruction {
     public Instruction clone() {
 	return this;
     }
-
+    
 }

@@ -2,7 +2,7 @@ package ox.stackgame.stackmachine.instructions;
 
 import ox.stackgame.stackmachine.CharStackValue;
 import ox.stackgame.stackmachine.IntStackValue;
-import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.ImmutableStackMachine;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
@@ -25,7 +25,7 @@ public class ConstInstruction extends Instruction {
     }
 
     @Override
-    public int execute(StackMachine machine) throws StackRuntimeException {
+    public int execute(ImmutableStackMachine machine) throws StackRuntimeException {
 	machine.getStack().push(value);
 	return machine.nextInstruction();
     }

@@ -1,6 +1,6 @@
 package ox.stackgame.stackmachine.instructions;
 
-import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.ImmutableStackMachine;
 
 public class LabelInstruction extends Instruction {
     private final String identifier;
@@ -16,7 +16,7 @@ public class LabelInstruction extends Instruction {
     }
     
     @Override
-    public int execute(StackMachine machine) {
+    public int execute(ImmutableStackMachine machine) {
 	return machine.nextInstruction();
     }
 

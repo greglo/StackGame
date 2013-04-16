@@ -1,6 +1,6 @@
 package ox.stackgame.stackmachine.instructions;
 
-import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.ImmutableStackMachine;
 
 public class JumpInstruction extends AbstractBranchInstruction {
 
@@ -9,7 +9,7 @@ public class JumpInstruction extends AbstractBranchInstruction {
     }
 
     @Override
-    protected boolean p(StackMachine machine) {
+    protected boolean p(ImmutableStackMachine machine) {
 	return true;
     }
     

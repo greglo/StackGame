@@ -1,6 +1,6 @@
 package ox.stackgame.stackmachine.instructions;
 
-import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.ImmutableStackMachine;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
@@ -12,7 +12,7 @@ public class StoreInstruction extends Instruction {
     }
     
     @Override
-    public int execute(StackMachine machine) throws StackRuntimeException {
+    public int execute(ImmutableStackMachine machine) throws StackRuntimeException {
 	StackValue<?> val = machine.getStack().pop();
 	machine.setStore(address, val);
 	return machine.nextInstruction();

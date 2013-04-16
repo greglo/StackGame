@@ -15,7 +15,7 @@ public class StackMachineTest {
     @Test
     public void testEmptyProgram() {
 	StackProgram program = new StackProgram();
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	assertEquals(false, machine.isRunning());
     }
 
@@ -25,7 +25,7 @@ public class StackMachineTest {
 	instructions.add(new LabelInstruction("lab"));
 	instructions.add(new JumpInstruction("lab"));
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.runAll();
     }
     
@@ -34,7 +34,7 @@ public class StackMachineTest {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new AddInstruction());
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.step();
     }
 
@@ -43,7 +43,7 @@ public class StackMachineTest {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new JumpInstruction("lab"));
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.step();
     }
     
@@ -52,7 +52,7 @@ public class StackMachineTest {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new LoadInstruction(-1));
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.step();
     }
     
@@ -60,11 +60,11 @@ public class StackMachineTest {
 	// We will push until the stack is full, but push no more
 	// (No exception expected)
 	List<Instruction> instructions = new ArrayList<Instruction>();
-	for (int i = 0; i < StackMachine.STACK_SIZE; i++)
+	for (int i = 0; i < ImmutableStackMachine.STACK_SIZE; i++)
 	    instructions.add(new ConstInstruction(0));
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
-	for (int i = 0; i < StackMachine.STACK_SIZE; i++)
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
+	for (int i = 0; i < ImmutableStackMachine.STACK_SIZE; i++)
 	    machine.step();
     }
     
@@ -73,11 +73,11 @@ public class StackMachineTest {
 	// We will push until the stack is full, and push again
 	// (Exception expected)
 	List<Instruction> instructions = new ArrayList<Instruction>();
-	for (int i = 0; i <= StackMachine.STACK_SIZE; i++)
+	for (int i = 0; i <= ImmutableStackMachine.STACK_SIZE; i++)
 	    instructions.add(new ConstInstruction(0));
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
-	for (int i = 0; i <= StackMachine.STACK_SIZE; i++)
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
+	for (int i = 0; i <= ImmutableStackMachine.STACK_SIZE; i++)
 	    machine.step();
     }
     

@@ -1,6 +1,6 @@
 package ox.stackgame.stackmachine.instructions;
 
-import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.ImmutableStackMachine;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
 public abstract class AbstractBranchInstruction extends Instruction {
@@ -11,7 +11,7 @@ public abstract class AbstractBranchInstruction extends Instruction {
     }
     
     @Override
-    public int execute(StackMachine machine) throws StackRuntimeException {
+    public int execute(ImmutableStackMachine machine) throws StackRuntimeException {
 	if (p(machine))
 	    return machine.getLabelLine(label);
 	else
@@ -23,6 +23,6 @@ public abstract class AbstractBranchInstruction extends Instruction {
 	return this;
     }
     
-    protected abstract boolean p(StackMachine machine);
+    protected abstract boolean p(ImmutableStackMachine machine);
 
 }

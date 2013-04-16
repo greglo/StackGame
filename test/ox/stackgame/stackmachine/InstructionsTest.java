@@ -17,7 +17,7 @@ public class InstructionsTest {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new ConstInstruction(new IntStackValue(2)));
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.step();
 	assertEquals(new Integer(2), machine.getStack().pop().getValue());
     }
@@ -29,7 +29,7 @@ public class InstructionsTest {
 	instructions.add(new ConstInstruction(new IntStackValue(3)));
 	instructions.add(new AddInstruction());
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.step();
 	machine.step();
 	machine.step();
@@ -44,7 +44,7 @@ public class InstructionsTest {
 	instructions.add(new ConstInstruction(new IntStackValue(3)));
 	instructions.add(new SubInstruction());
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.step();
 	machine.step();
 	machine.step();
@@ -59,7 +59,7 @@ public class InstructionsTest {
 	instructions.add(new ConstInstruction(new IntStackValue(3)));
 	instructions.add(new MulInstruction());
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.step();
 	machine.step();
 	machine.step();
@@ -73,7 +73,7 @@ public class InstructionsTest {
 	instructions.add(new ConstInstruction(new IntStackValue(2)));
 	instructions.add(new DivInstruction());
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.step();
 	machine.step();
 	machine.step();
@@ -87,7 +87,7 @@ public class InstructionsTest {
 	instructions.add(new ConstInstruction(new IntStackValue(2)));
 	instructions.add(new StoreInstruction(0));
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.step();
 	machine.step();
 	assertEquals(new Integer(2), machine.getStore(0).getValue());
@@ -98,9 +98,21 @@ public class InstructionsTest {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new LoadInstruction(0));
 	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	ImmutableStackMachine machine = new ImmutableStackMachine(program);
 	machine.setStore(0, new IntStackValue(2));
 	machine.step();
 	assertEquals(new Integer(2), machine.getStack().pop().getValue());
+    }
+    
+    @Test
+    public void testInput() throws StackRuntimeException {
+	List<Instruction> instructions = new ArrayList<Instruction>();
+	instructions.add(new InputInstruction());
+	StackProgram program = new StackProgram(instructions);
+	List<StackValue<?>> input = new ArrayList<StackValue<?>>();
+	input.add(new IntStackValue(1));
+	ImmutableStackMachine machine = new ImmutableStackMachine(program, input);
+	machine.step();
+	assertEquals(new Integer(1), machine.getStack().pop().getValue());
     }
 }
