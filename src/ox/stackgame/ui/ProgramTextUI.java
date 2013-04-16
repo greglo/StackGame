@@ -185,7 +185,7 @@ public class ProgramTextUI extends JLayeredPane {
 		});
 		
 		// place buttons on screen
-		this.add(playButton, new Integer(1));
-		this.add(resetButton, new Integer(1));
+		this.add(playButton, 1);
+		this.add(resetButton, 1);
 	}
 }
