@@ -5,8 +5,6 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import sun.tools.jstat.Alignment;
-
 
 
 public class ApplicationFrame {
