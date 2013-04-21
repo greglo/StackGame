@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import ox.stackgame.challenge.StackResultChallenge;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackProgram;
 
@@ -23,11 +24,14 @@ public class ApplicationFrame {
 	 */
 	public static void main(String[] args) {
 		
+		//Test challenge
+		StackResultChallenge testChallenge = new StackResultChallenge("This is a test challenge", null, null);
+		
 		// initialise modes
 		StateManager modeManager = new StateManager(new StackMachine(new StackProgram())); // instantiate the StateManager with a 'blank' machine
 		RunMode runMode = new RunMode();
 		Mode freeDesignMode = new FreeDesignMode();
-		Mode challengeMode = new ChallengeMode();
+		Mode challengeMode = new ChallengeMode(testChallenge);
 		modeManager.setActiveMode(challengeMode);
 		
 		// setup window to display
