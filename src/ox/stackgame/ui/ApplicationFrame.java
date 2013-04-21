@@ -3,7 +3,6 @@ package ox.stackgame.ui;
 import java.awt.*;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackProgram;

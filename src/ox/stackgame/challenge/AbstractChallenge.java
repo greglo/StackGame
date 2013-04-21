@@ -3,7 +3,6 @@
  */
 package ox.stackgame.challenge;
 
-import java.util.Collection;
 import java.util.Map;
 
 import ox.stackgame.stackmachine.*;

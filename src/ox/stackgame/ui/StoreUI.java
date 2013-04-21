@@ -3,7 +3,6 @@
  */
 package ox.stackgame.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
