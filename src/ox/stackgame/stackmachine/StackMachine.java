@@ -18,20 +18,28 @@ public class StackMachine {
     public final static int MAX_INSTRUCTIONS = 10000;
     public final static int STORE_SIZE = 4;
 
-    private final StackProgram program; 
+    private List<Instruction> instructions; 
+    private StackProgram program;
     private int programCounter; 		
-    private final EvaluationStack stack; 
-    private final StackValue<?>[] store; 		
+    private EvaluationStack stack; 
+    private StackValue<?>[] store; 		
     private int numInstructions;	
     
-    private final List<StackValue<?>> input;
+    private final List<StackValue<?>> originalInput;
+    private List<StackValue<?>> input;
     private int inputIndex;
-    private final List<StackValue<?>> output;
+    private List<StackValue<?>> output;
     
     private final List<StackMachineListener> listeners;
 
     public StackMachine(StackProgram program) {
 	this(program, new ArrayList<StackValue<?>>());
+    }
+    
+    public StackMachine(List<Instruction> instructions, List<StackValue<?>> input) {
+	this.originalInput = input;
+	loadInstructions(instructions);
+	this.listeners = new ArrayList<StackMachineListener>();
     }
     
     /**
@@ -43,20 +51,50 @@ public class StackMachine {
      *            behaviour
      */
     public StackMachine(StackProgram program, List<StackValue<?>> input) {
-	this.program = program;
-	this.programCounter = 0;
-	this.stack = new EvaluationStack();
-	this.numInstructions = 0;
-	this.store = new StackValue<?>[STORE_SIZE];
-	this.input = input;
-	this.inputIndex = 0;
-	this.output = new ArrayList<StackValue<?>>();
-	
-	this.listeners = new ArrayList<StackMachineListener>();
+	this.originalInput = input;
+	loadInstructions(program.getInstructions());
 
-	if (program == null)
-	    throw new IllegalArgumentException(
-		    "Must provide a non-null program");
+	this.listeners = new ArrayList<StackMachineListener>();
+    }
+    
+    /**
+     * Resets the stack machine to the state it was in before it started running the 
+     * stack program
+     */
+    public void reset() {
+	this.programCounter 	= 0;
+	this.stack 		= new EvaluationStack();
+	this.numInstructions 	= 0;
+	this.store 		= new StackValue<?>[STORE_SIZE];
+	this.input 		= originalInput;
+	this.inputIndex 	= 0;
+	this.output 		= new ArrayList<StackValue<?>>();
+    }
+    
+    
+    public void loadInstructions(List<Instruction> instructions) {
+	this.instructions = instructions;
+	this.program = new StackProgram(instructions);
+	reset();
+    }
+    
+    
+    public void addInstruction(int line, Instruction instruction) {
+	if (line < 0)
+	    line = 0;
+	if (line > instructions.size())
+	    line = instructions.size();
+	instructions.add(line, instruction);
+	loadInstructions(instructions);
+    }
+    
+    public void removeInstruction(int line) {
+	if (line < 0)
+	    line = 0;
+	if (line > instructions.size())
+	    line = instructions.size();
+	instructions.remove(line);
+	loadInstructions(instructions);
     }
 
     /**
@@ -215,7 +253,7 @@ public class StackMachine {
     }
 
     /**
-     * A wrapper for a Stack<StackValue<?>> which lets us throw
+     * A wrapper for a Stack< StackValue< ?>> which lets us throw
      * StackRuntimeExceptions, rather than the normal Java exception
      * @author Greg
      */

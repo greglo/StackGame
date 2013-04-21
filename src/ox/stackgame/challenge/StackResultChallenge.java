@@ -1,36 +1,41 @@
 package ox.stackgame.challenge;
 
-import java.util.HashSet;
+import java.util.Map;
 
 import ox.stackgame.stackmachine.StackMachine;
-import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
+import ox.stackgame.stackmachine.StackValue;
+import ox.stackgame.stackmachine.exceptions.EmptyStackException;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
  * A simple type of challenge that simply presents a problem and then allows the user to use any tools at their
  * disposal to solve it, basing success only on whether they leave the Stack in the correct state. (NB this checks
  * the entire stack, not just the top value - possibly should be changed).
- * @author danfox
+ * @author rgossiaux
  *
  */
 public class StackResultChallenge extends AbstractChallenge {
 	
-	private final EvaluationStack correctAnswer;
+	private final StackValue<?> correctAnswer;
 	
-	public StackResultChallenge(String description, EvaluationStack correctAnswer) {				
-		super(description, new HashSet<Class<? extends Instruction>> (), StackMachine.STACK_SIZE, StackMachine.MAX_INSTRUCTIONS);
+	public StackResultChallenge(String description, Map<Instruction, Integer> instructionSet, StackValue<?> correctAnswer) {				
+		super(description, instructionSet);
 		this.correctAnswer = correctAnswer;
 	}
 
 	@Override
+	/**
+	 * Returns "Your answer: x; correct answer: y" if the provided answer is wrong and "Empty stack" if stack is empty
+	 */
 	public String hasSucceeded(StackMachine m) {
-		// Compare just top value:
-		//if (m.getStack().peek().equals(correctAnswer.peek())) {
-		// Compare entire stack:
-		if (m.getStack().equals(correctAnswer)){
-			return "";
-		} else {
-			return "Not quite, try again";
+		try {
+			if (m.getStack().peek().equals(correctAnswer)) {
+				return "";
+			} else {
+				return "Your answer: " + m.getStack().peek().toString() + "; correct answer: " + correctAnswer.toString();
+			}
+		} catch (EmptyStackException e) {
+			return "Empty stack";
 		}
 	}
 
