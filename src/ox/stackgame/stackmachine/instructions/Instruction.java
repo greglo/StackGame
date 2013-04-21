@@ -5,14 +5,19 @@ import java.util.*;
 import ox.stackgame.stackmachine.StackValue;
 
 public class Instruction {
-	public final String name;
-	public final List< StackValue< ? > > args;
+    public final String name;
+    public final List<StackValue<?>> args;
 
-	public Instruction( String name, List< StackValue< ? > > args ) {
-		assert name != null : "name == null";
-		assert Operations.get( name ) != null : name + " isnt a real instruction";
-
-		this.name = name;
-		this.args = args;
-	}
+    public Instruction(String name) {
+	this(name, new ArrayList<StackValue<?>>());
+    }
+    
+    public Instruction(String name, List<StackValue<?>> args) {
+	assert name != null : "name == null";
+	assert Operations.get(name) != null : name + " isnt a real instruction";
+	assert args != null : "args == null";
+	
+	this.name = name;
+	this.args = args;
+    }
 }

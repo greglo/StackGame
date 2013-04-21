@@ -21,8 +21,5 @@ public class StackMachineListenerAdapter implements StackMachineListener {
 	
 	public void outputChanged() { }
 
-	@Override
-	public void stackInstructionsChanged(List<Instruction> instructions) {
-	    
-	}
+	public void stackInstructionsChanged(List<Instruction> instructions) { }
 }
