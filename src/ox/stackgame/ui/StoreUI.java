@@ -71,7 +71,7 @@ public class StoreUI extends JPanel {
 	
 	// override painting?
 	
-	public StoreUI(ModeManager m){
+	public StoreUI(StateManager m){
 		
 		// pay attention to mode changes
 		m.registerModeActivationVisitor(modeActivationVisitor);

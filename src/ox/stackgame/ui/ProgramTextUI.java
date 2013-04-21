@@ -78,7 +78,7 @@ public class ProgramTextUI extends JLayeredPane {
 		}
 	}
 	
-	public ProgramTextUI(final ModeManager modeManager, final RunMode runMode){
+	public ProgramTextUI(final StateManager modeManager, final RunMode runMode){
 		super();
 		
 		// appearance

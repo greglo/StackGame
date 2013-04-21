@@ -59,7 +59,7 @@ public class TapeUI extends JPanel {
 		}		
 	};
 	
-	public TapeUI(ModeManager modeManager){
+	public TapeUI(StateManager modeManager){
 		
 		// pay attention to mode changes
 		modeManager.registerModeActivationVisitor(modeActivationVisitor);

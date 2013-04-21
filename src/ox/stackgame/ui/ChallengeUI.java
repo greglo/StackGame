@@ -30,7 +30,7 @@ public class ChallengeUI extends JPanel {
 		// TODO check the stacksize hasn't exceeded challenge's specified stackSize.
 	};
 	
-	public ChallengeUI(ModeManager m){
+	public ChallengeUI(StateManager m){
 		
 		// TODO connect up the listener appropriately
 		

@@ -3,11 +3,24 @@ package ox.stackgame.ui;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class ModeManager {
+import ox.stackgame.stackmachine.StackMachine;
+
+/**
+ * The StateManager maintains all the 'state' information pertinent to the StackGame.  
+ * This includes the current Mode and the current active Machine. 
+ * @author danfox
+ *
+ */
+public class StateManager {
 	private Mode activeMode = null;
+	public final StackMachine stackMachine;
 	
 	private Collection<ModeVisitor> modeDeactivationVisitors = new HashSet<ModeVisitor>();
 	private Collection<ModeVisitor> modeActivationVisitors = new HashSet<ModeVisitor>();
+	
+	public StateManager(StackMachine stackMachine){
+		this.stackMachine = stackMachine;
+	}
 	
 	public void setActiveMode(Mode newMode){
 		// TODO check new mode is allowed?
