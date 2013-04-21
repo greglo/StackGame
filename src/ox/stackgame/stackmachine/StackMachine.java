@@ -215,7 +215,7 @@ public class StackMachine {
     }
 
     /**
-     * A wrapper for a Stack<StackValue<?>> which lets us throw
+     * A wrapper for a Stack< StackValue< ?>> which lets us throw
      * StackRuntimeExceptions, rather than the normal Java exception
      * @author Greg
      */
