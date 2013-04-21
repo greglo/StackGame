@@ -8,11 +8,11 @@ import java.util.Map;
 import ox.stackgame.stackmachine.instructions.*;
 
 public class StackProgram {
-    private final List<Instruction> instructions;
+    private final List<Operation> instructions;
     private final Map<String, Integer> labels;
     
     public StackProgram() {
-	instructions = new ArrayList<Instruction>();
+	instructions = new ArrayList<Operation>();
 	labels = new HashMap<String, Integer>();
     }
     
@@ -20,16 +20,17 @@ public class StackProgram {
 	this();
     }
     
-    public StackProgram(List<Instruction> instructions) {
+    public StackProgram(List<Operation> instructions) {
 	this.instructions = instructions;
 	labels = new HashMap<String, Integer>();
-	int index = 0;
-	for (Instruction instr : instructions) {
-	    if (instr instanceof LabelInstruction) {
-		LabelInstruction lab = (LabelInstruction)instr;
-		labels.put(lab.getIdentifier(), index);
-	    }
-	    index++;
+
+	int i = 0;
+	for( Operation op : instructions ) {
+		if( op.name == "label" ) {
+			labels.put( ( String ) op.args.get( 0 ).getValue(), i );
+		}
+
+		i++;
 	}
     }
     
@@ -37,7 +38,7 @@ public class StackProgram {
 	return instructions.size();
     }
     
-    public Instruction instructionAt(int index) {
+    public Operation instructionAt(int index) {
 	return instructions.get(index);
     }
     
