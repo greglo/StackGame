@@ -33,6 +33,10 @@ public class StackProgram {
 	}
     }
     
+    public List<Instruction> getInstructions() {
+	return instructions;
+    }
+    
     public int countInstructions() {
 	return instructions.size();
     }
