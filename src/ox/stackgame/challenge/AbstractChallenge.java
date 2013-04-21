@@ -10,7 +10,7 @@ import ox.stackgame.stackmachine.*;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
- * @author danfox
+ * @author rgossiaux
  * A representation of the concept of a 'challenge', involving instructions, success conditions etc.
  */
 public abstract class AbstractChallenge {
