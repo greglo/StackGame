@@ -3,3 +3,7 @@ bin/
 .DS_Store
 
 .classpath
+
+*.class
+.tags
+*Session.vim
