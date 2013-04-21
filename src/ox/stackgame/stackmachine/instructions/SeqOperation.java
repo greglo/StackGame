@@ -8,7 +8,7 @@ import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
 import ox.stackgame.stackmachine.StackValue;
 
-public abstract class SeqInstruction extends Instruction {
+public abstract class SeqOperation extends Operation {
 	public int execute( StackMachine m, List< StackValue< ? > > args ) throws StackRuntimeException {
 		apply( m, args );
 

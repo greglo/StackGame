@@ -11,85 +11,76 @@ import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.CharStackValue;
 import ox.stackgame.stackmachine.IntStackValue;
 
-public class Instructions {
-	private static final Hashtable< String, Instruction > ht = new Hashtable< String, Instruction >();
+public class Operations {
+	private static final Hashtable< String, Operation > ht = new Hashtable< String, Operation >();
 	private static boolean initialised = false;
 
 	private static void init() {
-		ht.put( "add", new BinopInstruction() {
+		ht.put( "add", new BinOperation() {
 			public StackValue< ? > binop( StackValue< ? > x, StackValue< ? > y ) throws TypeException {
 				return x.add( y );
 			}
-
-			public int numArgs() {
-				return 0;
-			}
 		} );
 
-		ht.put( "sub", new BinopInstruction() {
+		ht.put( "sub", new BinOperation() {
 			public StackValue< ? > binop( StackValue< ? > x, StackValue< ? > y ) throws TypeException {
 				return x.sub( y );
 			}
-
-			public int numArgs() {
-				return 0;
-			}
 		} );
 
-		ht.put( "mul", new BinopInstruction() {
+		ht.put( "mul", new BinOperation() {
 			public StackValue< ? > binop( StackValue< ? > x, StackValue< ? > y ) throws TypeException {
 				return x.mul( y );
 			}
 		} );
 
-		ht.put( "div", new BinopInstruction() {
+		ht.put( "div", new BinOperation() {
 			public StackValue< ? > binop( StackValue< ? > x, StackValue< ? > y ) throws TypeException {
 				return x.div( y );
 			}
 		} );
 
-		ht.put( "const", new SeqInstruction() {
+		ht.put( "const", new SeqOperation() {
 			public void apply( StackMachine m, List< StackValue< ? > > args ) throws StackRuntimeException {
 				m.getStack().push( args.get( 0 ) );
 			}
 
-			public < T > List< Class< T > > argTypes() {
-				return new ArrayList< Class< T > >( Arrays.asList( Integer.class, Character.class, String.class ) );
+			public List< Class< ? > > argTypes() {
+				return ( List< Class< ? > > ) Arrays.asList( Integer.class, Character.class, String.class );
 			}
 		} );
 
-		ht.put( "load", new SeqInstruction() {
+		ht.put( "load", new SeqOperation() {
 			public void apply( StackMachine m, List< StackValue< ? > > args ) throws StackRuntimeException {
 				m.getStack().push( m.getStore( ( Integer ) args.get( 0 ).getValue() ) );
 			}
 
-			public < T > List< Class< T > > argTypes() {
-				/* return new ArrayList< Class< T > >( Arrays.asList( Integer.class ) ); */
-				return ( List< Class< T > > ) Arrays.asList( Integer.class );
+			public List< Class< ? > > argTypes() {
+				return ( List< Class< ? > > ) Arrays.asList( Integer.class );
 			}
 		} );
 
-		ht.put( "store", new SeqInstruction() {
+		ht.put( "store", new SeqOperation() {
 			public void apply( StackMachine m, List< StackValue< ? > > args ) throws StackRuntimeException {
 				m.setStore( ( Integer ) args.get( 0 ).getValue(), m.getStack().pop() );
 			}
 
-			public < T > List< Class< T > > argTypes() {
-				return new ArrayList< Class< T > >( Arrays.asList( Integer.class ) );
+			public List< Class< ? > > argTypes() {
+				return ( List< Class< ? > > ) Arrays.asList( Integer.class );
 			}
 		} );
 
-		ht.put( "label", new SeqInstruction() {
+		ht.put( "label", new SeqOperation() {
 			public void apply( StackMachine m, List< StackValue< ? > > args ) throws StackRuntimeException {
 			}
 
-			public < T > List< Class< T > > argTypes() {
-				return new ArrayList< Class< T > >( Arrays.asList( String.class ) );
+			public List< Class< ? > > argTypes() {
+				return ( List< Class< ? > > ) Arrays.asList( String.class );
 			}
 		} );
 	}
 
-	public static Instruction get( String name ) {
+	public static Operation get( String name ) {
 		if( !initialised ) {
 			init();
 		}

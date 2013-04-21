@@ -7,7 +7,7 @@ import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.exceptions.TypeException;
 
-public abstract class BinopInstruction extends Instruction {
+public abstract class BinOperation extends Operation {
     @Override
     public int execute( StackMachine machine, List< StackValue< ? > > args ) throws StackRuntimeException {
 	StackValue<?> y = machine.getStack().pop();
@@ -19,11 +19,6 @@ public abstract class BinopInstruction extends Instruction {
 	    throw new TypeException(machine.getProgramCounter(), e.getType());
 	}
 	return machine.nextInstruction();
-    }
-    
-    @Override
-    public Instruction clone() {
-	return this;
     }
     
     protected abstract StackValue<?> binop(StackValue<?> x, StackValue<?> y) throws StackRuntimeException;

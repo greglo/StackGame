@@ -1,17 +1,18 @@
 package ox.stackgame.stackmachine.instructions;
 
 import java.util.*;
-import java.lang.*;
-
-import ox.stackgame.stackmachine.StackMachine;
-import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
 import ox.stackgame.stackmachine.StackValue;
 
-public abstract class Instruction {
-    public abstract int execute( StackMachine machine, List< StackValue< ? > > args ) throws StackRuntimeException;
+public class Instruction {
+	public final String name;
+	public final List< StackValue< ? > > args;
 
-    public < T > List< Class< T > > argTypes() {
-	    return null;
-    }
+	public Instruction( String name, List< StackValue< ? > > args ) {
+		assert name != null : "name == null";
+		assert Operations.get( name ) != null : name + " isnt a real instruction";
+
+		this.name = name;
+		this.args = args;
+	}
 }
