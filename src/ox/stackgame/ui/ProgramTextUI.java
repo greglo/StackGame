@@ -3,6 +3,8 @@
  */
 package ox.stackgame.ui;
 
+import java.util.List;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -12,6 +14,8 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 import ox.stackgame.stackmachine.*;
+import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
+import ox.stackgame.stackmachine.instructions.*;
 
 /**
  * Allows the user to input text while in Challenge/FreeDesignMode.  Also displays control buttons. 
@@ -66,7 +70,8 @@ public class ProgramTextUI extends JLayeredPane {
 	private void highlight (int line){
 		try {
 			highlighter.removeAllHighlights();
-			highlighter.addHighlight(jta.getLineStartOffset(line), jta.getLineEndOffset(line), new DefaultHighlighter.DefaultHighlightPainter(new Color(129,162,190)));
+			highlighter.addHighlight(jta.getLineStartOffset(line), jta.getLineEndOffset(line), 
+					new DefaultHighlighter.DefaultHighlightPainter(new Color(129,162,190)));
 		} catch (BadLocationException e){
 			throw new RuntimeException ("pc shouldn't be out of bounds");
 		}
@@ -148,8 +153,22 @@ public class ProgramTextUI extends JLayeredPane {
 		step1Button.setBounds(width-r-p,buttonStartY,r,r);
 		step1Button.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				// when clicked on 'dirty' textarea, feed the text through the lexer, switch to RunMode, pc:=0, call 'step'
-				// when clicked on a clean textarea ... TODO
+				// when not in runMode already, feed the text through the lexer, switch to RunMode (storing the current mode), pc:=0, call 'step'
+				if (modeManager.getActiveMode() != runMode){
+					// feed text through lexer
+					String text = jta.getText();
+					//List<Instruction> instructions = lex(text);
+					// update modeManager.stackMachine
+					//modeManager.stackMachine.loadInstructions(instructions);
+					// switch to RunMode
+					modeManager.setActiveMode(runMode);
+				}
+				// call step
+				try {
+					modeManager.stackMachine.step();
+				} catch (StackRuntimeException e) {
+					// TODO Handle machine errors
+				}
 			}			
 		});
 		this.add(step1Button, new Integer(1));
@@ -160,8 +179,8 @@ public class ProgramTextUI extends JLayeredPane {
 		stepAllButton.setBounds(width-r-p,buttonStartY+p+r,r,r);
 		stepAllButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				// for a dirty textarea, lex the text, switch to RunMode, create a timer, call step on the timer until machine terminates. 
-				// when clicked with a clean textarea ... TODO
+				// for a dirty textarea, lex the text, switch to RunMode (storing the current mode), create a timer, call step on the timer until machine terminates. 
+				// when clicked in runMode, just do the timer stuff
 			}			
 		});
 		this.add(stepAllButton, new Integer(1));
@@ -172,56 +191,22 @@ public class ProgramTextUI extends JLayeredPane {
 		runAllButton.setBounds(width-r-p,buttonStartY+p+r+p+r,r,r);
 		runAllButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				// for a dirty textarea, lex the text, switch to RunMode, call runAll on the stackMachine.
-				// for a clean textarea, ... TODO
+				// for a dirty textarea, lex the text, switch to RunMode (storing the current mode), call runAll on the stackMachine.
+				// when clicked in RunMode, call runAll
 			}			
 		});
 		this.add(runAllButton, new Integer(1));
-				
+
 		// create reset button
 		final JButton resetButton = new JButton("Reset");
 		resetButton.setEnabled(false);
-		resetButton.setBounds(width-r-p, buttonStartY+p+r+p+r+p+r,r,r);
-		resetButton.addActionListener(new ActionListener(){
+		resetButton.setBounds(width - r - p, buttonStartY + p + r + p + r + p + r, r, r);
+		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO describe button logic
-			}			
+				// (should not be enabled in DesignMode)
+				// switch back to old mode, call reset on the stackmachine
+			}
 		});
 		this.add(resetButton, new Integer(1));
-		
-		// handle button clicks
-//		step1Button.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent arg0) {
-//				System.out.println("Button clicked");
-//				
-//				// TODO 'lex' the text input to generate a stackprogram
-//				//StackProgram p = lex(jta.getText());
-//				//StackMachine m = new StackMachine(p);
-//				
-//				// pass machine to RunMode, then make active
-//				//runMode.setMachine(m);
-//				
-//				// save old mode to enable return
-//				oldMode = modeManager.getActiveMode();
-//				//modeManager.setActiveMode(runMode); // requires machine to be be set
-//				
-//				// disable this button, enable reset button
-//				step1Button.setEnabled(false);
-//				resetButton.setEnabled(true);
-//			}			
-//		});
-//		resetButton.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent arg0) {
-//				System.out.println("Reset button clicked");
-//			
-//				// return to previous mode
-//				//modeManager.setActiveMode(oldMode); // TODO uncomment this when lexer works.
-//				//oldMode = null; // just in case
-//				
-//				// disable this button, enable play button
-//				resetButton.setEnabled(false);
-//				step1Button.setEnabled(true);
-//			}
-//		});
 	}
 }
