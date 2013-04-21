@@ -4,6 +4,7 @@
 package ox.stackgame.challenge;
 
 import java.util.Collection;
+import java.util.Map;
 
 import ox.stackgame.stackmachine.*;
 import ox.stackgame.stackmachine.instructions.Instruction;
@@ -14,24 +15,17 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  */
 public abstract class AbstractChallenge {
 	public final String description;
-    public final int stackSize; // =200
-    public final int maxInstructions; // = 10000;
-    public final Collection<Class<? extends Instruction>> allowedInstructions; 
+    protected Map<Instruction, Integer> instructionSet;
+    
 	
     /**
      * Create a new challenge.
      * @param description Plaintext string explaining to the user what the aim is (e.g. Divide [expr] by [expr] with a stack size of x.)  Could include hints.
-     * @param allowedInstructions A collection of allowed types of instruction for this challenge.  Send null to allow all instructions.
-     * @param stackSize
-     * @param maxInstructions
-     * @param storeSize
+     * @param instructionSet A map from instructions to the number of that instruction permitted in the challenge; -1 for infinite 
      */
-	AbstractChallenge (String description, Collection<Class<? extends Instruction>> allowedInstructions, 
-			int stackSize, int maxInstructions){
+	AbstractChallenge (String description, Map<Instruction, Integer> instructionSet){
 		this.description = description;
-		this.allowedInstructions = allowedInstructions;
-		this.stackSize = stackSize;
-		this.maxInstructions = maxInstructions;
+		this.instructionSet = instructionSet;
 	}
 	
 	/**
