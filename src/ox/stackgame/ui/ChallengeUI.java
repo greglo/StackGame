@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import ox.stackgame.challenge.AbstractChallenge;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
 
@@ -20,6 +21,8 @@ import ox.stackgame.stackmachine.StackMachineListenerAdapter;
  *
  */
 public class ChallengeUI extends JPanel {
+
+	protected AbstractChallenge challenge;
 	
 	private StackMachineListener l = new StackMachineListenerAdapter(){
 		public void programCounterChanged(int line) {
@@ -51,4 +54,26 @@ public class ChallengeUI extends JPanel {
 	    		"torquent per conubia nostra, per inceptos himenaeos. Praesent facilisis convallis accumsan. </body></html>");
 	    this.add(l2);
 	}
+	
+	private ModeVisitor modeActivationVisitor = new ModeVisitor(){
+		public void visit(Mode m) {}	
+		
+		public void visit(DesignMode m){
+		}
+		
+		public void visit(RunMode m){			
+		}	
+	};
+	
+	// code to be executed when a mode is deactivated
+	private ModeVisitor modeDeactivationVisitor = new ModeVisitor(){
+		public void visit(Mode m) {}
+		
+		public void visit(DesignMode m){
+		}
+		
+		public void visit(RunMode m){
+		}
+	};
+
 }

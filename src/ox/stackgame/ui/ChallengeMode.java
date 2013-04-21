@@ -26,4 +26,6 @@ public class ChallengeMode extends DesignMode {
 		this.challenge = challenge;
 	}
 	
+	public AbstractChallenge getChallenge() { return challenge; }
+	
 }
