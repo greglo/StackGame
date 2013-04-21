@@ -11,7 +11,7 @@ import ox.stackgame.stackmachine.StackValue;
 public abstract class Operation {
     public abstract int execute( StackMachine machine, List< StackValue< ? > > args ) throws StackRuntimeException;
 
-    public List< Class< ? > > argTypes() {
+    public List< Class< ? extends Object > > argTypes() {
 	    return null;
     }
 }

@@ -45,8 +45,8 @@ public class Operations {
 				m.getStack().push( args.get( 0 ) );
 			}
 
-			public List< Class< ? > > argTypes() {
-				return ( List< Class< ? > > ) Arrays.asList( Integer.class, Character.class, String.class );
+			public List< Class< ? extends Object > > argTypes() {
+				return ( List< Class< ? extends Object > > ) Arrays.asList( Integer.class, Character.class, String.class );
 			}
 		} );
 
@@ -55,8 +55,8 @@ public class Operations {
 				m.getStack().push( m.getStore( ( Integer ) args.get( 0 ).getValue() ) );
 			}
 
-			public List< Class< ? > > argTypes() {
-				return ( List< Class< ? > > ) Arrays.asList( Integer.class );
+			public List< Class< ? extends Object > > argTypes() {
+				return ( List< Class< ? extends Object > > ) Arrays.asList( Integer.class );
 			}
 		} );
 
@@ -65,8 +65,8 @@ public class Operations {
 				m.setStore( ( Integer ) args.get( 0 ).getValue(), m.getStack().pop() );
 			}
 
-			public List< Class< ? > > argTypes() {
-				return ( List< Class< ? > > ) Arrays.asList( Integer.class );
+			public List< Class< ? extends Object > > argTypes() {
+				return ( List< Class< ? extends Object > > ) Arrays.asList( Integer.class );
 			}
 		} );
 
@@ -74,8 +74,8 @@ public class Operations {
 			public void apply( StackMachine m, List< StackValue< ? > > args ) throws StackRuntimeException {
 			}
 
-			public List< Class< ? > > argTypes() {
-				return ( List< Class< ? > > ) Arrays.asList( String.class );
+			public List< Class< ? extends Object > > argTypes() {
+				return ( List< Class< ? extends Object > > ) Arrays.asList( String.class );
 			}
 		} );
 	}
