@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Stack;
 
 import ox.stackgame.stackmachine.exceptions.*;
-import ox.stackgame.stackmachine.instructions.Instruction;
+import ox.stackgame.stackmachine.instructions.*;
 
 /**
  * Implementation of a simple stack machine
@@ -217,7 +217,8 @@ public class StackMachine {
     public void step() throws StackRuntimeException {
 	if (isRunning()) {
 	    Instruction nextInstruction = program.instructionAt(programCounter);
-	    setProgramCounter(nextInstruction.execute(this));
+	    Operation op = Operations.get( nextInstruction.name );
+	    setProgramCounter( op.execute( this, nextInstruction.args ) );
 	    numInstructions++;
 	}
     }
