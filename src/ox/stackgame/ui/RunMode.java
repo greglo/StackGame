@@ -10,7 +10,7 @@ import ox.stackgame.stackmachine.StackMachine;
  * @author danfox
  */
 public class RunMode extends Mode {
-	private StackMachine stackMachine = null;
+	//private StackMachine stackMachine = null;
 	// Invariant: stackMachine is valid while RunMode is the active mode
 	
 //	public void setMachine(StackMachine m){

@@ -148,7 +148,8 @@ public class ProgramTextUI extends JLayeredPane {
 		step1Button.setBounds(width-r-p,buttonStartY,r,r);
 		step1Button.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO describe button logic
+				// when clicked on 'dirty' textarea, feed the text through the lexer, switch to RunMode, pc:=0, call 'step'
+				// when clicked on a clean textarea ... TODO
 			}			
 		});
 		this.add(step1Button, new Integer(1));
@@ -159,7 +160,8 @@ public class ProgramTextUI extends JLayeredPane {
 		stepAllButton.setBounds(width-r-p,buttonStartY+p+r,r,r);
 		stepAllButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO describe button logic
+				// for a dirty textarea, lex the text, switch to RunMode, create a timer, call step on the timer until machine terminates. 
+				// when clicked with a clean textarea ... TODO
 			}			
 		});
 		this.add(stepAllButton, new Integer(1));
@@ -170,7 +172,8 @@ public class ProgramTextUI extends JLayeredPane {
 		runAllButton.setBounds(width-r-p,buttonStartY+p+r+p+r,r,r);
 		runAllButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO describe button logic
+				// for a dirty textarea, lex the text, switch to RunMode, call runAll on the stackMachine.
+				// for a clean textarea, ... TODO
 			}			
 		});
 		this.add(runAllButton, new Integer(1));
