@@ -15,6 +15,16 @@ public class Operations {
     private static final Hashtable<String, Operation> ht = new Hashtable<String, Operation>();
     private static boolean initialised = false;
 
+    private static List< Class< ? > > typeList( Class< ? >... types ) {
+        ArrayList< Class< ? > > res = new ArrayList< Class< ? > >();
+
+        for( Class< ? > type : types ) {
+            res.add( type );
+        }
+
+        return res;
+    }
+
     private static void init() {
 	ht.put("add", new BinOperation() {
 	    public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
@@ -51,11 +61,7 @@ public class Operations {
 	    }
 
 	    public List<Class<?>> argTypes() {
-		List<Class<?>> list = new ArrayList<Class<?>>();
-		list.add(Integer.class);
-		list.add(Character.class);
-		list.add(String.class);
-		return list;
+		return typeList( Integer.class, Character.class, String.class );
 	    }
 	});
 
@@ -66,9 +72,7 @@ public class Operations {
 	    }
 
 	    public List<Class<? extends Object>> argTypes() {
-		List<Class<?>> list = new ArrayList<Class<?>>();
-		list.add(Integer.class);
-		return list;
+		return typeList( Integer.class );
 	    }
 	});
 
@@ -79,9 +83,7 @@ public class Operations {
 	    }
 
 	    public List<Class<?>> argTypes() {
-		List<Class<?>> list = new ArrayList<Class<?>>();
-		list.add(Integer.class);
-		return list;
+		return typeList( Integer.class );
 	    }
 	});
 
@@ -91,9 +93,7 @@ public class Operations {
 	    }
 
 	    public List<Class<?>> argTypes() {
-		List<Class<?>> list = new ArrayList<Class<?>>();
-		list.add(String.class);
-		return list;
+		return typeList( String.class );
 	    }
 	});
     }
