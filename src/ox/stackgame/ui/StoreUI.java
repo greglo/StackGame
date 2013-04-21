@@ -31,9 +31,6 @@ public class StoreUI extends JPanel {
 		public void visit(Mode m) {	}		
 		
 		public void visit(RunMode m){
-			// wakeup, start listening to newly active machine.
-			activeMachine = m.getMachine();
-			activeMachine.addListener(l);
 			// change appearance to awaken. maybe redraw? 
 			refillLabel();
 		}
@@ -42,11 +39,7 @@ public class StoreUI extends JPanel {
 	private ModeVisitor modeDeactivationVisitor = new ModeVisitor(){
 		public void visit(Mode m) {}
 		
-		public void visit(RunMode m){
-			// stop listening.
-			activeMachine.removeListener(l);
-			activeMachine = null; // unnecessary, but makes sure no-one uses it afterwards
-			
+		public void visit(RunMode m){			
 			label.setText("[asleep]");
 		}
 	};
@@ -76,6 +69,9 @@ public class StoreUI extends JPanel {
 		// pay attention to mode changes
 		m.registerModeActivationVisitor(modeActivationVisitor);
 		m.registerModeDeactivationVisitor(modeDeactivationVisitor);
+		
+		// listen to the stack machine
+		m.stackMachine.addListener(l);
 		
 		this.setBackground(ApplicationFrame.caBlue2L);
 		this.setSize(new Dimension(boxSize,boxSize * StackMachine.STORE_SIZE));

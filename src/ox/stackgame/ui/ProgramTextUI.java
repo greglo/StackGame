@@ -22,7 +22,6 @@ import ox.stackgame.stackmachine.*;
  *
  */
 public class ProgramTextUI extends JLayeredPane {
-	private StackMachine activeMachine = null;
 	private Mode oldMode = null;
 	private Highlighter highlighter;
 	private final JTextArea jta;
@@ -39,11 +38,7 @@ public class ProgramTextUI extends JLayeredPane {
 			jta.setForeground(editableTextColor);
 		}
 		
-		public void visit(RunMode m){
-			// start listening to newly active machine.
-			activeMachine = m.getMachine();
-			activeMachine.addListener(l); 
-			
+		public void visit(RunMode m){			
 			highlight(0); // TODO check whether this is superfluous
 		}	
 	};
@@ -57,9 +52,7 @@ public class ProgramTextUI extends JLayeredPane {
 		}
 		
 		public void visit(RunMode m){
-			// stop listening.
-			activeMachine.removeListener(l);
-			activeMachine = null;
+
 		}
 	};
 
@@ -87,6 +80,9 @@ public class ProgramTextUI extends JLayeredPane {
 		// pay attention to mode changes
 		modeManager.registerModeActivationVisitor(modeActivationVisitor);
 		modeManager.registerModeDeactivationVisitor(modeDeactivationVisitor);
+		
+		// listen to the stack machine
+		modeManager.stackMachine.addListener(l);
 		
 		// create a scroll pane
 		JScrollPane jsp = new JScrollPane();

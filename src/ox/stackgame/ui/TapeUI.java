@@ -27,9 +27,6 @@ public class TapeUI extends JPanel {
 		}
 		
 		public void visit(RunMode m){
-			// start listening to current machine
-			activeMachine = m.getMachine();
-			activeMachine.addListener(l);
 			// TODO Cursor on first input 
 		}
 	};
@@ -42,9 +39,6 @@ public class TapeUI extends JPanel {
 		}
 		
 		public void visit(RunMode m){
-			// stop listening to machine
-			activeMachine.removeListener(l);
-			activeMachine=null;
 			// TODO hide cursor
 		}
 	};
@@ -59,11 +53,14 @@ public class TapeUI extends JPanel {
 		}		
 	};
 	
-	public TapeUI(StateManager modeManager){
+	public TapeUI(StateManager m){
 		
 		// pay attention to mode changes
-		modeManager.registerModeActivationVisitor(modeActivationVisitor);
-		modeManager.registerModeDeactivationVisitor(modeDeactivationVisitor);
+		m.registerModeActivationVisitor(modeActivationVisitor);
+		m.registerModeDeactivationVisitor(modeDeactivationVisitor);
+		
+		// listen to the stack machine
+		m.stackMachine.addListener(l);
 		
 		// sort out appearance
 		this.setBackground(ApplicationFrame.caBlue2L);

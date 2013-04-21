@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.StackProgram;
 
 
 
@@ -23,7 +24,7 @@ public class ApplicationFrame {
 	public static void main(String[] args) {
 		
 		// initialise modes
-		StateManager modeManager = new StateManager(new StackMachine(null)); // instantiate the StateManager with a 'blank' machine
+		StateManager modeManager = new StateManager(new StackMachine(new StackProgram())); // instantiate the StateManager with a 'blank' machine
 		RunMode runMode = new RunMode();
 		Mode freeDesignMode = new FreeDesignMode();
 		Mode challengeMode = new ChallengeMode();
