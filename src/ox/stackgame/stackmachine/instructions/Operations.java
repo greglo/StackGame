@@ -15,14 +15,13 @@ public class Operations {
     private static final Hashtable<String, Operation> ht = new Hashtable<String, Operation>();
     private static boolean initialised = false;
 
-    private static List< Class< ? > > typeList( Class< ? >... types ) {
-        ArrayList< Class< ? > > res = new ArrayList< Class< ? > >();
+    public static List<Class<?>> typeList(Class<?>... types) {
+	ArrayList<Class<?>> res = new ArrayList<Class<?>>();
 
-        for( Class< ? > type : types ) {
-            res.add( type );
-        }
+	for (Class<?> type : types)
+	    res.add(type);
 
-        return res;
+	return res;
     }
 
     private static void init() {
@@ -61,7 +60,7 @@ public class Operations {
 	    }
 
 	    public List<Class<?>> argTypes() {
-		return typeList( Integer.class, Character.class, String.class );
+		return typeList(Integer.class, Character.class, String.class);
 	    }
 	});
 
@@ -72,7 +71,7 @@ public class Operations {
 	    }
 
 	    public List<Class<? extends Object>> argTypes() {
-		return typeList( Integer.class );
+		return typeList(Integer.class);
 	    }
 	});
 
@@ -83,7 +82,7 @@ public class Operations {
 	    }
 
 	    public List<Class<?>> argTypes() {
-		return typeList( Integer.class );
+		return typeList(Integer.class);
 	    }
 	});
 
@@ -93,16 +92,23 @@ public class Operations {
 	    }
 
 	    public List<Class<?>> argTypes() {
-		return typeList( String.class );
+		return typeList(String.class);
 	    }
+	});
+	
+	ht.put("jump", new BranchOperation() {
+	    @Override
+	    protected boolean p(StackMachine machine) {
+		return true;
+	    } 
 	});
     }
 
     public static Operation get(String name) {
-	if (!initialised) {
+	if (!initialised)
 	    init();
-	}
-
+	if (ht.get(name) == null)
+	    System.out.println(name);
 	return ht.get(name);
     }
 }
