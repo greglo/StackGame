@@ -15,5 +15,5 @@ public abstract class SeqOperation extends Operation {
         return m.nextInstruction();
     }
 
-    public abstract void apply( StackMachine m, List< StackValue< ? > > args ) throws StackRuntimeException;
+    public abstract void apply( StackMachine m, StackValue< ? > arg ) throws StackRuntimeException;
 }
