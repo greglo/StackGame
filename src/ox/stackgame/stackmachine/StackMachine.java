@@ -132,16 +132,16 @@ public class StackMachine {
     /**
      * Consume a word of input (presumably to push on to the evaluation stack)
      * @return	The word of input
+     * @throws EmptyInputException 
      */
-    public StackValue<?> consumeInput() {
+    public StackValue<?> consumeInput() throws EmptyInputException {
 	if (inputIndex < input.size()) {
 	    for (StackMachineListener l : listeners)
 		l.inputConsumed(inputIndex);
 	    return input.get(inputIndex++);
 	}
 	else
-	    return null;
-	// TODO
+	    throw new EmptyInputException(programCounter);
     }
     
     /**

@@ -102,6 +102,15 @@ public class Operations {
                 return true;
             } 
         });
+        
+        ht.put("input", new SeqOperation() {
+	    @Override
+	    public void apply(StackMachine m, StackValue<?> arg)
+		    throws StackRuntimeException {
+		m.getStack().push(m.consumeInput());
+	    }
+            
+        });
     }
 
     public static Operation get(String name) {
