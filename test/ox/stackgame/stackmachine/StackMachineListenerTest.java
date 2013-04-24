@@ -3,6 +3,7 @@ package ox.stackgame.stackmachine;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -66,13 +67,29 @@ public class StackMachineListenerTest {
     }
 
     @Test
-    public void testStoreChanged() {
-
+    public void testStoreChanged() throws StackRuntimeException {
+	List<Instruction> program = new ArrayList<Instruction>();
+	StackMachine machine = new StackMachine(program);
+	MockListener l = new MockListener();
+	machine.addListener(l);
+	machine.addInstruction(0, new Instruction("const", new IntStackValue(5)));
+	machine.addInstruction(1, new Instruction("store", new IntStackValue(1)));
+	machine.step();
+	machine.step();
+	assertEquals(true, l.storeChangedFired);
     }
 
     @Test
-    public void testInputConsumed() {
-
+    public void testInputConsumed() throws StackRuntimeException {
+	List<StackValue<?>> input = new ArrayList<StackValue<?>>();
+	input.add(new IntStackValue(3));
+	List<Instruction> program = new ArrayList<Instruction>();
+	StackMachine machine = new StackMachine(program, input);
+	MockListener l = new MockListener();
+	machine.addListener(l);
+	machine.addInstruction(0, new Instruction("input", new IntStackValue(5)));
+	machine.step();
+	assertEquals(true, l.inputConsumedFired);
     }
 
     @Test
