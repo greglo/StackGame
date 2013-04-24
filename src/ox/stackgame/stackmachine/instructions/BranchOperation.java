@@ -1,7 +1,5 @@
 package ox.stackgame.stackmachine.instructions;
 
-import java.util.List;
-
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.StringStackValue;

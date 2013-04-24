@@ -20,6 +20,7 @@ import ox.stackgame.stackmachine.exceptions.InvalidAddressException;
  * @author danfox
  *
  */
+@SuppressWarnings("serial")
 public class StoreUI extends JPanel {
 	
 	private JLabel label;

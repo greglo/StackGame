@@ -14,6 +14,7 @@ import ox.stackgame.stackmachine.StackMachineListenerAdapter;
  * @author danfox
  *
  */
+@SuppressWarnings("serial")
 public class TapeUI extends JPanel {
 
 	private StackMachine activeMachine = null;

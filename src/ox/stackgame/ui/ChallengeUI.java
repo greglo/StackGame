@@ -23,6 +23,7 @@ import ox.stackgame.stackmachine.StackMachineListenerAdapter;
  * @author danfox
  * 
  */
+@SuppressWarnings("serial")
 public class ChallengeUI extends JPanel {
 
 	protected AbstractChallenge challenge;

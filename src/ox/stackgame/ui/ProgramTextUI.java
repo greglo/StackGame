@@ -27,6 +27,7 @@ import ox.stackgame.stackmachine.instructions.*;
  * @author danfox
  * 
  */
+@SuppressWarnings("serial")
 public class ProgramTextUI extends JLayeredPane {
     private Mode oldMode = null;
     private Highlighter highlighter;

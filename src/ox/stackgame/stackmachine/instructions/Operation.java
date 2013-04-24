@@ -1,7 +1,6 @@
 package ox.stackgame.stackmachine.instructions;
 
 import java.util.*;
-import java.lang.*;
 
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;

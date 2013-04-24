@@ -1,7 +1,5 @@
 package ox.stackgame.stackmachine.instructions;
 
-import java.util.*;
-
 import ox.stackgame.stackmachine.StackValue;
 
 public class Instruction {
