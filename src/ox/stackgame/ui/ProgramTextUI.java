@@ -142,7 +142,7 @@ public class ProgramTextUI extends JLayeredPane {
 		this.add(createScrollPane(), new Integer(0)); // fills container
 
 		// create buttons
-		int r= 50;
+		int r= 60;
 		int p = ApplicationFrame.p;
 		int h= ApplicationFrame.h;
 		int buttonStartY = p;
@@ -174,6 +174,7 @@ public class ProgramTextUI extends JLayeredPane {
 		this.add(step1Button, new Integer(1));
 		
 		// create stepAll Button
+		// allows the user to see each command animated until the machine halts.
 		final JButton stepAllButton = new JButton("StepAll");
 		stepAllButton.setForeground(new Color(0,133,200));	
 		stepAllButton.setBounds(width-r-p,buttonStartY+p+r,r,r);
@@ -181,18 +182,38 @@ public class ProgramTextUI extends JLayeredPane {
 			public void actionPerformed(ActionEvent arg0) {
 				// for a dirty textarea, lex the text, switch to RunMode (storing the current mode), create a timer, call step on the timer until machine terminates. 
 				// when clicked in runMode, just do the timer stuff
+				// disable this button
+				// enable pausebutton
 			}			
 		});
 		this.add(stepAllButton, new Integer(1));
 		
+		// pauseButton
+		// only relevant to stepAll Button
+		final JButton pauseButton = new JButton("Pause");
+		pauseButton.setForeground(new Color(0,133,200));	
+		pauseButton.setBounds(width-r-p,buttonStartY+p+r+p+r,r,r);
+		pauseButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				// disabled in designMode.
+				// enabled if machine is being animated
+				// when clicked, stop the stepAll timer from calling step
+					// enable stepAllButton, enable runAllButton
+			}			
+		});
+		this.add(pauseButton, new Integer(1));
+		
+		
+		
 		// create runAll button
 		final JButton runAllButton = new JButton("RunAll");
 		runAllButton.setForeground(new Color(0,133,200));	
-		runAllButton.setBounds(width-r-p,buttonStartY+p+r+p+r,r,r);
+		runAllButton.setBounds(width-r-p,buttonStartY+p+r+p+r+p+r,r,r);
 		runAllButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				// for a dirty textarea, lex the text, switch to RunMode (storing the current mode), call runAll on the stackMachine.
 				// when clicked in RunMode, call runAll
+				// disable this button
 			}			
 		});
 		this.add(runAllButton, new Integer(1));
