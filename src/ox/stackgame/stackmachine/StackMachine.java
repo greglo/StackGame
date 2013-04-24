@@ -218,7 +218,7 @@ public class StackMachine {
 	if (isRunning()) {
 	    Instruction nextInstruction = program.instructionAt(programCounter);
 	    Operation op = Operations.get( nextInstruction.name );
-	    setProgramCounter( op.execute( this, nextInstruction.args ) );
+	    setProgramCounter( op.execute( this, nextInstruction.arg ) );
 	    numInstructions++;
 	}
     }
