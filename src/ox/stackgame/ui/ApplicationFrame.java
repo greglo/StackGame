@@ -1,12 +1,17 @@
 package ox.stackgame.ui;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
 import ox.stackgame.challenge.StackResultChallenge;
+import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackProgram;
+import ox.stackgame.stackmachine.StringStackValue;
+import ox.stackgame.stackmachine.instructions.Instruction;
 
 
 
@@ -26,8 +31,18 @@ public class ApplicationFrame {
 		//Test challenge
 		StackResultChallenge testChallenge = new StackResultChallenge("This is a test challenge", null, null);
 		
+		// instantiate the application with a trivial example machine:  (5 + 3A) * 2
+		List<Instruction> instructions = new ArrayList<Instruction>();
+		instructions.add(new Instruction("load", new IntStackValue(5)));
+		instructions.add(new Instruction("load", new IntStackValue(3)));
+		instructions.add(new Instruction("add"));
+		instructions.add(new Instruction("load", new IntStackValue(2)));
+		instructions.add(new Instruction("mul"));
+		StackProgram program = new StackProgram(instructions);
+		StackMachine machine = new StackMachine(program);
+		
 		// initialise modes
-		StateManager modeManager = new StateManager(new StackMachine(new StackProgram())); // instantiate the StateManager with a 'blank' machine
+		StateManager modeManager = new StateManager(machine); 
 		RunMode runMode = new RunMode();
 		Mode freeDesignMode = new FreeDesignMode();
 		Mode challengeMode = new ChallengeMode(testChallenge);
