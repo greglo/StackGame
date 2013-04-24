@@ -6,23 +6,19 @@ import ox.stackgame.stackmachine.StackValue;
 
 public class Instruction {
     public final String name;
-    public final List<StackValue<?>> args;
+    public final StackValue<?> arg;
 
     public Instruction(String name) {
-        this(name, new ArrayList<StackValue<?>>());
+        this(name, null);
     }
 
-    public Instruction(String name, StackValue<?>... args) {
-        List<StackValue<?>> argsList = new ArrayList<StackValue<?>>();
-        for (StackValue<?> value : args)
-            argsList.add(value);
-
+    public Instruction(String name, StackValue<?> arg) {
         assert name != null : "name == null";
         assert Operations.get(name) != null : name + " isnt a real instruction";
-        assert argsList != null : "args == null";
+        assert ( arg == null ) == ( Operations.get( name ).argTypes() == null ) : "wrong number of args for " + name;
 
         this.name = name;
-        this.args = argsList;
+        this.arg = arg;
     }
 
     public Instruction(String name, List<StackValue<?>> args) {
