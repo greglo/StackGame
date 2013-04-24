@@ -55,7 +55,7 @@ public class Operations {
         });
 
         ht.put("const", new SeqOperation() {
-            public void apply(StackMachine m, List<StackValue<?>> arg)
+            public void apply(StackMachine m, StackValue<?> arg)
                     throws StackRuntimeException {
                 m.getStack().push(arg);
             }
@@ -66,7 +66,7 @@ public class Operations {
         });
 
         ht.put("load", new SeqOperation() {
-            public void apply(StackMachine m, List<StackValue<?>> arg)
+            public void apply(StackMachine m, StackValue<?> arg)
                     throws StackRuntimeException {
                 m.getStack().push(m.getStore((Integer) arg.getValue()));
             }
@@ -77,7 +77,7 @@ public class Operations {
         });
 
         ht.put("store", new SeqOperation() {
-            public void apply(StackMachine m, List<StackValue<?>> arg)
+            public void apply(StackMachine m, StackValue<?> arg)
                     throws StackRuntimeException {
                 m.setStore((Integer) arg.getValue(), m.getStack().pop());
             }
@@ -88,7 +88,7 @@ public class Operations {
         });
 
         ht.put("label", new SeqOperation() {
-            public void apply(StackMachine m, List<StackValue<?>> arg)
+            public void apply(StackMachine m, StackValue<?> arg)
                     throws StackRuntimeException {
             }
 
