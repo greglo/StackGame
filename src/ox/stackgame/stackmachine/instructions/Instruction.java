@@ -20,13 +20,4 @@ public class Instruction {
         this.name = name;
         this.arg = arg;
     }
-
-    public Instruction(String name, List<StackValue<?>> args) {
-        assert name != null : "name == null";
-        assert Operations.get(name) != null : name + " isnt a real instruction";
-        assert args != null : "args == null";
-
-        this.name = name;
-        this.args = args;
-    }
 }
