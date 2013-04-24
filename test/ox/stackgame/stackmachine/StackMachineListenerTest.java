@@ -2,10 +2,12 @@ package ox.stackgame.stackmachine;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
+import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 public class StackMachineListenerTest {
@@ -53,8 +55,14 @@ public class StackMachineListenerTest {
     }
 
     @Test
-    public void testStackProgramCounterChanged() {
-
+    public void testStackProgramCounterChanged() throws StackRuntimeException {
+	List<Instruction> program = new ArrayList<Instruction>();
+	StackMachine machine = new StackMachine(program);
+	MockListener l = new MockListener();
+	machine.addListener(l);
+	machine.addInstruction(0, new Instruction("const", new IntStackValue(5)));
+	machine.step();
+	assertEquals(true, l.stackProgramCounterChanged);
     }
 
     @Test
