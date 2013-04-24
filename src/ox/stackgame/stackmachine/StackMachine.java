@@ -252,6 +252,14 @@ public class StackMachine {
     public void removeListener(StackMachineListener l) {
 	listeners.remove(l);
     }
+    
+    /**
+     * Should only be used by views.  (Not for execution).
+     * @return the instructions in this StackMachine.
+     */
+    public List<Instruction> getInstructions(){
+    	return this.instructions;
+    }
 
     /**
      * A wrapper for a Stack< StackValue< ?>> which lets us throw

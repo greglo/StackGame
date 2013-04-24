@@ -3,6 +3,7 @@
  */
 package ox.stackgame.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.awt.*;
@@ -65,6 +66,10 @@ public class ProgramTextUI extends JLayeredPane {
 		public void programCounterChanged(int line) {
 			highlight(line);
 		}
+		
+		public void stackInstructionsChanged(List<Instruction> p) {
+			jta.setText(antiLex(p));
+		}
 	};
 	
 	private void highlight (int line){
@@ -125,6 +130,26 @@ public class ProgramTextUI extends JLayeredPane {
 		return jsp;
 	}
 	
+	private List<Instruction> lex(String text){
+		ArrayList<Instruction> p = new ArrayList<Instruction>();
+		// TODO write a real lexer, connect it here.
+		p.add(new Instruction("load", new IntStackValue(5)));
+		p.add(new Instruction("load", new IntStackValue(3)));
+		p.add(new Instruction("add"));
+		return p;
+	}
+	
+	private String antiLex(List<Instruction> program) {
+		StringBuilder b = new StringBuilder();
+		for (Instruction i : program) {
+			if (b.length()!=0) b.append("\n");
+			b.append(i.name);
+			for (StackValue<?> v : i.args)
+				b.append(" " + v.getValue());
+		}
+		return b.toString();
+	}
+	
 	public ProgramTextUI(final StateManager modeManager, final RunMode runMode){
 		super();
 		
@@ -140,12 +165,15 @@ public class ProgramTextUI extends JLayeredPane {
 		
 		// add scrollpane
 		this.add(createScrollPane(), new Integer(0)); // fills container
+		jta.setText(antiLex(modeManager.stackMachine.getInstructions()));
 
 		// create buttons
 		int r= 60;
 		int p = ApplicationFrame.p;
 		int h= ApplicationFrame.h;
 		int buttonStartY = p;
+		
+		// TODO position the buttons in a more sensible way. Get rid of +p+h+ldfklsdkf....
 		
 		// create step1 button
 		final JButton step1Button = new JButton("Step1");
@@ -157,9 +185,9 @@ public class ProgramTextUI extends JLayeredPane {
 				if (modeManager.getActiveMode() != runMode){
 					// feed text through lexer
 					String text = jta.getText();
-					//List<Instruction> instructions = lex(text);
+					List<Instruction> instructions = lex(text);
 					// update modeManager.stackMachine
-					//modeManager.stackMachine.loadInstructions(instructions);
+					modeManager.stackMachine.loadInstructions(instructions);
 					// switch to RunMode
 					modeManager.setActiveMode(runMode);
 				}
@@ -191,6 +219,7 @@ public class ProgramTextUI extends JLayeredPane {
 		// pauseButton
 		// only relevant to stepAll Button
 		final JButton pauseButton = new JButton("Pause");
+		pauseButton.setEnabled(false);
 		pauseButton.setForeground(new Color(0,133,200));	
 		pauseButton.setBounds(width-r-p,buttonStartY+p+r+p+r,r,r);
 		pauseButton.addActionListener(new ActionListener(){
