@@ -48,52 +48,52 @@ public class Operations {
 
         ht.put("div", new BinOperation() {
             public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
-            throws TypeException {
-            return x.div(y);
+                    throws TypeException {
+                return x.div(y);
             }
         });
 
         ht.put("const", new SeqOperation() {
             public void apply(StackMachine m, List<StackValue<?>> args)
-            throws StackRuntimeException {
-            m.getStack().push(args.get(0));
+                    throws StackRuntimeException {
+                m.getStack().push(args.get(0));
             }
 
-        public List<Class<?>> argTypes() {
-            return typeList(Integer.class, Character.class, String.class);
-        }
+            public List<Class<?>> argTypes() {
+                return typeList(Integer.class, Character.class, String.class);
+            }
         });
 
         ht.put("load", new SeqOperation() {
             public void apply(StackMachine m, List<StackValue<?>> args)
-            throws StackRuntimeException {
-            m.getStack().push(m.getStore((Integer) args.get(0).getValue()));
+                    throws StackRuntimeException {
+                m.getStack().push(m.getStore((Integer) args.get(0).getValue()));
             }
 
-        public List<Class<? extends Object>> argTypes() {
-            return typeList(Integer.class);
-        }
+            public List<Class<? extends Object>> argTypes() {
+                return typeList(Integer.class);
+            }
         });
 
         ht.put("store", new SeqOperation() {
             public void apply(StackMachine m, List<StackValue<?>> args)
-            throws StackRuntimeException {
-            m.setStore((Integer) args.get(0).getValue(), m.getStack().pop());
+                    throws StackRuntimeException {
+                m.setStore((Integer) args.get(0).getValue(), m.getStack().pop());
             }
 
-        public List<Class<?>> argTypes() {
-            return typeList(Integer.class);
-        }
+            public List<Class<?>> argTypes() {
+                return typeList(Integer.class);
+            }
         });
 
         ht.put("label", new SeqOperation() {
             public void apply(StackMachine m, List<StackValue<?>> args)
-            throws StackRuntimeException {
+                    throws StackRuntimeException {
             }
 
-        public List<Class<?>> argTypes() {
-            return typeList(String.class);
-        }
+            public List<Class<?>> argTypes() {
+                return typeList(String.class);
+            }
         });
 
         ht.put("jump", new BranchOperation() {
