@@ -10,60 +10,65 @@ import ox.stackgame.stackmachine.instructions.Instruction;
 
 public class StackMachineListenerTest {
 
-	class MockListener implements StackMachineListener{
-		public boolean stackInstructionsChangedFired = false;
-		public void stackInstructionsChanged(List<Instruction> instructions) {
-			this.stackInstructionsChangedFired = true;
-		}
+    class MockListener implements StackMachineListener {
+	public boolean stackInstructionsChangedFired = false;
 
-		public boolean stackProgramCounterChanged = false;
-		public void programCounterChanged(int line) {
-			this.stackProgramCounterChanged = true;
-		}
+	public void stackInstructionsChanged(List<Instruction> instructions) {
+	    this.stackInstructionsChangedFired = true;
+	}
 
-		public boolean storeChangedFired = false;
-		public void storeChanged(int address) {
-			this.storeChangedFired=true;
-		}
+	public boolean stackProgramCounterChanged = false;
 
-		public boolean inputConsumedFired=false;
-		public void inputConsumed(int startIndex) {
-			this.inputConsumedFired=true;
-		}
+	public void programCounterChanged(int line) {
+	    this.stackProgramCounterChanged = true;
+	}
 
-		public boolean outputChangedFired=false;
-		public void outputChanged() {
-			this.outputChangedFired=true;
-		}
+	public boolean storeChangedFired = false;
+
+	public void storeChanged(int address) {
+	    this.storeChangedFired = true;
 	}
-	
-	@Test
-	public void testStackInstructionsChanged() {
-		StackProgram program = new StackProgram();
-		StackMachine machine = new StackMachine(program);
-		MockListener l = new MockListener();
-		machine.addListener(l);
-		machine.addInstruction(0, new Instruction("load", new IntStackValue(2)));
-		assertEquals(true, l.stackInstructionsChangedFired);
+
+	public boolean inputConsumedFired = false;
+
+	public void inputConsumed(int startIndex) {
+	    this.inputConsumedFired = true;
 	}
-	
-	@Test 
-	public void testStackProgramCounterChanged(){
-		
+
+	public boolean outputChangedFired = false;
+
+	public void outputChanged() {
+	    this.outputChangedFired = true;
 	}
-	
-	@Test 
-	public void testStoreChanged(){
-		
-	}
-	
-	@Test 
-	public void testInputConsumed(){
-		
-	}
-	
-	@Test 
-	public void testOutputChanged(){
-		
-	}
+    }
+
+    @Test
+    public void testStackInstructionsChanged() {
+	StackProgram program = new StackProgram();
+	StackMachine machine = new StackMachine(program);
+	MockListener l = new MockListener();
+	machine.addListener(l);
+	machine.addInstruction(0, new Instruction("load", new IntStackValue(2)));
+	assertEquals(true, l.stackInstructionsChangedFired);
+    }
+
+    @Test
+    public void testStackProgramCounterChanged() {
+
+    }
+
+    @Test
+    public void testStoreChanged() {
+
+    }
+
+    @Test
+    public void testInputConsumed() {
+
+    }
+
+    @Test
+    public void testOutputChanged() {
+
+    }
 }
