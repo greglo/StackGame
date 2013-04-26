@@ -19,6 +19,12 @@ public class LexerTest {
     	// 'const 5' is legal; 'const' is not.  should throw an exception.
     	List<Instruction> ops = Lexer.lex("const\n");
 	}
+    
+    @Test(expected = LexerException.class)
+    public void tooManyArgsTest() throws LexerException {
+	List<Instruction> ops = Lexer.lex("const 1 2");
+	System.out.println(ops.get(0).arg.getValue());
+    }
 
 	@Test
 	public void lexertest() throws LexerException {
