@@ -102,6 +102,10 @@ public class Operations {
             protected boolean p(StackMachine machine) {
                 return true;
             } 
+
+            public List<Class<?>> argTypes() {
+                return typeList(StringStackValue.class);
+            }
         });
     }
 
