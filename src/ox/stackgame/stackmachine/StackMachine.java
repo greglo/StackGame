@@ -43,9 +43,9 @@ public class StackMachine {
     }
 
     public StackMachine(List<Instruction> instructions, List<StackValue<?>> input) {
+	this.listeners = new ArrayList<StackMachineListener>();
         this.originalInput = input;
         loadInstructions(instructions);
-        this.listeners = new ArrayList<StackMachineListener>();
     }
 
     /**
@@ -57,10 +57,9 @@ public class StackMachine {
      *            behaviour
      */
     public StackMachine(StackProgram program, List<StackValue<?>> input) {
+	this.listeners = new ArrayList<StackMachineListener>();
         this.originalInput = input;
         loadInstructions(program.getInstructions());
-
-        this.listeners = new ArrayList<StackMachineListener>();
     }
 
     /**
@@ -81,6 +80,8 @@ public class StackMachine {
     public void loadInstructions(List<Instruction> instructions) {
         this.instructions = instructions;
         this.program = new StackProgram(instructions);
+        for (StackMachineListener l : listeners)
+            l.stackInstructionsChanged(instructions);
         reset();
     }
 
