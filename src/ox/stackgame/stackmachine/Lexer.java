@@ -71,7 +71,7 @@ public class Lexer {
                         try {
                             value = (StackValue<?>) argType.newInstance();
                         } catch (InstantiationException e) {
-                            throw new LexerException(lineno, argType.getName() + " needs a 0 argument constructor");
+                            throw new RuntimeException(argType.getName() + " needs a 0 argument constructor");
                         } catch (IllegalAccessException e) {
                             throw new RuntimeException("type is not accessible");
                         }
