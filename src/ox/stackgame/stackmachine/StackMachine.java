@@ -202,9 +202,8 @@ public class StackMachine {
      * Get the location of the next instruction in the program
      * @return
      */
-    public int incrementProgramCounter() {
-	setProgramCounter(getProgramCounter() + 1);
-	return getProgramCounter();
+    public int nextInstruction() {
+	return getProgramCounter() + 1;
     }
 
     /**
