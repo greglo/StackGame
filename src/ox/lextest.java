@@ -3,6 +3,7 @@ package ox;
 import java.util.*;
 
 import ox.stackgame.stackmachine.*;
+import ox.stackgame.stackmachine.Lexer.LexerException;
 import ox.stackgame.stackmachine.instructions.*;
 import ox.stackgame.stackmachine.exceptions.*;
 
@@ -17,7 +18,7 @@ public class lextest {
         + "dump\n"
         + "nop\n";
 
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws LexerException {
         List< Instruction > ops = Lexer.lex( prog );
 
         // for( Instruction op : ops ) {

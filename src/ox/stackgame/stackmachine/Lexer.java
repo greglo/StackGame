@@ -6,7 +6,16 @@ import java.util.*;
 import java.util.regex.*;
 
 public class Lexer {
-    public static ArrayList< Instruction > lex( String source ) {
+	
+	public static class LexerException extends Exception{
+		public final int lineNumber;
+		public LexerException(int lineNumber, String message){
+			super(message);
+			this.lineNumber=lineNumber;
+		}
+	}
+	
+    public static ArrayList< Instruction > lex( String source ) throws LexerException {
         ArrayList< Instruction > program = new ArrayList< Instruction >();
 
         Pattern linesPattern = Pattern.compile( "[^\n]+" );
@@ -17,6 +26,7 @@ public class Lexer {
 
         Matcher lines = linesPattern.matcher( source );
 
+        int lineno =0;
         while( lines.find() ) {
             String line = source.substring( lines.start(), lines.end() );
 
@@ -44,12 +54,14 @@ public class Lexer {
                     name = word;
                     op = Operations.get( name );
 
-                    assert op != null : name + " is bad opname";
+                    //assert op != null : name + " is bad opname";
+                    if (op == null) throw new LexerException(lineno, name + " is bad opname");
                 }
                 else {
                     List< Class< ? > > types = op.argTypes();
 
-                    assert types != null : name + " takes no args";
+                    //assert types != null : name + " takes no args";
+                    if (types == null) throw new LexerException(lineno, name + " takes no args");
 
                     for( Class< ? > type : types ) {
                         StackValue< ? > value = null;
@@ -58,10 +70,11 @@ public class Lexer {
                             value = ( StackValue< ? > ) type.newInstance();
                         }
                         catch( InstantiationException e ) {
-                            assert false : type.getName() + " needs a 0 argument constructor";
+                            //assert false : type.getName() + " needs a 0 argument constructor";
+                        	throw new LexerException(lineno, type.getName() + " needs a 0 argument constructor");
                         }
                         catch( IllegalAccessException e ) {
-                            assert false : "i dont know";
+                            throw new RuntimeException("type is not accessible"); // this shouldn't ever happen.
                         }
 
                         if( value.init( word ) ) {
@@ -71,11 +84,14 @@ public class Lexer {
                         }
                     }
 
-                    assert arg != null : "couldn't find valid type for `" + word + "` in op " + name;
+                    //assert arg != null : "couldn't find valid type for `" + word + "` in op " + name;
+                	if(arg==null) throw new LexerException(lineno, "couldn't find valid type for `" + word + "` in op " + name);
+
                 }
             }
 
             program.add( new Instruction( name, arg ) );
+            lineno++;
         }
 
         return program;

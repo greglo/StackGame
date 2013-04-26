@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import ox.stackgame.stackmachine.Lexer.LexerException;
 import ox.stackgame.stackmachine.exceptions.NotHaltingException;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.instructions.Instruction;
@@ -13,7 +14,7 @@ import ox.stackgame.stackmachine.instructions.Instruction;
 public class LexerTest {	 
 	 
 	 @Test
-	 public void lexertest() {
+	 public void lexertest() throws LexerException {
 	        List< Instruction > ops = Lexer.lex( ""
 			        + "jump lab\n"
 			        + "const 5\n"
