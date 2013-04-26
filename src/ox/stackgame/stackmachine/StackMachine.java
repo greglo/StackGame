@@ -34,6 +34,10 @@ public class StackMachine {
 
     private final List<StackMachineListener> listeners;
 
+    public StackMachine(List<Instruction> instructions) {
+	this(instructions, new ArrayList<StackValue<?>>());
+    }
+    
     public StackMachine(StackProgram program) {
         this(program, new ArrayList<StackValue<?>>());
     }
