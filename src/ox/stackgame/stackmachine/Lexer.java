@@ -42,58 +42,56 @@ public class Lexer {
             }
 
             Matcher words = wordsPattern.matcher( trimmed );
-
-            String name = null;
-            Operation op = null;
-            StackValue< ? > arg = null;
-
-            for( int i = 0; words.find(); i++ ) {
-                String word = trimmed.substring( words.start(), words.end() );
-
-                // first word on the line is the name of an operation
-                if( i == 0 ) {
-                    name = word;
-                    op = Operations.get( name );
-
-                    //assert op != null : name + " is bad opname";
-                    if (op == null) throw new LexerException(lineno, name + " is bad opname");
-                }
-                // other words must be arguments (or invalid code)
-                else {
-                    List< Class< ? > > types = op.argTypes();
-
-                    //assert types != null : name + " takes no args";
-                    if (types == null) throw new LexerException(lineno, name + " takes no args");
-
-                    for( Class< ? > type : types ) {
-                        StackValue< ? > value = null;
-
+            
+            if (words.find()) {
+        	// Op provided 
+        	String opName = trimmed.substring(words.start(), words.end());
+        	Operation op = Operations.get(opName);
+        	
+        	if (op == null) 
+        	    throw new LexerException(lineno, opName + " is not a valid Instruction");
+        	
+        	StackValue<?> arg = null;
+        	List<Class<?>> argTypes = op.argTypes();
+        	
+        	if (words.find()) {
+        	    // Argument provided
+        	    String argString = trimmed.substring(words.start(), words.end());
+        	    
+        	    if (argTypes == null) 
+        		throw new LexerException(lineno, opName + " does take an argument: Unexpected '" + argString + "'");
+        	    
+        	    for (Class<?> argType : argTypes) {
+        		StackValue<?> value = null;
+        		
                         try {
-                            value = ( StackValue< ? > ) type.newInstance();
+                            value = ( StackValue< ? > ) argType.newInstance();
                         }
                         catch( InstantiationException e ) {
-                            //assert false : type.getName() + " needs a 0 argument constructor";
-                        	throw new LexerException(lineno, type.getName() + " needs a 0 argument constructor");
+                            throw new LexerException(lineno, argType.getName() + " needs a 0 argument constructor");
                         }
                         catch( IllegalAccessException e ) {
                             throw new RuntimeException("type is not accessible"); // this shouldn't ever happen.
                         }
 
-                        if( value.init( word ) ) {
+                        if( value.init( argString ) ) {
                             arg = value;
-
                             break;
                         }
-                    }
-
-                    //assert arg != null : "couldn't find valid type for `" + word + "` in op " + name;
-                	if(arg==null) throw new LexerException(lineno, "couldn't find valid type for `" + word + "` in op " + name);
-
-                }
+        	    }
+        	    if (arg == null )
+        		throw new LexerException(lineno, "couldn't find valid type for `" + argString + "` in op " + opName);
+        	}
+        	else if (argTypes != null)
+        	    throw new LexerException(lineno, "Argument expected, but none given");
+        	
+        	if (words.find()) 
+        	    throw new LexerException(lineno, "Too many arguments were provided");
+        	    
+        	
+        	
+        	program.add(new Instruction(opName, arg));
             }
-            // TODO
-            if (arg == null && op.argTypes() != null) throw new LexerException(lineno, "Argument expected, but none given");
-            program.add( new Instruction( name, arg ) );
         }
 
         return program;
