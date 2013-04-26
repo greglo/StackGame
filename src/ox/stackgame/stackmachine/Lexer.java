@@ -63,7 +63,7 @@ public class Lexer {
                             words.end());
 
                     if (argTypes == null)
-                        throw new LexerException(lineno, opName + " does take an argument: Unexpected '" + argString + "'");
+                        throw new LexerException(lineno, opName + " doesn't take an argument: Unexpected '" + argString + "'");
 
                     for (Class<?> argType : argTypes) {
                         StackValue<?> value = null;
