@@ -7,13 +7,14 @@ import java.util.regex.*;
 
 public class Lexer {
 	
-	public static class LexerException extends Exception{
-		public final int lineNumber;
-		public LexerException(int lineNumber, String message){
-			super(message);
-			this.lineNumber=lineNumber;
-		}
+    @SuppressWarnings("serial")
+    public static class LexerException extends Exception{
+	public final int lineNumber;
+	public LexerException(int lineNumber, String message){
+	    super(message);
+	    this.lineNumber=lineNumber;
 	}
+    }
 	
     public static ArrayList< Instruction > lex( String source ) throws LexerException {
         ArrayList< Instruction > program = new ArrayList< Instruction >();

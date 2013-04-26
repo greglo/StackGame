@@ -1,7 +1,6 @@
 package ox.stackgame.stackmachine.instructions;
 
 import java.util.*;
-import java.lang.*;
 
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
@@ -17,123 +16,124 @@ public class Operations {
     private static boolean initialised = false;
 
     public static List<Class<?>> typeList(Class<?>... types) {
-        ArrayList<Class<?>> res = new ArrayList<Class<?>>();
+	ArrayList<Class<?>> res = new ArrayList<Class<?>>();
 
-        for (Class<?> type : types)
-            res.add(type);
+	for (Class<?> type : types)
+	    res.add(type);
 
-        return res;
+	return res;
     }
 
     private static void init() {
-        ht.put("add", new BinOperation() {
-            public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
-                    throws TypeException {
-                return x.add(y);
-            }
-        });
+	ht.put("add", new BinOperation() {
+	    public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
+		    throws TypeException {
+		return x.add(y);
+	    }
+	});
 
-        ht.put("sub", new BinOperation() {
-            public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
-                    throws TypeException {
-                return x.sub(y);
-            }
-        });
+	ht.put("sub", new BinOperation() {
+	    public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
+		    throws TypeException {
+		return x.sub(y);
+	    }
+	});
 
-        ht.put("mul", new BinOperation() {
-            public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
-                    throws TypeException {
-                return x.mul(y);
-            }
-        });
+	ht.put("mul", new BinOperation() {
+	    public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
+		    throws TypeException {
+		return x.mul(y);
+	    }
+	});
 
-        ht.put("div", new BinOperation() {
-            public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
-                    throws TypeException {
-                return x.div(y);
-            }
-        });
+	ht.put("div", new BinOperation() {
+	    public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
+		    throws TypeException {
+		return x.div(y);
+	    }
+	});
 
-        ht.put("const", new SeqOperation() {
-            public void apply(StackMachine m, StackValue<?> arg)
-                    throws StackRuntimeException {
-                m.getStack().push(arg);
-            }
+	ht.put("const", new SeqOperation() {
+	    public void apply(StackMachine m, StackValue<?> arg)
+		    throws StackRuntimeException {
+		m.getStack().push(arg);
+	    }
 
-            public List<Class<?>> argTypes() {
-                return typeList(IntStackValue.class, CharStackValue.class, StringStackValue.class);
-            }
-        });
+	    public List<Class<?>> argTypes() {
+		return typeList(IntStackValue.class, CharStackValue.class,
+			StringStackValue.class);
+	    }
+	});
 
-        ht.put("load", new SeqOperation() {
-            public void apply(StackMachine m, StackValue<?> arg)
-                    throws StackRuntimeException {
-                m.getStack().push(m.getStore((Integer) arg.getValue()));
-            }
+	ht.put("load", new SeqOperation() {
+	    public void apply(StackMachine m, StackValue<?> arg)
+		    throws StackRuntimeException {
+		m.getStack().push(m.getStore((Integer) arg.getValue()));
+	    }
 
-            public List<Class<? extends Object>> argTypes() {
-                return typeList(IntStackValue.class);
-            }
-        });
+	    public List<Class<? extends Object>> argTypes() {
+		return typeList(IntStackValue.class);
+	    }
+	});
 
-        ht.put("store", new SeqOperation() {
-            public void apply(StackMachine m, StackValue<?> arg)
-                    throws StackRuntimeException {
-                m.setStore((Integer) arg.getValue(), m.getStack().pop());
-            }
+	ht.put("store", new SeqOperation() {
+	    public void apply(StackMachine m, StackValue<?> arg)
+		    throws StackRuntimeException {
+		m.setStore((Integer) arg.getValue(), m.getStack().pop());
+	    }
 
-            public List<Class<?>> argTypes() {
-                return typeList(IntStackValue.class);
-            }
-        });
+	    public List<Class<?>> argTypes() {
+		return typeList(IntStackValue.class);
+	    }
+	});
 
-        ht.put("label", new SeqOperation() {
-            public void apply(StackMachine m, StackValue<?> arg)
-                    throws StackRuntimeException {
-            }
+	ht.put("label", new SeqOperation() {
+	    public void apply(StackMachine m, StackValue<?> arg)
+		    throws StackRuntimeException {
+	    }
 
-            public List<Class<?>> argTypes() {
-                return typeList(StringStackValue.class);
-            }
-        });
+	    public List<Class<?>> argTypes() {
+		return typeList(StringStackValue.class);
+	    }
+	});
 
-        ht.put("jump", new BranchOperation() {
-            @Override
-            protected boolean p(StackMachine machine) {
-                return true;
-            } 
+	ht.put("jump", new BranchOperation() {
+	    @Override
+	    protected boolean p(StackMachine machine) {
+		return true;
+	    }
 
-            public List<Class<?>> argTypes() {
-                return typeList(StringStackValue.class);
-            }
-        });
-        
-        ht.put("input", new SeqOperation() {
+	    public List<Class<?>> argTypes() {
+		return typeList(StringStackValue.class);
+	    }
+	});
+
+	ht.put("input", new SeqOperation() {
 	    @Override
 	    public void apply(StackMachine m, StackValue<?> arg)
 		    throws StackRuntimeException {
-		m.getStack().push(m.consumeInput());		
+		m.getStack().push(m.consumeInput());
 	    }
-            
-        });
 
-        ht.put( "nop", new SeqOperation() {
-            public void apply(StackMachine m, StackValue<?> arg) {
-            }
-        } );
+	});
 
-        ht.put( "dump", new SeqOperation() {
-            public void apply( StackMachine m, StackValue< ? > arg ) {
-                m.dump();
-            }
-        } );
+	ht.put("nop", new SeqOperation() {
+	    public void apply(StackMachine m, StackValue<?> arg) {
+	    }
+	});
+
+	ht.put("dump", new SeqOperation() {
+	    public void apply(StackMachine m, StackValue<?> arg) {
+		m.dump();
+	    }
+	});
     }
 
     public static Operation get(String name) {
-        if (!initialised)
-            init();
-        if (ht.get(name) == null)
-            System.out.println(name);
-        return ht.get(name);
+	if (!initialised)
+	    init();
+	if (ht.get(name) == null)
+	    System.out.println(name);
+	return ht.get(name);
     }
 }

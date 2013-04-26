@@ -10,7 +10,6 @@ import ox.stackgame.challenge.StackResultChallenge;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackProgram;
-import ox.stackgame.stackmachine.StringStackValue;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 
