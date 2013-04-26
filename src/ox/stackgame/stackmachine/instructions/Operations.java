@@ -114,7 +114,14 @@ public class Operations {
 		    throws StackRuntimeException {
 		m.getStack().push(m.consumeInput());
 	    }
-
+	});
+	
+	ht.put("output", new SeqOperation() {
+	    @Override
+	    public void apply(StackMachine m, StackValue<?> arg)
+		    throws StackRuntimeException {
+		m.addOutput(m.getStack().pop());
+	    }
 	});
 
 	ht.put("nop", new SeqOperation() {
