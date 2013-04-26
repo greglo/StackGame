@@ -82,9 +82,9 @@ public class Operations {
                 m.setStore((Integer) arg.getValue(), m.getStack().pop());
             }
 
-        public List<Class<?>> argTypes() {
-            return typeList(IntStackValue.class);
-        }
+            public List<Class<?>> argTypes() {
+                return typeList(IntStackValue.class);
+            }
         });
 
         ht.put("label", new SeqOperation() {
@@ -92,9 +92,9 @@ public class Operations {
                     throws StackRuntimeException {
             }
 
-        public List<Class<?>> argTypes() {
-            return typeList(StringStackValue.class);
-        }
+            public List<Class<?>> argTypes() {
+                return typeList(StringStackValue.class);
+            }
         });
 
         ht.put("jump", new BranchOperation() {
@@ -103,9 +103,9 @@ public class Operations {
                 return true;
             }
 
-        public List<Class<?>> argTypes() {
-            return typeList(StringStackValue.class);
-        }
+            public List<Class<?>> argTypes() {
+                return typeList(StringStackValue.class);
+            }
         });
 
         ht.put("input", new SeqOperation() {
