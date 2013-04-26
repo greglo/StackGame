@@ -137,6 +137,7 @@ public class Operations {
     }
 
     public static Operation get(String name) {
+	name = name.trim().toLowerCase();
 	if (!initialised)
 	    init();
 	if (ht.get(name) == null)
