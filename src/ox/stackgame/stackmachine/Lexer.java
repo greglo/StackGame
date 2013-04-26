@@ -26,8 +26,7 @@ public class Lexer {
 
         Matcher lines = linesPattern.matcher( source );
 
-        int lineno =0;
-        while( lines.find() ) {
+        for(int lineno =0; lines.find(); lineno++ ) {
             String line = source.substring( lines.start(), lines.end() );
 
             Matcher comment = commentPattern.matcher( line );
@@ -50,6 +49,7 @@ public class Lexer {
             for( int i = 0; words.find(); i++ ) {
                 String word = trimmed.substring( words.start(), words.end() );
 
+                // first word on the line is the name of an operation
                 if( i == 0 ) {
                     name = word;
                     op = Operations.get( name );
@@ -57,6 +57,7 @@ public class Lexer {
                     //assert op != null : name + " is bad opname";
                     if (op == null) throw new LexerException(lineno, name + " is bad opname");
                 }
+                // other words must be arguments (or invalid code)
                 else {
                     List< Class< ? > > types = op.argTypes();
 
@@ -91,7 +92,6 @@ public class Lexer {
             }
 
             program.add( new Instruction( name, arg ) );
-            lineno++;
         }
 
         return program;
