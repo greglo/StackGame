@@ -7,6 +7,8 @@ import java.util.Stack;
 import ox.stackgame.stackmachine.exceptions.*;
 import ox.stackgame.stackmachine.instructions.*;
 
+import ox.stackgame.ui.VT102;
+
 /**
  * Implementation of a simple stack machine
  * TODO For subroutines, read the wikipedia page on Forth
@@ -24,24 +26,24 @@ public class StackMachine {
     private EvaluationStack stack; 
     private StackValue<?>[] store; 		
     private int numInstructions;	
-    
+
     private final List<StackValue<?>> originalInput;
     private List<StackValue<?>> input;
     private int inputIndex;
     private List<StackValue<?>> output;
-    
+
     private final List<StackMachineListener> listeners;
 
     public StackMachine(StackProgram program) {
-	this(program, new ArrayList<StackValue<?>>());
+        this(program, new ArrayList<StackValue<?>>());
     }
-    
+
     public StackMachine(List<Instruction> instructions, List<StackValue<?>> input) {
-	this.originalInput = input;
-	loadInstructions(instructions);
-	this.listeners = new ArrayList<StackMachineListener>();
+        this.originalInput = input;
+        loadInstructions(instructions);
+        this.listeners = new ArrayList<StackMachineListener>();
     }
-    
+
     /**
      * Class constructor
      * 
@@ -51,50 +53,50 @@ public class StackMachine {
      *            behaviour
      */
     public StackMachine(StackProgram program, List<StackValue<?>> input) {
-	this.originalInput = input;
-	loadInstructions(program.getInstructions());
+        this.originalInput = input;
+        loadInstructions(program.getInstructions());
 
-	this.listeners = new ArrayList<StackMachineListener>();
+        this.listeners = new ArrayList<StackMachineListener>();
     }
-    
+
     /**
      * Resets the stack machine to the state it was in before it started running the 
      * stack program
      */
     public void reset() {
-	this.programCounter 	= 0;
-	this.stack 		= new EvaluationStack();
-	this.numInstructions 	= 0;
-	this.store 		= new StackValue<?>[STORE_SIZE];
-	this.input 		= originalInput;
-	this.inputIndex 	= 0;
-	this.output 		= new ArrayList<StackValue<?>>();
+        this.programCounter 	= 0;
+        this.stack 		= new EvaluationStack();
+        this.numInstructions 	= 0;
+        this.store 		= new StackValue<?>[STORE_SIZE];
+        this.input 		= originalInput;
+        this.inputIndex 	= 0;
+        this.output 		= new ArrayList<StackValue<?>>();
     }
-    
-    
+
+
     public void loadInstructions(List<Instruction> instructions) {
-	this.instructions = instructions;
-	this.program = new StackProgram(instructions);
-	reset();
+        this.instructions = instructions;
+        this.program = new StackProgram(instructions);
+        reset();
     }
-    
-    
+
+
     public void addInstruction(int line, Instruction instruction) {
-	if (line < 0)
-	    line = 0;
-	if (line > instructions.size())
-	    line = instructions.size();
-	instructions.add(line, instruction);
-	loadInstructions(instructions);
+        if (line < 0)
+            line = 0;
+        if (line > instructions.size())
+            line = instructions.size();
+        instructions.add(line, instruction);
+        loadInstructions(instructions);
     }
-    
+
     public void removeInstruction(int line) {
-	if (line < 0)
-	    line = 0;
-	if (line > instructions.size())
-	    line = instructions.size();
-	instructions.remove(line);
-	loadInstructions(instructions);
+        if (line < 0)
+            line = 0;
+        if (line > instructions.size())
+            line = instructions.size();
+        instructions.remove(line);
+        loadInstructions(instructions);
     }
 
     /**
@@ -102,58 +104,58 @@ public class StackMachine {
      *         execute
      */
     public boolean isRunning() {
-	return 0 <= programCounter
-		&& programCounter < program.countInstructions();
+        return 0 <= programCounter
+            && programCounter < program.countInstructions();
     }
-    
+
     /**
      * Sets the program counter to the next instruction to be executed
      * @param programCounter	The line of the next instruction
      */
     private void setProgramCounter(int programCounter) {
-	this.programCounter = programCounter;
-	for (StackMachineListener l : listeners)
-	    l.programCounterChanged(programCounter);
+        this.programCounter = programCounter;
+        for (StackMachineListener l : listeners)
+            l.programCounterChanged(programCounter);
     }
-    
+
     /**
      * Get the current instruction being pointed to by programCounter
      * @return index of the instruction that will be executed next time step() is called
      */
     public int getProgramCounter() {
-	return programCounter;
+        return programCounter;
     }
-    
+
     /**
      * Consume a word of input (presumably to push on to the evaluation stack)
      * @return	The word of input
      */
     public StackValue<?> consumeInput() {
-	if (inputIndex < input.size()) {
-	    for (StackMachineListener l : listeners)
-		l.inputConsumed(inputIndex);
-	    return input.get(inputIndex++);
-	}
-	else
-	    return null;
-	// TODO
+        if (inputIndex < input.size()) {
+            for (StackMachineListener l : listeners)
+                l.inputConsumed(inputIndex);
+            return input.get(inputIndex++);
+        }
+        else
+            return null;
+        // TODO
     }
-    
+
     /**
      * Append a value to the output buffer
      * @param value
      */
     public void output(StackValue<?> value) {
-	output.add(value);
-	for (StackMachineListener l : listeners)
-	    l.outputChanged();
+        output.add(value);
+        for (StackMachineListener l : listeners)
+            l.outputChanged();
     }
 
     /**
      * @return The evaluation stack of the machine
      */
     public EvaluationStack getStack() {
-	return stack;
+        return stack;
     }
 
     /**
@@ -164,14 +166,14 @@ public class StackMachine {
      * @throws InvalidAddressException
      */
     public void setStore(int address, StackValue<?> value)
-	    throws InvalidAddressException {
-	if (0 <= address && address < STORE_SIZE) {
-	    store[address] = value;
-	    for (StackMachineListener l : listeners)
-		l.storeChanged(address);
-	}
-	else
-	    throw new InvalidAddressException(address, programCounter);
+            throws InvalidAddressException {
+        if (0 <= address && address < STORE_SIZE) {
+            store[address] = value;
+            for (StackMachineListener l : listeners)
+                l.storeChanged(address);
+        }
+        else
+            throw new InvalidAddressException(address, programCounter);
     }
 
     /**
@@ -181,10 +183,10 @@ public class StackMachine {
      * @throws InvalidAddressException
      */
     public StackValue<?> getStore(int address) throws InvalidAddressException {
-	if (0 <= address && address < STORE_SIZE)
-	    return store[address];
-	else
-	    throw new InvalidAddressException(address, programCounter);
+        if (0 <= address && address < STORE_SIZE)
+            return store[address];
+        else
+            throw new InvalidAddressException(address, programCounter);
     }
 
     /**
@@ -192,7 +194,7 @@ public class StackMachine {
      * @return
      */
     public int nextInstruction() {
-	return programCounter + 1;
+        return programCounter + 1;
     }
 
     /**
@@ -202,11 +204,11 @@ public class StackMachine {
      * @throws NoSuchLabelException
      */
     public int getLabelLine(String identifier) throws NoSuchLabelException {
-	int line = program.getLabelPosition(identifier);
-	if (line > -1)
-	    return line;
-	else
-	    throw new NoSuchLabelException(identifier, programCounter);
+        int line = program.getLabelPosition(identifier);
+        if (line > -1)
+            return line;
+        else
+            throw new NoSuchLabelException(identifier, programCounter);
     }
 
     /**
@@ -215,12 +217,12 @@ public class StackMachine {
      * @throws StackRuntimeException
      */
     public void step() throws StackRuntimeException {
-	if (isRunning()) {
-	    Instruction nextInstruction = program.instructionAt(programCounter);
-	    Operation op = Operations.get( nextInstruction.name );
-	    setProgramCounter( op.execute( this, nextInstruction.arg ) );
-	    numInstructions++;
-	}
+        if (isRunning()) {
+            Instruction nextInstruction = program.instructionAt(programCounter);
+            Operation op = Operations.get( nextInstruction.name );
+            setProgramCounter( op.execute( this, nextInstruction.arg ) );
+            numInstructions++;
+        }
     }
 
     /**
@@ -230,35 +232,35 @@ public class StackMachine {
      * @throws NotHaltingException
      */
     public void runAll() throws StackRuntimeException, NotHaltingException {
-	while (isRunning() && numInstructions <= MAX_INSTRUCTIONS)
-	    step();
+        while (isRunning() && numInstructions <= MAX_INSTRUCTIONS)
+            step();
 
-	if (isRunning())
-	    throw new NotHaltingException(numInstructions);
+        if (isRunning())
+            throw new NotHaltingException(numInstructions);
     }
-    
+
     /**
      * Add a listener to the stack machine
      * @param l
      */
     public void addListener(StackMachineListener l) {
-	listeners.add(l);
+        listeners.add(l);
     }
-    
+
     /**
      * Remove a listener from the stack machine
      * @param l
      */
     public void removeListener(StackMachineListener l) {
-	listeners.remove(l);
+        listeners.remove(l);
     }
-    
+
     /**
      * Should only be used by views.  (Not for execution).
      * @return the instructions in this StackMachine.
      */
     public List<Instruction> getInstructions(){
-    	return this.instructions;
+        return this.instructions;
     }
 
     /**
@@ -267,46 +269,76 @@ public class StackMachine {
      * @author Greg
      */
     public class EvaluationStack {
-	private final Stack<StackValue<?>> internalStack;
-	
-	public EvaluationStack() {
-	    internalStack = new Stack<StackValue<?>>();
-	}
+        private final Stack<StackValue<?>> internalStack;
 
-	public StackValue<?> peek() throws EmptyStackException {
-	    if (!internalStack.isEmpty())
-		return internalStack.peek();
-	    else
-		throw new EmptyStackException(programCounter);
-	}
+        public EvaluationStack() {
+            internalStack = new Stack<StackValue<?>>();
+        }
 
-	public StackValue<?> pop() throws EmptyStackException {
-	    StackValue<?> val = this.peek();
-	    internalStack.pop();
-	    return val;
-	}
-	
-	public void push(StackValue<?> val) throws FullStackException {
-	    if (internalStack.size() < STACK_SIZE)
-		internalStack.push(val);
-	    else
-		throw new FullStackException(programCounter);
-	}
-	
-	public int size() {
-	    return internalStack.size();
-	}
-	
-	public void clear() {
-	    internalStack.clear();
-	}
-	
-	public boolean equals(Object other){
-		return false;
-	}
-	
-	public boolean equals(EvaluationStack other){
-		return internalStack.equals(other.internalStack);
-	}
+        public StackValue<?> peek() throws EmptyStackException {
+            if (!internalStack.isEmpty())
+                return internalStack.peek();
+            else
+                throw new EmptyStackException(programCounter);
+        }
+
+        public StackValue<?> pop() throws EmptyStackException {
+            StackValue<?> val = this.peek();
+            internalStack.pop();
+            return val;
+        }
+
+        public void push(StackValue<?> val) throws FullStackException {
+            if (internalStack.size() < STACK_SIZE)
+                internalStack.push(val);
+            else
+                throw new FullStackException(programCounter);
+        }
+
+        public int size() {
+            return internalStack.size();
+        }
+
+        public void clear() {
+            internalStack.clear();
+        }
+
+        public boolean equals(Object other){
+            return false;
+        }
+
+        public boolean equals(EvaluationStack other){
+            return internalStack.equals(other.internalStack);
+        }
+    }
+    public void dump() {
+        System.out.println( "surrounding program:" );
+        for( int i = Math.max( 0, programCounter - 5 ); i < Math.min( instructions.size(), programCounter + 5 ); i++ ) {
+            Instruction op = instructions.get( i );
+
+            System.out.print(
+                    VT102.e() + ( i == programCounter ? "[1m" : "[0m" )
+                    + op.name );
+
+            System.out.print( VT102.e() + "[0m" );
+
+            if( op.arg != null ) {
+                System.out.print( " " + op.arg.getValue().toString() );
+            }
+
+            System.out.println();
+        }
+
+        System.out.println( "stack:" );
+        for( int i = 0; i < stack.size(); i++ ) {
+            System.out.print( stack.internalStack.get( i ).getValue().toString() + " " );
+        }
+
+        System.out.println();
+
+        System.out.println( "store:" );
+        for( int i = 0; i < STORE_SIZE; i++ ) {
+            System.out.println( i + ": " + ( store[ i ] == null ? "null" : store[ i ].getValue().toString() ) );
+        }
     }
 }

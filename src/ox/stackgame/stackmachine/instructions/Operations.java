@@ -107,6 +107,17 @@ public class Operations {
                 return typeList(StringStackValue.class);
             }
         });
+
+        ht.put( "nop", new SeqOperation() {
+            public void apply(StackMachine m, StackValue<?> arg) {
+            }
+        } );
+
+        ht.put( "dump", new SeqOperation() {
+            public void apply( StackMachine m, StackValue< ? > arg ) {
+                m.dump();
+            }
+        } );
     }
 
     public static Operation get(String name) {
