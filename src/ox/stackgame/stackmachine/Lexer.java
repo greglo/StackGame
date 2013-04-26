@@ -6,91 +6,90 @@ import java.util.*;
 import java.util.regex.*;
 
 public class Lexer {
-	
+
     @SuppressWarnings("serial")
-    public static class LexerException extends Exception{
-	public final int lineNumber;
-	public LexerException(int lineNumber, String message){
-	    super(message);
-	    this.lineNumber=lineNumber;
-	}
+    public static class LexerException extends Exception {
+        public final int lineNumber;
+
+        public LexerException(int lineNumber, String message) {
+            super(message);
+            this.lineNumber = lineNumber;
+        }
     }
-	
-    public static ArrayList< Instruction > lex( String source ) throws LexerException {
-        ArrayList< Instruction > program = new ArrayList< Instruction >();
 
-        Pattern linesPattern = Pattern.compile( "[^\n]+" );
-        Pattern commentPattern = Pattern.compile( "\".*$" );
-        Pattern trimlPattern = Pattern.compile( "^\\s*" );
-        Pattern trimrPattern = Pattern.compile( "\\s*$" );
-        Pattern wordsPattern = Pattern.compile( "[^\\s]+" );
+    public static ArrayList<Instruction> lex(String source)
+            throws LexerException {
+        ArrayList<Instruction> program = new ArrayList<Instruction>();
 
-        Matcher lines = linesPattern.matcher( source );
+        Pattern linesPattern = Pattern.compile("[^\n]+");
+        Pattern commentPattern = Pattern.compile("\".*$");
+        Pattern trimlPattern = Pattern.compile("^\\s*");
+        Pattern trimrPattern = Pattern.compile("\\s*$");
+        Pattern wordsPattern = Pattern.compile("[^\\s]+");
 
-        for(int lineno =0; lines.find(); lineno++ ) {
-            String line = source.substring( lines.start(), lines.end() );
+        Matcher lines = linesPattern.matcher(source);
 
-            Matcher comment = commentPattern.matcher( line );
-            String commentless = comment.replaceFirst( "" );
+        for (int lineno = 0; lines.find(); lineno++) {
+            String line = source.substring(lines.start(), lines.end());
 
-            Matcher triml = trimlPattern.matcher( commentless );
-            Matcher trimr = trimrPattern.matcher( triml.replaceFirst( "" ) );
-            String trimmed = trimr.replaceFirst( "" );
+            Matcher comment = commentPattern.matcher(line);
+            String commentless = comment.replaceFirst("");
 
-            if( trimmed == "" ) {
+            Matcher triml = trimlPattern.matcher(commentless);
+            Matcher trimr = trimrPattern.matcher(triml.replaceFirst(""));
+            String trimmed = trimr.replaceFirst("");
+
+            if (trimmed == "") {
                 continue;
             }
 
-            Matcher words = wordsPattern.matcher( trimmed );
-            
+            Matcher words = wordsPattern.matcher(trimmed);
+
             if (words.find()) {
-        	// Op provided 
-        	String opName = trimmed.substring(words.start(), words.end());
-        	Operation op = Operations.get(opName);
-        	
-        	if (op == null) 
-        	    throw new LexerException(lineno, opName + " is not a valid Instruction");
-        	
-        	StackValue<?> arg = null;
-        	List<Class<?>> argTypes = op.argTypes();
-        	
-        	if (words.find()) {
-        	    // Argument provided
-        	    String argString = trimmed.substring(words.start(), words.end());
-        	    
-        	    if (argTypes == null) 
-        		throw new LexerException(lineno, opName + " does take an argument: Unexpected '" + argString + "'");
-        	    
-        	    for (Class<?> argType : argTypes) {
-        		StackValue<?> value = null;
-        		
+                // Op provided
+                String opName = trimmed.substring(words.start(), words.end());
+                Operation op = Operations.get(opName);
+
+                if (op == null)
+                    throw new LexerException(lineno, opName
+                            + " is not a valid Instruction");
+
+                StackValue<?> arg = null;
+                List<Class<?>> argTypes = op.argTypes();
+
+                if (words.find()) {
+                    // Argument provided
+                    String argString = trimmed.substring(words.start(),
+                            words.end());
+
+                    if (argTypes == null)
+                        throw new LexerException(lineno, opName + " does take an argument: Unexpected '" + argString + "'");
+
+                    for (Class<?> argType : argTypes) {
+                        StackValue<?> value = null;
+
                         try {
-                            value = ( StackValue< ? > ) argType.newInstance();
-                        }
-                        catch( InstantiationException e ) {
+                            value = (StackValue<?>) argType.newInstance();
+                        } catch (InstantiationException e) {
                             throw new LexerException(lineno, argType.getName() + " needs a 0 argument constructor");
-                        }
-                        catch( IllegalAccessException e ) {
-                            throw new RuntimeException("type is not accessible"); // this shouldn't ever happen.
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException("type is not accessible");
                         }
 
-                        if( value.init( argString ) ) {
+                        if (value.init(argString)) {
                             arg = value;
                             break;
                         }
-        	    }
-        	    if (arg == null )
-        		throw new LexerException(lineno, "couldn't find valid type for `" + argString + "` in op " + opName);
-        	}
-        	else if (argTypes != null)
-        	    throw new LexerException(lineno, "Argument expected, but none given");
-        	
-        	if (words.find()) 
-        	    throw new LexerException(lineno, "Too many arguments were provided");
-        	    
-        	
-        	
-        	program.add(new Instruction(opName, arg));
+                    }
+                    if (arg == null)
+                        throw new LexerException(lineno, "couldn't find valid type for `" + argString + "` in op " + opName);
+                } else if (argTypes != null)
+                    throw new LexerException(lineno, "Argument expected, but none given");
+
+                if (words.find())
+                    throw new LexerException(lineno, "Too many arguments were provided");
+
+                program.add(new Instruction(opName, arg));
             }
         }
 
