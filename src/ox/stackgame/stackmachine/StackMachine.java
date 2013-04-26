@@ -12,9 +12,6 @@ import ox.stackgame.stackmachine.instructions.*;
 import ox.stackgame.ui.VT102;
 
 /**
- * Implementation of a simple stack machine
- * TODO For subroutines, read the wikipedia page on Forth
- * 
  * @author Greg
  */
 public class StackMachine {
@@ -22,30 +19,42 @@ public class StackMachine {
     public final static int MAX_INSTRUCTIONS = 10000;
     public final static int STORE_SIZE = 4;
 
-    private List<Instruction> instructions; 
-    private final Map<String, Integer> labels;
-    private int programCounter; 		
-    private EvaluationStack stack; 
-    private StackValue<?>[] store; 		
+    private int 			programCounter; 		
+    private EvaluationStack 		stack; 
+    private StackValue<?>[] 		store; 		
+    private List<Instruction> 		instructions; 
+    private final Map<String, Integer> 	labels;
+    
+    // Track the number of instructions being run on the machine
     private int numInstructions;	
 
-    private final List<StackValue<?>> originalInput;
-    private List<StackValue<?>> input;
-    private int inputIndex;
-    private List<StackValue<?>> output;
+    private final List<StackValue<?>> 	originalInput;
+    private List<StackValue<?>> 	input;
+    private int 			inputIndex;
+    private List<StackValue<?>> 	output;
 
     private final List<StackMachineListener> listeners;
 
+    
+    /**
+     * Create a new StackMachine with nothing on the input tape
+     * @param instructions	The program loaded into the machine
+     */
     public StackMachine(List<Instruction> instructions) {
 	this(instructions, new ArrayList<StackValue<?>>());
     }
+    
+    /**
+     * Create a new StackMachine
+     * @param instructions	The program loaded into the machine
+     * @param input		The values on the input tape
+     */
     public StackMachine(List<Instruction> instructions, List<StackValue<?>> input) {
 	this.listeners = new ArrayList<StackMachineListener>();
         this.labels = new HashMap<String, Integer>();
 	this.originalInput = input;
         loadInstructions(instructions);
     }
-
 
     /**
      * Resets the stack machine to the state it was in before it started running the 
@@ -61,7 +70,10 @@ public class StackMachine {
         this.output 		= new ArrayList<StackValue<?>>();
     }
 
-
+    /**
+     * Load a new program into the machine and reset it
+     * @param instructions	The program to load into the machine
+     */
     public void loadInstructions(List<Instruction> instructions) {
         this.instructions = instructions;
         
@@ -77,7 +89,11 @@ public class StackMachine {
         reset();
     }
 
-
+    /**
+     * Add an instruction into the currently loaded program, and reset
+     * @param line		Line to insert the instruction at
+     * @param instruction	Instruction to insert
+     */
     public void addInstruction(int line, Instruction instruction) {
         if (line < 0)
             line = 0;
@@ -87,6 +103,10 @@ public class StackMachine {
         loadInstructions(instructions);
     }
 
+    /**
+     * Remove an instruction from the currently loaded program, and reset
+     * @param line		Line to remove the instruction at
+     */
     public void removeInstruction(int line) {
         if (line < 0)
             line = 0;
@@ -95,7 +115,62 @@ public class StackMachine {
         instructions.remove(line);
         loadInstructions(instructions);
     }
+    
+    /**
+     * Gets the value stored in a particular value in store
+     * @param address		The address to get
+     * @return			The value
+     * @throws 			InvalidAddressException
+     */
+    public StackValue<?> getStore(int address) throws InvalidAddressException {
+        if (0 <= address && address < STORE_SIZE)
+            return store[address];
+        else
+            throw new InvalidAddressException(address, programCounter);
+    }
+    
+    /**
+     * Set a particular address in store
+     * 
+     * @param address 		The address to set
+     * @param value 		The value to set the address to
+     * @throws InvalidAddressException
+     */
+    public void setStore(int address, StackValue<?> value) throws InvalidAddressException {
+        if (0 <= address && address < STORE_SIZE) {
+            store[address] = value;
+            for (StackMachineListener l : listeners)
+                l.storeChanged(address);
+        }
+        else
+            throw new InvalidAddressException(address, programCounter);
+    }
 
+    /**
+     * Consume the first work on the input tape
+     * @return			The word of input
+     * @throws 			EmptyInputException 
+     */
+    public StackValue<?> consumeInput() throws EmptyInputException {
+        if (inputIndex < input.size()) {
+            for (StackMachineListener l : listeners)
+                l.inputConsumed(inputIndex);
+            return input.get(inputIndex++);
+        }
+        else
+            throw new EmptyInputException(programCounter);
+    }
+
+    /**
+     * Add a value to the end of the output tape
+     * @param value		The value to add to the output tape
+     */
+    public void addOutput(StackValue<?> value) {
+        output.add(value);
+        for (StackMachineListener l : listeners)
+            l.outputChanged();
+    }
+    
     /**
      * @return Whether there is at least one more instruction for the machine to
      *         execute
@@ -103,6 +178,14 @@ public class StackMachine {
     public boolean isRunning() {
         return 0 <= programCounter
             && programCounter < instructions.size();
+    }
+    
+    /**
+     * Get the current instruction being pointed to by programCounter
+     * @return index of the instruction that will be executed next time step() is called
+     */
+    public int getProgramCounter() {
+        return programCounter;
     }
 
     /**
@@ -114,38 +197,14 @@ public class StackMachine {
         for (StackMachineListener l : listeners)
             l.programCounterChanged(programCounter);
     }
-
+    
     /**
-     * Get the current instruction being pointed to by programCounter
-     * @return index of the instruction that will be executed next time step() is called
+     * Get the location of the next instruction in the program
+     * @return
      */
-    public int getProgramCounter() {
-        return programCounter;
-    }
-
-    /**
-     * Consume a word of input (presumably to push on to the evaluation stack)
-     * @return	The word of input
-     */
-    public StackValue<?> consumeInput() {
-        if (inputIndex < input.size()) {
-            for (StackMachineListener l : listeners)
-                l.inputConsumed(inputIndex);
-            return input.get(inputIndex++);
-        }
-        else
-            return null;
-        // TODO
-    }
-
-    /**
-     * Append a value to the output buffer
-     * @param value
-     */
-    public void output(StackValue<?> value) {
-        output.add(value);
-        for (StackMachineListener l : listeners)
-            l.outputChanged();
+    public int incrementProgramCounter() {
+	setProgramCounter(getProgramCounter() + 1);
+	return getProgramCounter();
     }
 
     /**
@@ -153,45 +212,6 @@ public class StackMachine {
      */
     public EvaluationStack getStack() {
         return stack;
-    }
-
-    /**
-     * Set a particular address in store
-     * 
-     * @param address 	The address to set
-     * @param value 	The value to set the address to
-     * @throws InvalidAddressException
-     */
-    public void setStore(int address, StackValue<?> value)
-            throws InvalidAddressException {
-        if (0 <= address && address < STORE_SIZE) {
-            store[address] = value;
-            for (StackMachineListener l : listeners)
-                l.storeChanged(address);
-        }
-        else
-            throw new InvalidAddressException(address, programCounter);
-    }
-
-    /**
-     * Gets the value stored in a particular value in store
-     * @param address	The address to get
-     * @return		The value
-     * @throws InvalidAddressException
-     */
-    public StackValue<?> getStore(int address) throws InvalidAddressException {
-        if (0 <= address && address < STORE_SIZE)
-            return store[address];
-        else
-            throw new InvalidAddressException(address, programCounter);
-    }
-
-    /**
-     * Get the location of the next instruction in the program
-     * @return
-     */
-    public int nextInstruction() {
-        return programCounter + 1;
     }
 
     /**
@@ -208,6 +228,11 @@ public class StackMachine {
             throw new NoSuchLabelException(identifier, programCounter);
     }
     
+    /**
+     * Get the line number of a label
+     * @param identifier	The identifier of the label
+     * @return			The labels line number (-1 if it does not exist)
+     */
     private int getLabelPosition(String identifier) {
 	if (labels.containsKey(identifier))
 	    return labels.get(identifier);
@@ -268,7 +293,7 @@ public class StackMachine {
     }
 
     /**
-     * A wrapper for a Stack< StackValue< ?>> which lets us throw
+     * A wrapper for a Stack<StackValue<?>> which lets us throw
      * StackRuntimeExceptions, rather than the normal Java exception
      * @author Greg
      */
