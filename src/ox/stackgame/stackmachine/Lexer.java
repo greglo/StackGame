@@ -91,7 +91,8 @@ public class Lexer {
 
                 }
             }
-
+            // TODO
+            if (arg == null && op.argTypes() != null) throw new LexerException(lineno, "Argument expected, but none given");
             program.add( new Instruction( name, arg ) );
         }
 
