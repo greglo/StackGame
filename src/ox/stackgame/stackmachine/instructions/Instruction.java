@@ -18,4 +18,11 @@ public class Instruction {
 	this.name = name;
 	this.arg = arg;
     }
+    
+    public String toString() {
+        String str = name.toLowerCase();
+        if (arg != null)
+            str += " " + arg.getValue().toString();
+        return str;
+    }
 }

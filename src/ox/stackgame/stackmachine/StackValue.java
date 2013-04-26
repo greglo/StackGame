@@ -4,11 +4,12 @@ import ox.stackgame.stackmachine.exceptions.TypeException;
 
 
 public abstract class StackValue<T> {
-	/**
-	 * Create a StackValue from a string
-	 * @param str String to convert into a StackValue
-	 * @return true if successful, false otherwise
-	 */
+    
+    /**
+     * Create a StackValue from a string
+     * @param str       String to convert into a StackValue
+     * @return          true if successful, false otherwise
+     */
     public abstract boolean init( String str );
 
     /**

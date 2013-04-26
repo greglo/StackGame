@@ -54,6 +54,7 @@ public class StackMachine {
         this.labels = new HashMap<String, Integer>();
 	this.originalInput = input;
         loadInstructions(instructions);
+        dump();
     }
 
     /**
@@ -340,33 +341,34 @@ public class StackMachine {
         }
     }
     public void dump() {
-        System.out.println( "surrounding program:" );
-        for( int i = Math.max( 0, programCounter - 5 ); i < Math.min( instructions.size(), programCounter + 5 ); i++ ) {
+        System.out.println("=== PROGRAM ===");
+        
+//        int lbound = Math.max(0, programCounter - 5);
+//        int ubound = Math.min(instructions.size(), programCounter + 5);
+        
+        for (int i = 0; i < instructions.size(); i++ ) {
             Instruction op = instructions.get( i );
 
-            System.out.print(
-                    VT102.e() + ( i == programCounter ? "[1m" : "[0m" )
-                    + op.name );
-
-            System.out.print( VT102.e() + "[0m" );
-
-            if( op.arg != null ) {
-                System.out.print( " " + op.arg.getValue().toString() );
-            }
-
+            System.out.print("  " + VT102.e());
+            System.out.print(i == programCounter ? "[1m> " : "[0m  ");
+            System.out.print(op.toString());
+            System.out.print("  " + VT102.e());
+            
             System.out.println();
         }
 
-        System.out.println( "stack:" );
-        for( int i = 0; i < stack.size(); i++ ) {
-            System.out.print( stack.internalStack.get( i ).getValue().toString() + " " );
-        }
-
         System.out.println();
+        System.out.println("=== STACK ===");
+        for( int i = 0; i < stack.size(); i++ )
+            System.out.println("  " + stack.internalStack.get( i ).getValue().toString());
 
-        System.out.println( "store:" );
-        for( int i = 0; i < STORE_SIZE; i++ ) {
-            System.out.println( i + ": " + ( store[ i ] == null ? "null" : store[ i ].getValue().toString() ) );
-        }
+        
+        System.out.println();
+        System.out.println("=== STORE ===");
+        for( int i = 0; i < STORE_SIZE; i++ ) 
+            System.out.println("  " + i + ": " + (store[ i ] == null ? "null" : store[ i ].getValue().toString()));
+        
+        System.out.println();
+        System.out.println();
     }
 }

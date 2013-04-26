@@ -18,7 +18,6 @@ public class CharStackValueTest {
     @Test
     public void testAdd() throws TypeException {
 	CharStackValue a = new CharStackValue('A');
-	System.out.println(new CharStackValue(0));
 	for (int i = 0; i < 1; i++) {
 	    CharStackValue c = new CharStackValue(i);
 	    assertEquals(c.getValue(), a.add(c).getValue());
