@@ -9,7 +9,6 @@ import javax.swing.*;
 import ox.stackgame.challenge.StackResultChallenge;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
-import ox.stackgame.stackmachine.StackProgram;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 
@@ -37,8 +36,7 @@ public class ApplicationFrame {
 		instructions.add(new Instruction("add"));
 		instructions.add(new Instruction("load", new IntStackValue(2)));
 		instructions.add(new Instruction("mul"));
-		StackProgram program = new StackProgram(instructions);
-		StackMachine machine = new StackMachine(program);
+		StackMachine machine = new StackMachine(instructions);
 		
 		// initialise modes
 		StateManager modeManager = new StateManager(machine); 

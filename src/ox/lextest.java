@@ -25,7 +25,7 @@ public class lextest {
         //     System.out.println( op.name + " " + ( op.arg == null ? "" : op.arg.getValue().toString() ) );
         // }
 
-        StackMachine m = new StackMachine( new StackProgram( ops ) );
+        StackMachine m = new StackMachine(ops);
 
         try {
             m.step();

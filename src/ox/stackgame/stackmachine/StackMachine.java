@@ -1,7 +1,9 @@
 package ox.stackgame.stackmachine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import ox.stackgame.stackmachine.exceptions.*;
@@ -21,7 +23,7 @@ public class StackMachine {
     public final static int STORE_SIZE = 4;
 
     private List<Instruction> instructions; 
-    private StackProgram program;
+    private final Map<String, Integer> labels;
     private int programCounter; 		
     private EvaluationStack stack; 
     private StackValue<?>[] store; 		
@@ -37,30 +39,13 @@ public class StackMachine {
     public StackMachine(List<Instruction> instructions) {
 	this(instructions, new ArrayList<StackValue<?>>());
     }
-    
-    public StackMachine(StackProgram program) {
-        this(program, new ArrayList<StackValue<?>>());
-    }
-
     public StackMachine(List<Instruction> instructions, List<StackValue<?>> input) {
 	this.listeners = new ArrayList<StackMachineListener>();
-        this.originalInput = input;
+        this.labels = new HashMap<String, Integer>();
+	this.originalInput = input;
         loadInstructions(instructions);
     }
 
-    /**
-     * Class constructor
-     * 
-     * @param program
-     *            The program to be executed on this machine Changing the
-     *            program after passing it to the machine produces undefined
-     *            behaviour
-     */
-    public StackMachine(StackProgram program, List<StackValue<?>> input) {
-	this.listeners = new ArrayList<StackMachineListener>();
-        this.originalInput = input;
-        loadInstructions(program.getInstructions());
-    }
 
     /**
      * Resets the stack machine to the state it was in before it started running the 
@@ -79,7 +64,14 @@ public class StackMachine {
 
     public void loadInstructions(List<Instruction> instructions) {
         this.instructions = instructions;
-        this.program = new StackProgram(instructions);
+        
+        int i = 0;
+        for(Instruction op : instructions) {
+            if(op.name.equals("label"))
+                labels.put((String) op.arg.getValue(), i);
+            i++;
+        }
+        
         for (StackMachineListener l : listeners)
             l.stackInstructionsChanged(instructions);
         reset();
@@ -110,7 +102,7 @@ public class StackMachine {
      */
     public boolean isRunning() {
         return 0 <= programCounter
-            && programCounter < program.countInstructions();
+            && programCounter < instructions.size();
     }
 
     /**
@@ -209,11 +201,18 @@ public class StackMachine {
      * @throws NoSuchLabelException
      */
     public int getLabelLine(String identifier) throws NoSuchLabelException {
-        int line = program.getLabelPosition(identifier);
+        int line = getLabelPosition(identifier);
         if (line > -1)
             return line;
         else
             throw new NoSuchLabelException(identifier, programCounter);
+    }
+    
+    private int getLabelPosition(String identifier) {
+	if (labels.containsKey(identifier))
+	    return labels.get(identifier);
+	else 
+	    return -1;
     }
 
     /**
@@ -223,7 +222,7 @@ public class StackMachine {
      */
     public void step() throws StackRuntimeException {
         if (isRunning()) {
-            Instruction nextInstruction = program.instructionAt(programCounter);
+            Instruction nextInstruction = instructions.get(programCounter);
             Operation op = Operations.get( nextInstruction.name );
             setProgramCounter( op.execute( this, nextInstruction.arg ) );
             numInstructions++;

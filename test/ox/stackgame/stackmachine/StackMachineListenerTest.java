@@ -43,8 +43,8 @@ public class StackMachineListenerTest {
 
     @Test
     public void testStackInstructionsChanged() throws StackRuntimeException, NotHaltingException {
-	StackProgram program = new StackProgram();
-	StackMachine machine = new StackMachine(program);
+	List<Instruction> instructions = new ArrayList<Instruction>();
+	StackMachine machine = new StackMachine(instructions);
 	MockListener l = new MockListener();
 	machine.addListener(l);
 	machine.addInstruction(0, new Instruction("load", new IntStackValue(2)));

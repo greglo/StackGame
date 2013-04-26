@@ -14,8 +14,8 @@ public class StackMachineTest {
 
     @Test
     public void testEmptyProgram() {
-	StackProgram program = new StackProgram();
-	StackMachine machine = new StackMachine(program);
+	List<Instruction> instructions = new ArrayList<Instruction>();
+	StackMachine machine = new StackMachine(instructions);
 	assertEquals(false, machine.isRunning());
     }
 
@@ -25,8 +25,7 @@ public class StackMachineTest {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new Instruction("label", new StringStackValue("lab")));
 	instructions.add(new Instruction("jump", new StringStackValue("lab")));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.runAll();
     }
 
@@ -34,8 +33,7 @@ public class StackMachineTest {
     public void testEmptyStackException() throws StackRuntimeException {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new Instruction("add"));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.step();
     }
 
@@ -43,8 +41,7 @@ public class StackMachineTest {
     public void testNoSuchLabelException() throws StackRuntimeException {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new Instruction("jump", new StringStackValue("lab")));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.step();
     }
 
@@ -52,8 +49,7 @@ public class StackMachineTest {
     public void testInvalidAddressException() throws StackRuntimeException {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new Instruction("load", new IntStackValue(-1)));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.step();
     }
 
@@ -63,8 +59,7 @@ public class StackMachineTest {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	for (int i = 0; i < StackMachine.STACK_SIZE; i++)
 	    instructions.add(new Instruction("const", new IntStackValue(0)));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	for (int i = 0; i < StackMachine.STACK_SIZE; i++)
 	    machine.step();
     }
@@ -76,8 +71,7 @@ public class StackMachineTest {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	for (int i = 0; i <= StackMachine.STACK_SIZE; i++)
 	    instructions.add(new Instruction("const", new IntStackValue(0)));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	for (int i = 0; i <= StackMachine.STACK_SIZE; i++)
 	    machine.step();
     }

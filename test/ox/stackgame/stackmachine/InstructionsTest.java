@@ -16,8 +16,7 @@ public class InstructionsTest {
     public void testConst() throws StackRuntimeException {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new Instruction("const", new IntStackValue(2)));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.step();
 	assertEquals(new Integer(2), machine.getStack().pop().getValue());
     }
@@ -28,8 +27,7 @@ public class InstructionsTest {
 	instructions.add(new Instruction("const", new IntStackValue(2)));
 	instructions.add(new Instruction("const", new IntStackValue(3)));
 	instructions.add(new Instruction("add"));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.step();
 	machine.step();
 	machine.step();
@@ -43,8 +41,7 @@ public class InstructionsTest {
 	instructions.add(new Instruction("const", new IntStackValue(2)));
 	instructions.add(new Instruction("const", new IntStackValue(3)));
 	instructions.add(new Instruction("sub"));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.step();
 	machine.step();
 	machine.step();
@@ -58,8 +55,7 @@ public class InstructionsTest {
 	instructions.add(new Instruction("const", new IntStackValue(2)));
 	instructions.add(new Instruction("const", new IntStackValue(3)));
 	instructions.add(new Instruction("mul"));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.step();
 	machine.step();
 	machine.step();
@@ -72,8 +68,7 @@ public class InstructionsTest {
 	instructions.add(new Instruction("const", new IntStackValue(5)));
 	instructions.add(new Instruction("const", new IntStackValue(2)));
 	instructions.add(new Instruction("div"));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.step();
 	machine.step();
 	machine.step();
@@ -86,8 +81,7 @@ public class InstructionsTest {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new Instruction("const", new IntStackValue(2)));
 	instructions.add(new Instruction("store", new IntStackValue(0)));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.step();
 	machine.step();
 	assertEquals(new Integer(2), machine.getStore(0).getValue());
@@ -97,8 +91,7 @@ public class InstructionsTest {
     public void testLoad() throws StackRuntimeException {
 	List<Instruction> instructions = new ArrayList<Instruction>();
 	instructions.add(new Instruction("load", new IntStackValue(0)));
-	StackProgram program = new StackProgram(instructions);
-	StackMachine machine = new StackMachine(program);
+	StackMachine machine = new StackMachine(instructions);
 	machine.setStore(0, new IntStackValue(2));
 	machine.step();
 	assertEquals(new Integer(2), machine.getStack().pop().getValue());

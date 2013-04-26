@@ -26,7 +26,7 @@ public class LexerTest {
 				+ "label lab\n" + "const 7\n" + "const 100\n" + "add\n"
 				+ "nop\n");
 
-		StackMachine m = new StackMachine(new StackProgram(ops));
+		StackMachine m = new StackMachine(ops);
 
 		try {
 			m.step();
