@@ -107,6 +107,15 @@ public class Operations {
                 return typeList(StringStackValue.class);
             }
         });
+        
+        ht.put("input", new SeqOperation() {
+	    @Override
+	    public void apply(StackMachine m, StackValue<?> arg)
+		    throws StackRuntimeException {
+		m.getStack().push(m.consumeInput());		
+	    }
+            
+        });
 
         ht.put( "nop", new SeqOperation() {
             public void apply(StackMachine m, StackValue<?> arg) {

@@ -105,4 +105,15 @@ public class InstructionsTest {
 	assertEquals(new Integer(2), machine.getStack().pop().getValue());
     }
     
+    @Test
+    public void testInput() throws StackRuntimeException {
+	List<Instruction> instructions = new ArrayList<Instruction>();
+	instructions.add(new Instruction("input"));
+	List<StackValue<?>> input = new ArrayList<StackValue<?>>();
+	input.add(new IntStackValue(2));
+	StackMachine machine = new StackMachine(instructions, input);
+	machine.step();
+	assertEquals(new Integer(2), machine.getStack().pop().getValue());
+    }
+    
 }
