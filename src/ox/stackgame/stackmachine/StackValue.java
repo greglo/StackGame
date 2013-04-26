@@ -4,6 +4,8 @@ import ox.stackgame.stackmachine.exceptions.TypeException;
 
 
 public abstract class StackValue<T> {
+    public abstract boolean init( String str );
+
     /**
      * Get the value stored within the StackValue
      * @return
