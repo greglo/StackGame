@@ -140,8 +140,6 @@ public class Operations {
         name = name.trim().toLowerCase();
         if (!initialised)
             init();
-        if (ht.get(name) == null)
-            System.out.println(name);
         return ht.get(name);
     }
 }
