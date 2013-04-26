@@ -144,8 +144,7 @@ public class ProgramTextUI extends JLayeredPane {
 		for (Instruction i : program) {
 			if (b.length()!=0) b.append("\n");
 			b.append(i.name);
-			for (StackValue<?> v : i.args)
-				b.append(" " + v.getValue());
+			if (i.arg != null) b.append(" " + i.arg.getValue());
 		}
 		return b.toString();
 	}
