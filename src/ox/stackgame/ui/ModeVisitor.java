@@ -11,5 +11,7 @@ package ox.stackgame.ui;
  * 
  */
 public interface ModeVisitor {
-    public void visit(Mode m);
+    public void visit(ChallengeMode m);
+    public void visit(RunMode m);
+    public void visit(FreeDesignMode m);
 }

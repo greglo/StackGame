@@ -21,28 +21,42 @@ public class TapeUI extends JPanel {
     private static int boxSize = 50;
 
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
-        public void visit(Mode m) {
-        }
-
-        public void visit(DesignMode m) {
-            // TODO make input tape editable
-        }
+     // TODO make input tape editable on DesignMode visitors
 
         public void visit(RunMode m) {
             // TODO Cursor on first input
         }
+
+        @Override
+        public void visit(ChallengeMode m) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void visit(FreeDesignMode m) {
+            // TODO Auto-generated method stub
+            
+        }
     };
 
     private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
-        public void visit(Mode m) {
-        }
-
-        public void visit(DesignMode m) {
-            // TODO make input tape uneditable
-        }
+        // TODO make input tape uneditable on design modes
 
         public void visit(RunMode m) {
             // TODO hide cursor
+        }
+
+        @Override
+        public void visit(ChallengeMode m) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void visit(FreeDesignMode m) {
+            // TODO Auto-generated method stub
+            
         }
     };
 

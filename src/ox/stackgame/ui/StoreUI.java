@@ -27,21 +27,39 @@ public class StoreUI extends JPanel {
     private static int boxSize = 50;
 
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
-        public void visit(Mode m) {
-        }
+    
 
         public void visit(RunMode m) {
             // change appearance to awaken. maybe redraw?
             refillLabel();
         }
+
+        @Override
+        public void visit(ChallengeMode m) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void visit(FreeDesignMode m) {
+            // TODO Auto-generated method stub
+            
+        }
     };
 
     private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
-        public void visit(Mode m) {
-        }
-
         public void visit(RunMode m) {
             label.setText("[asleep]");
+        }
+
+        public void visit(ChallengeMode m) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        public void visit(FreeDesignMode m) {
+            // TODO Auto-generated method stub
+            
         }
     };
 

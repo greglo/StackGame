@@ -8,8 +8,4 @@ package ox.stackgame.ui;
  */
 public abstract class DesignMode extends Mode {
 
-    public void accept(ModeVisitor v) {
-        v.visit(this);
-    }
-
 }

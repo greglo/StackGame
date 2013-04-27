@@ -7,7 +7,5 @@ package ox.stackgame.ui;
  * 
  */
 public abstract class Mode {
-    public void accept(ModeVisitor v) {
-        v.visit(this);
-    }
+    public abstract void accept(ModeVisitor v);
 }

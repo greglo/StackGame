@@ -38,31 +38,35 @@ public class ProgramTextUI extends JLayeredPane {
 
     // code to be executed when a mode is activated.
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
-        public void visit(Mode m) {
+        public void visit(RunMode m) {
+            highlight(0); // TODO check whether this is superfluous
         }
 
-        public void visit(DesignMode m) {
+        public void visit(ChallengeMode m) {
             jta.setEditable(true);
             jta.setForeground(editableTextColor);
         }
 
-        public void visit(RunMode m) {
-            highlight(0); // TODO check whether this is superfluous
+        public void visit(FreeDesignMode m) {
+            jta.setEditable(true);
+            jta.setForeground(editableTextColor);
         }
     };
 
     // code to be executed when a mode is deactivated
     private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
-        public void visit(Mode m) {
+        public void visit(RunMode m) {
+
         }
 
-        public void visit(DesignMode m) {
+        public void visit(ChallengeMode m) {
             jta.setEditable(false);
             jta.setForeground(frozenTextColor);
         }
 
-        public void visit(RunMode m) {
-
+        public void visit(FreeDesignMode m) {
+            jta.setEditable(false);
+            jta.setForeground(frozenTextColor);
         }
     };
 

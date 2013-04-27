@@ -61,11 +61,6 @@ public class ChallengeUI extends JPanel {
 	}
 
 	private ModeVisitor modeActivationVisitor = new ModeVisitor() {
-		public void visit(Mode m) {
-		}
-
-		public void visit(DesignMode m) {
-		}
 
 		public void visit(RunMode m) {
 		}
@@ -74,18 +69,30 @@ public class ChallengeUI extends JPanel {
 			challenge = m.challenge;
 			descLabel.setText(challenge.description);
 		}
+
+        @Override
+        public void visit(FreeDesignMode m) {
+            // TODO Auto-generated method stub
+            
+        }
 	};
 
 	// code to be executed when a mode is deactivated
 	private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
-		public void visit(Mode m) {
-		}
-
-		public void visit(DesignMode m) {
-		}
-
 		public void visit(RunMode m) {
 		}
+
+        @Override
+        public void visit(ChallengeMode m) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void visit(FreeDesignMode m) {
+            // TODO Auto-generated method stub
+            
+        }
 	};
 
 }
