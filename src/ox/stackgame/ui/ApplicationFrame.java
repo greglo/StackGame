@@ -42,8 +42,7 @@ public class ApplicationFrame {
 		StateManager modeManager = new StateManager(machine); 
 		RunMode runMode = new RunMode();
 		Mode freeDesignMode = new FreeDesignMode();
-		Mode challengeMode = new ChallengeMode(testChallenge);
-		modeManager.setActiveMode(challengeMode);
+		Mode challengeMode = new ChallengeMode(testChallenge);		
 		
 		// setup window to display
 		final JFrame frame = new JFrame("Stack Game");
@@ -91,6 +90,8 @@ public class ApplicationFrame {
 			u.setLocation(250+p,h-p-70); // no idea why this needs a 70.
 			contentPane.add(u, new Integer(1));// layer 1 is on top of 0	
 		}
+		
+		modeManager.setActiveMode(challengeMode);
 		
 		frame.setVisible(true);
 	}

@@ -9,5 +9,9 @@ package ox.stackgame.ui;
  *
  */
 public class FreeDesignMode extends DesignMode {
+	
+	public void accept (ModeVisitor v){
+		v.visit(this);
+	}
 
 }

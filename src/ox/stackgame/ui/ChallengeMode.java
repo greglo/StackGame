@@ -18,6 +18,10 @@ import ox.stackgame.challenge.AbstractChallenge;
 public class ChallengeMode extends DesignMode {
 	protected AbstractChallenge challenge;
 	
+	public void accept (ModeVisitor v){
+		v.visit(this);
+	}
+	
 	public ChallengeMode() {
 		challenge = null;
 	}
