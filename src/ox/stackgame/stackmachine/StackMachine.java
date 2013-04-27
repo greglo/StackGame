@@ -54,7 +54,6 @@ public class StackMachine {
         this.labels = new HashMap<String, Integer>();
 	this.originalInput = input;
         loadInstructions(instructions);
-        dump();
     }
 
     /**
