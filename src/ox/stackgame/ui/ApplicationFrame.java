@@ -65,10 +65,10 @@ public class ApplicationFrame {
         // StackUI
         {
             JComponent u = new StackUI(modeManager);
-            u.setLocation(700,0);
-            contentPane.add(u,new Integer(0));
+            u.setLocation(700, 0);
+            contentPane.add(u, new Integer(0));
         }
-        
+
         // StoreUI
         {
             JComponent u = new StoreUI(modeManager);
