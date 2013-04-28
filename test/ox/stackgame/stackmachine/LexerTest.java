@@ -12,8 +12,7 @@ import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 public class LexerTest {
-
-    @Test(expected = LexerException.class)
+    @Test(expected = RuntimeException.class)
     public void noArgsTest() throws LexerException {
         // Throws error as no argument provided to 'const'
         Lexer.lex("const");
@@ -70,7 +69,5 @@ public class LexerTest {
         } catch (NotHaltingException e) {
             e.printStackTrace();
         }
-
     }
-
 }

@@ -83,8 +83,7 @@ public class Lexer {
                     }
                     if (arg == null)
                         throw new LexerException(lineno, "couldn't find valid type for `" + argString + "` in op " + opName);
-                } else if (argTypes != null)
-                    throw new LexerException(lineno, "Argument expected, but none given");
+                }
 
                 if (words.find())
                     throw new LexerException(lineno, "Too many arguments were provided");

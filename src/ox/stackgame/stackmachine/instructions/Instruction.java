@@ -7,18 +7,26 @@ public class Instruction {
     public final StackValue<?> arg;
 
     public Instruction(String name) {
-	this(name, null);
+        this(name, null);
     }
 
     public Instruction(String name, StackValue<?> arg) {
-	assert name != null : "name == null";
-	assert Operations.get(name) != null : name + " isnt a real instruction";
-	assert (arg == null) == (Operations.get(name).argTypes() == null) : "wrong number of args for " + name;
+        if( name == null ) {
+            throw new RuntimeException( "name == null" );
+        }
 
-	this.name = name;
-	this.arg = arg;
+        if( Operations.get( name ) == null ) {
+            throw new RuntimeException( name + " isn't a real instruction" );
+        }
+
+        if( ( arg == null ) != ( Operations.get(name).argTypes() == null ) ) {
+            throw new RuntimeException( "wrong number of args for " + name );
+        }
+
+        this.name = name;
+        this.arg = arg;
     }
-    
+
     public String toString() {
         String str = name.toLowerCase();
         if (arg != null)
