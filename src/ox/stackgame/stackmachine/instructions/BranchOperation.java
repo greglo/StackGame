@@ -17,5 +17,5 @@ public abstract class BranchOperation extends Operation {
 	    return machine.nextInstruction();
     }
 
-    protected abstract boolean p(StackMachine machine);
+    protected abstract boolean p(StackMachine machine) throws StackRuntimeException;
 }
