@@ -10,6 +10,6 @@ package ox.stackgame.stackmachine.exceptions;
 @SuppressWarnings("serial")
 public class NotHaltingException extends Exception {
     public NotHaltingException(int numInstructions) {
-	super("Execution terminated because the program may not end");
+        super("Execution terminated because the program may not end");
     }
 }
