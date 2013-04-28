@@ -11,6 +11,6 @@ public abstract class Operation {
     public abstract int execute(StackMachine machine, StackValue<?> arg) throws StackRuntimeException;
 
     public List<Class<?>> argTypes() {
-	return null;
+        return null;
     }
 }
