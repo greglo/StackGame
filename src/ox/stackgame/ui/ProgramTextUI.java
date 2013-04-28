@@ -94,6 +94,8 @@ public class ProgramTextUI extends JLayeredPane {
         }
     }
     
+    public boolean isTextDirty() { return dirtyText; }
+    
     private void redHighlight(int line) {
         try {
             highlighter.removeAllHighlights();
