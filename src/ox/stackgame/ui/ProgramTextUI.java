@@ -241,6 +241,8 @@ public class ProgramTextUI extends JLayeredPane {
                 // when clicked in runMode, just do the timer stuff
                 // disable this button
                 // enable pausebutton
+                modeManager.setActiveMode(runMode);
+                runMode.run();
             }
         });
         this.add(stepAllButton, new Integer(1));

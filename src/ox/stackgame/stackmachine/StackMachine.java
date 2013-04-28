@@ -2,6 +2,7 @@ package ox.stackgame.stackmachine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -296,7 +297,7 @@ public class StackMachine {
      * StackRuntimeExceptions, rather than the normal Java exception
      * @author Greg
      */
-    public class EvaluationStack {
+    public class EvaluationStack implements Iterable<StackValue<?>>{
         private final Stack<StackValue<?>> internalStack;
 
         public EvaluationStack() {
@@ -346,6 +347,11 @@ public class StackMachine {
         private void notifyListeners() {
             for (StackMachineListener l : listeners)
                 l.stackChanged(this);
+        }
+
+
+        public Iterator<StackValue<?>> iterator() {
+            return internalStack.iterator();
         }
     }
     public void dump() {

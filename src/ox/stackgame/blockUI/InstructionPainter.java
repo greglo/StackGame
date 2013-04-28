@@ -19,6 +19,7 @@ public class InstructionPainter implements BlockElementPainter {
 		
 		g.setColor(c);
 		g.fillRect(realLocation.x, realLocation.y, BlockUI.CELLWIDTH, BlockUI.CELLHEIGHT);
+//TODO: display instruction type
 	}
 
 	
