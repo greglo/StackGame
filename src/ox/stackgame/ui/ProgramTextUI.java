@@ -15,6 +15,7 @@ import javax.swing.event.*;
 import javax.swing.text.*;
 
 import ox.stackgame.stackmachine.*;
+import ox.stackgame.stackmachine.Lexer.LexerException;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.instructions.*;
 
@@ -150,11 +151,12 @@ public class ProgramTextUI extends JLayeredPane {
     }
 
     private List<Instruction> lex(String text) {
-        ArrayList<Instruction> p = new ArrayList<Instruction>();
-        // TODO write a real lexer, connect it here.
-        p.add(new Instruction("load", new IntStackValue(5)));
-        p.add(new Instruction("load", new IntStackValue(3)));
-        p.add(new Instruction("add"));
+        ArrayList<Instruction> p = null;
+        try {
+            p = Lexer.lex(text);
+        } catch (LexerException e) {
+            System.err.println("Lexer error on line " + e.lineNumber + ": " + e.getMessage());
+        }
         return p;
     }
 

@@ -21,6 +21,7 @@ import ox.stackgame.stackmachine.StackMachineListenerAdapter;
  * stackSize and allowedInstructions.
  * 
  * @author danfox
+ * @author rgossiaux
  * 
  */
 public class ChallengeUI extends JPanel {
