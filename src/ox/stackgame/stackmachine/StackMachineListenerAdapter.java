@@ -15,11 +15,11 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  */
 public class StackMachineListenerAdapter implements StackMachineListener {
     public void programCounterChanged(int line) { }
-	
+
     public void storeChanged(int address) { }
 
     public void inputConsumed(int startIndex) { }
-	
+
     public void outputChanged() { }
 
     public void programChanged(List<Instruction> instructions) { }
