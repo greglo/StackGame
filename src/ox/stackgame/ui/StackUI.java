@@ -48,41 +48,16 @@ public class StackUI extends JPanel {
         }
     }; 
 
-    private StackMachineListener l = new StackMachineListener() {
-
-        // TODO call updateLab appropriately
-        
-        public void programCounterChanged(int line) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        public void storeChanged(int address) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        public void inputConsumed(int startIndex) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        public void outputChanged() {
-            // TODO Auto-generated method stub
-            
-        }
-
-        public void programChanged(List<Instruction> instructions) {
-            // TODO Auto-generated method stub
-            
+    private StackMachineListener l = new StackMachineListenerAdapter() {
+        public void stackChanged(EvaluationStack stack) {
+            updateLab(stack);
         }
         
     };
     
     private final JLabel lab;
     
-    private void updateLab(StackMachine sm){
-        EvaluationStack stack = sm.getStack();
+    private void updateLab(EvaluationStack stack){
         StringBuilder sb = new StringBuilder();
         // iterate through stack, display StackValues
         for(StackValue<?> v : stack){
@@ -105,7 +80,7 @@ public class StackUI extends JPanel {
         lab.setForeground(Color.WHITE);
         this.add(lab);
         
-        updateLab(m.stackMachine);
+        updateLab(m.stackMachine.getStack());
         
         this.setBackground(ApplicationFrame.caBlueL);
         this.setSize(new Dimension(300, ApplicationFrame.h));
