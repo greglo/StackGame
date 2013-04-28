@@ -313,6 +313,7 @@ public class StackMachine {
         public StackValue<?> pop() throws EmptyStackException {
             StackValue<?> val = this.peek();
             internalStack.pop();
+            notifyListeners();
             return val;
         }
 
@@ -321,6 +322,8 @@ public class StackMachine {
                 internalStack.push(val);
             else
                 throw new FullStackException(programCounter);
+            
+            notifyListeners();
         }
 
         public int size() {
@@ -329,6 +332,7 @@ public class StackMachine {
 
         public void clear() {
             internalStack.clear();
+            notifyListeners();
         }
 
         public boolean equals(Object other){
@@ -337,6 +341,11 @@ public class StackMachine {
 
         public boolean equals(EvaluationStack other){
             return internalStack.equals(other.internalStack);
+        }
+        
+        private void notifyListeners() {
+            for (StackMachineListener l : listeners)
+                l.stackChanged(this);
         }
     }
     public void dump() {
