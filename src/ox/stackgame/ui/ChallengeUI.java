@@ -62,12 +62,14 @@ public class ChallengeUI extends JPanel {
     }
 
     private void disableMode() {
-        // TODO: deal with switching out of challenge mode (unregister listener, etc)
+        // TODO: deal with switching out of challenge mode (unregister listener,
+        // etc)
         this.setVisible(false);
     }
-    
+
     private void enableMode() {
-        // TODO: deal with switching into challenge mode (register listener, update display, etc)
+        // TODO: deal with switching into challenge mode (register listener,
+        // update display, etc)
         this.setVisible(true);
     }
 
