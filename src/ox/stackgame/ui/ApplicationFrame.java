@@ -40,7 +40,7 @@ public class ApplicationFrame {
 
         // initialise modes
         StateManager modeManager = new StateManager(machine);
-        RunMode runMode = new RunMode();
+        RunMode runMode = new RunMode(machine);
         Mode freeDesignMode = new FreeDesignMode();
         Mode challengeMode = new ChallengeMode(testChallenge);
 
