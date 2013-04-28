@@ -1,6 +1,6 @@
 package ox.stackgame.stackmachine;
 
-import ox.stackgame.stackmachine.exceptions.TypeException;
+import ox.stackgame.stackmachine.exceptions.*;
 
 public class CharStackValue extends StackValue<Character> {
     private int charCode;
@@ -8,16 +8,42 @@ public class CharStackValue extends StackValue<Character> {
     public CharStackValue() {
     }
 
-    public CharStackValue(int charCode) {
-        this.charCode = intToCharCode(charCode);
+    public CharStackValue( Character ch ) throws InvalidCharException {
+        ch = Character.toUpperCase( ch );
+
+        char code = ch.charValue();
+
+        if( code < 'A' || code > 'Z' ) {
+            throw new InvalidCharException();
+        }
+
+        charCode = toInternalCode( code );
     }
 
-    public CharStackValue(char ch) {
-        this.charCode = intToCharCode((int)ch - 65);
+    private CharStackValue( int code ) {
+        charCode = code;
     }
 
-    public CharStackValue(Character value) {
-        this.charCode = intToCharCode((int)value - 65);
+    private int toInternalCode( char code ) {
+        return ( code - 'A' ) + 1;
+    }
+
+    private char fromInternalCode( int code ) {
+        return ( char ) ( ( code - 1 ) + 'A' );
+    }
+
+    private static int addCodes( int c1, int c2 ) {
+        c1 += c2;
+
+        while( c1 > 26 ) {
+            c1 -= 26;
+        }
+
+        while( c1 < 1 ) {
+            c1 += 26;
+        }
+
+        return c1;
     }
 
     public boolean init( String str ) {
@@ -25,46 +51,49 @@ public class CharStackValue extends StackValue<Character> {
             return false;
         }
 
-        this.charCode = intToCharCode((int)str.charAt( 0 ) - 65);
+        char code = str.toUpperCase().charAt( 0 );
+        charCode = toInternalCode( code );
 
-        // TODO: check if it's in our valid charset
-
-        return true;
+        return code >= 'A' && code <= 'Z';
     }
 
     @Override
     public Character getValue() {
-        return new Character((char)(charCode + 65));
+        return new Character( fromInternalCode( charCode ) );
     }
 
     public int getCharCode() {
         return charCode;
     }
 
-    private int intToCharCode(int i) {
-        while (i < 0)
-            i += 26;
-        return i % 26;
+    @Override
+    public StackValue< ? > add( StackValue< ? > v ) throws TypeException {
+        Class< ? > type = v.getClass();
+
+        if( type == CharStackValue.class ) {
+            return new CharStackValue( addCodes( charCode, ( ( CharStackValue ) v ).charCode ) );
+        }
+
+        if( type == IntStackValue.class ) {
+            return new CharStackValue( addCodes( charCode, ( ( IntStackValue ) v ).getValue() ) );
+        }
+
+        throw new TypeException( 0, v.getClass() );
     }
 
     @Override
-    public StackValue<?> add(StackValue<?> y) throws TypeException {
-        if (y.getClass() == CharStackValue.class)
-            return new CharStackValue(this.charCode + ((CharStackValue)y).charCode);
-        else if (y.getClass() == IntStackValue.class)
-            return new CharStackValue(this.charCode + ((IntStackValue)y).getValue());
-        else
-            throw new TypeException(0, y.getClass());
-    }
+    public StackValue< ? > sub( StackValue< ? > v ) throws TypeException {
+        Class< ? > type = v.getClass();
 
-    @Override
-    public StackValue<?> sub(StackValue<?> y) throws TypeException {
-        if (y.getClass() == CharStackValue.class)
-            return new CharStackValue(this.charCode - ((CharStackValue)y).charCode);
-        else if (y.getClass() == IntStackValue.class)
-            return new CharStackValue(this.charCode - ((IntStackValue)y).getValue());
-        else
-            throw new TypeException(0, y.getClass());
+        if( type == CharStackValue.class ) {
+            return new CharStackValue( addCodes( charCode, -( ( CharStackValue ) v ).charCode ) );
+        }
+
+        if( type == IntStackValue.class ) {
+            return new CharStackValue( addCodes( charCode, -( ( IntStackValue ) v ).getValue() ) );
+        }
+
+        throw new TypeException( 0, v.getClass() );
     }
 
     @Override
