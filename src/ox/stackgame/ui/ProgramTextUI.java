@@ -144,14 +144,17 @@ public class ProgramTextUI extends JLayeredPane {
             }
 
             public void changedUpdate(DocumentEvent de) {
+                highlighter.removeAllHighlights();
                 lines.setText(getLinesText());
             }
 
             public void insertUpdate(DocumentEvent de) {
+                highlighter.removeAllHighlights();
                 lines.setText(getLinesText());
             }
 
             public void removeUpdate(DocumentEvent de) {
+                highlighter.removeAllHighlights();
                 lines.setText(getLinesText());
             }
         });
