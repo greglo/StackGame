@@ -12,7 +12,7 @@ public abstract class BranchOperation extends Operation {
 
 	if (p(machine)) {
 	    String label = ((StringStackValue) arg).getValue();
-	    return machine.getLabelLine(label);
+	    return machine.getLabelLine(label) + 1;
 	} else
 	    return machine.nextInstruction();
     }

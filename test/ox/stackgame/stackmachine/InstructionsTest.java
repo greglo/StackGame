@@ -108,4 +108,33 @@ public class InstructionsTest {
 	assertEquals(new Integer(2), machine.getStack().pop().getValue());
     }
     
+    @Test
+    public void testJezPass() throws StackRuntimeException {
+        List<Instruction> instructions = new ArrayList<Instruction>();
+        instructions.add(new Instruction("const", new IntStackValue(0)));
+        instructions.add(new Instruction("jez", new StringStackValue("pass")));
+        instructions.add(new Instruction("const", new IntStackValue(1)));
+        instructions.add(new Instruction("label", new StringStackValue("pass")));
+        instructions.add(new Instruction("const", new IntStackValue(2)));
+        StackMachine machine = new StackMachine(instructions);
+        machine.step();
+        machine.step();
+        machine.step();
+        assertEquals(new Integer(2), machine.getStack().pop().getValue());
+    }
+    
+    @Test
+    public void testJezFail() throws StackRuntimeException {
+        List<Instruction> instructions = new ArrayList<Instruction>();
+        instructions.add(new Instruction("const", new IntStackValue(1)));
+        instructions.add(new Instruction("jez", new StringStackValue("fail")));
+        instructions.add(new Instruction("const", new IntStackValue(2)));
+        instructions.add(new Instruction("label", new StringStackValue("fail")));
+        instructions.add(new Instruction("const", new IntStackValue(3)));
+        StackMachine machine = new StackMachine(instructions);
+        machine.step();
+        machine.step();
+        machine.step();
+        assertEquals(new Integer(2), machine.getStack().pop().getValue());
+    }
 }
