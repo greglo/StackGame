@@ -28,11 +28,6 @@ public interface SelectionManagerListener {
 	 * Notifies the listener that all objects have been unselected.
 	 */
 	void selectionCleared();
-	/**
-	 * Notifies the listener that the "with shadow" flag has changed.
-	 * 
-	 * @paran newCurrentWithShadow	the new "with shadow" flag
-	 */
-//	void selectionActivated();
+
 
 }

@@ -9,19 +9,12 @@ import java.util.Collections;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
- * This class manages the selection of a set of cave elements. It implements the
- * Observer pattern and can therefore be used as a model in a
- * Model-View-Controller framework.
- * 
- * @param <E>	determines the type of objects that are being selected
+ * This class manages the selection of a set of Instructions
  */
 public class SelectionManager {
 
 	protected final List<SelectionManagerListener> listeners;
 	protected final List<Instruction> selection;
-//	protected Cave currentCave;
-//	protected int currentCave;
-//	protected boolean currentWithShadow;
 	protected boolean active;
 	
 	public SelectionManager() {
@@ -29,31 +22,6 @@ public class SelectionManager {
 		selection = new ArrayList<Instruction>();
 		active = false;
 	}
-//	public Cave getCurrentCave() {
-//		return currentCave;
-//	}
-//	public void setCurrentCave(Cave newCurrentCave) {
-	//	currentCave = newCurrentCave;
-/*		if (currentCave.getNumberOfCaves() > 0)
-			currentCave = 0;
-		else
-			currentCave = -1;
-		selection.clear();*/
-//		for (SelectionManagerListener l : listeners)
-//			l.currentCaveChanged(currentCave);
-//	}
-/*	public int getCurrentCave() {
-		return currentCave;
-	}*/
-/*	public void setCurrentCave(int newCurrentCave) {
-		if (currentCave != null && newCurrentCave < currentCave.getNumberOfCaves())
-			currentCave = newCurrentCave;
-		else
-			currentCave = -1;
-		selection.clear();
-		for (SelectionManagerListener l : listeners)
-			l.currentCaveChanged(currentCave);
-	}*/
 	public boolean isSelectionEmpty() {
 		return selection.isEmpty();
 	}

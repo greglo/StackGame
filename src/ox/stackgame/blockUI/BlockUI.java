@@ -39,8 +39,6 @@ import ox.stackgame.ui.StateManager;
 
 @SuppressWarnings("serial")
 public class BlockUI extends JPanel {
-	/** Assigns a painter to a class. */
-	
 	protected final GeneralListener generalListener;
 	protected final EventHandler nullHandler;
 	protected final MouseHandler editHandler;
@@ -135,6 +133,7 @@ public class BlockUI extends JPanel {
 	
 	/** Keeps the view synchronised with the Application State Model and Domain Model */
 	//basically, whatever relevant happens, repaint.
+//TODO: listen to cave change
 	protected class GeneralListener implements StackMachineListener, SelectionManagerListener, BlockManagerListener {
 
 		//BlockManagerListener
