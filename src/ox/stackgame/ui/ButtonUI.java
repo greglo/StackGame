@@ -13,10 +13,13 @@ import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
 import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
 import ox.stackgame.stackmachine.StackMachineListener;
+import ox.stackgame.stackmachine.exceptions.NotHaltingException;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
-public class ButtonUI extends JPanel {   
+public class ButtonUI extends JPanel { 
+    
+    private Mode oldMode = null;
     
     
     public ButtonUI(final StateManager modeManager, final ProgramTextUI tui, final RunMode runMode){
@@ -24,13 +27,15 @@ public class ButtonUI extends JPanel {
         this.setBackground(Color.BLACK);
         this.setSize(new Dimension(80,300));
         
-     // create buttons
+        // create buttons
         int r = 60;
         int p = ApplicationFrame.p;
         int h = ApplicationFrame.h;
         int buttonStartY = p;
 
-        // +p+h+ldfklsdkf....
+        // create lex button
+        final JButton lexButton = new JButton("Check Code");
+        this.add(lexButton);
 
         // create step1 button
         final JButton step1Button = new JButton("Step1");
@@ -46,7 +51,6 @@ public class ButtonUI extends JPanel {
         this.add(stepAllButton);
 
         // pauseButton
-        // only relevant to stepAll Button
         final JButton pauseButton = new JButton("Pause");
         pauseButton.setForeground(new Color(0, 133, 200));
         pauseButton.setEnabled(false);
@@ -66,15 +70,23 @@ public class ButtonUI extends JPanel {
         this.add(resetButton);
 
         // button logic
+        lexButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // feed text through lexer
+                // update modeManager.stackMachine
+                System.out.println("Lexed Text input");
+                modeManager.stackMachine.loadInstructions(tui.getProgram()); 
+                
+                // enable appropriate buttons
+            }
+        });
         step1Button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // when not in runMode already, feed the text through the lexer,
                 // switch to RunMode (storing the current mode), pc:=0, call
                 // 'step'
                 if (modeManager.getActiveMode() != runMode) {
-                    // feed text through lexer
-                    // update modeManager.stackMachine
-                    modeManager.stackMachine.loadInstructions(tui.getProgram());
+                    oldMode = modeManager.getActiveMode();
                     // switch to RunMode
                     modeManager.setActiveMode(runMode);
                 }
@@ -95,6 +107,21 @@ public class ButtonUI extends JPanel {
                 // (storing the current mode), call runAll on the stackMachine.
                 // when clicked in RunMode, call runAll
                 // disable this button
+
+                if (modeManager.getActiveMode() != runMode) {
+                    oldMode = modeManager.getActiveMode();
+                    // switch to RunMode
+                    modeManager.setActiveMode(runMode);
+                }
+                try {
+                    modeManager.stackMachine.runAll();
+                } catch (StackRuntimeException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (NotHaltingException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
         
@@ -104,6 +131,8 @@ public class ButtonUI extends JPanel {
                 // enabled if machine is being animated
                 // when clicked, stop the stepAll timer from calling step
                 // enable stepAllButton, enable runAllButton
+                
+                assert(modeManager.getActiveMode()==runMode);
                 
                 runMode.pause();
                 pauseButton.setEnabled(false); // cant repause
@@ -120,7 +149,13 @@ public class ButtonUI extends JPanel {
                 // when clicked in runMode, just do the timer stuff
                 // disable this button
                 // enable pausebutton
-                modeManager.setActiveMode(runMode);
+
+                if (modeManager.getActiveMode() != runMode) {
+                    oldMode = modeManager.getActiveMode();
+                    // switch to RunMode
+                    modeManager.setActiveMode(runMode);
+                }
+                
                 runMode.run();
                 
                 stepAllButton.setEnabled(false); // can't repress step All
@@ -133,7 +168,10 @@ public class ButtonUI extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 // (should not be enabled in DesignMode)
                 // switch back to old mode, call reset on the stackmachine
-                
+                modeManager.setActiveMode(oldMode);
+                oldMode = null;
+                modeManager.stackMachine.reset();
+                resetButton.setEnabled(false);
             }
         });
         
