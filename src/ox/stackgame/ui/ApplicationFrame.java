@@ -82,6 +82,13 @@ public class ApplicationFrame {
             u.setLocation(250, 0);
             contentPane.add(u, new Integer(0));
         }
+        
+        // ButtonUI
+        {
+            JComponent u = new ButtonUI(modeManager);
+            u.setLocation(700-p-u.getWidth(),p);
+            contentPane.add(u,new Integer(1));
+        }
 
         // TapeUI
         {
