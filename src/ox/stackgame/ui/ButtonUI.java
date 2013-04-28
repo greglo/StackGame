@@ -35,19 +35,20 @@ public class ButtonUI extends JPanel {
 
         // create lex button
         final JButton lexButton = new JButton("Check Code");
+        lexButton.setEnabled(tui.isTextDirty());
         this.add(lexButton);
 
         // create step1 button
         final JButton step1Button = new JButton("Step1");
         step1Button.setForeground(new Color(0, 133, 200));
-        step1Button.setEnabled(false);
+        step1Button.setEnabled(!tui.isTextDirty());
         this.add(step1Button);
 
         // create stepAll Button
         // allows the user to see each command animated until the machine halts.
         final JButton stepAllButton = new JButton("StepAll");
         stepAllButton.setForeground(new Color(0, 133, 200));
-        stepAllButton.setEnabled(false);
+        stepAllButton.setEnabled(!tui.isTextDirty());
         this.add(stepAllButton);
 
         // pauseButton
@@ -59,7 +60,7 @@ public class ButtonUI extends JPanel {
         // create runAll button
         final JButton runAllButton = new JButton("RunAll");
         runAllButton.setForeground(new Color(0, 133, 200));
-        runAllButton.setEnabled(false);
+        runAllButton.setEnabled(!tui.isTextDirty());
         this.add(runAllButton);
 
         // create reset button
@@ -79,6 +80,9 @@ public class ButtonUI extends JPanel {
                 step1Button.setEnabled(true);
                 stepAllButton.setEnabled(true);
                 runAllButton.setEnabled(true);
+                
+                // don't relex 
+                lexButton.setEnabled(false);
             }
         });
         step1Button.addActionListener(new ActionListener() {
@@ -173,6 +177,8 @@ public class ButtonUI extends JPanel {
                 oldMode = null;
                 modeManager.stackMachine.reset();
                 resetButton.setEnabled(false);
+                
+                lexButton.setEnabled(true);
             }
         });
         
