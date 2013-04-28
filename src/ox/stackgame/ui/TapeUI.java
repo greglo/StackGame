@@ -1,12 +1,14 @@
 package ox.stackgame.ui;
 
 import java.awt.Dimension;
+import java.util.List;
 
 import javax.swing.*;
 
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
+import ox.stackgame.stackmachine.StackValue;
 
 /**
  * Visualisation of the input and output tapes. Allows user input in design mode
@@ -17,6 +19,7 @@ import ox.stackgame.stackmachine.StackMachineListenerAdapter;
  */
 public class TapeUI extends JPanel {
 
+    private List<StackValue<?>> inputTape = null;
     private StackMachine activeMachine = null;
     private static int boxSize = 50;
 
@@ -24,7 +27,8 @@ public class TapeUI extends JPanel {
      // TODO make input tape editable on DesignMode visitors
 
         public void visit(RunMode m) {
-            // TODO Cursor on first input
+            activeMachine = m.machine;
+            resetCursors();
         }
 
         @Override
@@ -82,9 +86,16 @@ public class TapeUI extends JPanel {
         // sort out appearance
         this.setBackground(ApplicationFrame.caBlue2L);
         this.setSize(new Dimension(750 - 2 * ApplicationFrame.p, 50));
+        
+        resetCursors();
 
         // TODO create scrolling (two scrollbars?) monotype font etc, different
         // colours for input/output
 
+    }
+
+    protected void resetCursors() {
+        // TODO Auto-generated method stub
+        
     }
 }
