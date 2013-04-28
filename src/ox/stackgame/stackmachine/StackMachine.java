@@ -65,6 +65,7 @@ public class StackMachine {
         this.programCounter 	= 0;
         this.stack 		= new EvaluationStack();
         this.numInstructions 	= 0;
+        this.store 		= new StackValue<?>[STORE_SIZE];
         this.input 		= originalInput;
         this.inputIndex 	= 0;
         this.output 		= new ArrayList<StackValue<?>>();
