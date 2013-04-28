@@ -104,16 +104,24 @@ public class StackMachineListenerTest {
         StackMachine machine = new StackMachine(instructions);
         MockListener l = new MockListener();
         machine.addListener(l);
-        machine.addInstruction(0,
-                new Instruction("const", new IntStackValue(2)));
+        machine.addInstruction(0, new Instruction("const", new IntStackValue(2)));
         machine.addInstruction(1, new Instruction("output"));
         machine.runAll();
         assertTrue(l.outputChangedFired);
     }
 
     @Test
-    public void testStackChanged() throws StackRuntimeException,
-            NotHaltingException {
-
+    public void testStackChanged() throws StackRuntimeException, NotHaltingException {
+        List<Instruction> instructions = new ArrayList<Instruction>();
+        StackMachine machine = new StackMachine(instructions);
+        MockListener l = new MockListener();
+        machine.addListener(l);
+        machine.addInstruction(0, new Instruction("const", new IntStackValue(2)));
+        machine.addInstruction(1, new Instruction("output"));
+        machine.step();
+        assertTrue(l.stackChangedFired);
+        l.outputChangedFired = false;
+        machine.step();
+        assertTrue(l.stackChangedFired);
     }
 }
