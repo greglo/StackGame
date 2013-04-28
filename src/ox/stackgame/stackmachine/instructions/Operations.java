@@ -126,6 +126,13 @@ public class Operations {
                 return machine.getStack().peek().getValue().equals(0);
             }
         });
+        
+        ht.put("jnez", new BranchOperation() {
+            @Override
+            protected boolean p(StackMachine machine) throws EmptyStackException {
+                return !machine.getStack().peek().getValue().equals(0);
+            }
+        });
 
         ht.put("jii", new BranchOperation() {
             @Override
