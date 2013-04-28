@@ -1,5 +1,7 @@
 package ox.stackgame.stackmachine.instructions;
 
+import java.util.*;
+
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.StringStackValue;
@@ -15,6 +17,11 @@ public abstract class BranchOperation extends Operation {
             return machine.getLabelLine(label) + 1;
         } else
             return machine.nextInstruction();
+    }
+
+    @Override
+    public List<Class<?>> argTypes() {
+        return Operations.typeList(StringStackValue.class);
     }
 
     protected abstract boolean p(StackMachine machine) throws StackRuntimeException;
