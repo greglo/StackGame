@@ -31,10 +31,10 @@ public class ApplicationFrame {
         // instantiate the application with a trivial example machine: (5 + 3A)
         // * 2
         List<Instruction> instructions = new ArrayList<Instruction>();
-        instructions.add(new Instruction("load", new IntStackValue(5)));
-        instructions.add(new Instruction("load", new IntStackValue(3)));
+        instructions.add(new Instruction("const", new IntStackValue(5)));
+        instructions.add(new Instruction("const", new IntStackValue(3)));
         instructions.add(new Instruction("add"));
-        instructions.add(new Instruction("load", new IntStackValue(2)));
+        instructions.add(new Instruction("const", new IntStackValue(2)));
         instructions.add(new Instruction("mul"));
         StackMachine machine = new StackMachine(instructions);
 
