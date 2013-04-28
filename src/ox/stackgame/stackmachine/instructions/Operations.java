@@ -61,8 +61,7 @@ public class Operations {
             }
 
             public List<Class<?>> argTypes() {
-                return typeList(IntStackValue.class, CharStackValue.class,
-                    StringStackValue.class);
+                return typeList(IntStackValue.class, CharStackValue.class);
             }
         });
 
