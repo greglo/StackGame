@@ -40,33 +40,31 @@ public class ButtonUI extends JPanel {
         // create step1 button
         final JButton step1Button = new JButton("Step1");
         step1Button.setForeground(new Color(0, 133, 200));
-        step1Button.setSize(r, r);
+        step1Button.setEnabled(false);
         this.add(step1Button);
 
         // create stepAll Button
         // allows the user to see each command animated until the machine halts.
         final JButton stepAllButton = new JButton("StepAll");
         stepAllButton.setForeground(new Color(0, 133, 200));
-        stepAllButton.setSize(r, r);
+        stepAllButton.setEnabled(false);
         this.add(stepAllButton);
 
         // pauseButton
         final JButton pauseButton = new JButton("Pause");
         pauseButton.setForeground(new Color(0, 133, 200));
         pauseButton.setEnabled(false);
-        pauseButton.setSize(r, r);
         this.add(pauseButton);
 
         // create runAll button
         final JButton runAllButton = new JButton("RunAll");
         runAllButton.setForeground(new Color(0, 133, 200));
-        runAllButton.setSize(r, r);
+        runAllButton.setEnabled(false);
         this.add(runAllButton);
 
         // create reset button
         final JButton resetButton = new JButton("Reset");
         resetButton.setEnabled(false);
-        resetButton.setSize(r, r);
         this.add(resetButton);
 
         // button logic
@@ -78,6 +76,9 @@ public class ButtonUI extends JPanel {
                 modeManager.stackMachine.loadInstructions(tui.getProgram()); 
                 
                 // enable appropriate buttons
+                step1Button.setEnabled(true);
+                stepAllButton.setEnabled(true);
+                runAllButton.setEnabled(true);
             }
         });
         step1Button.addActionListener(new ActionListener() {
