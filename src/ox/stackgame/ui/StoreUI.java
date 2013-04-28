@@ -23,7 +23,7 @@ import ox.stackgame.stackmachine.exceptions.InvalidAddressException;
 public class StoreUI extends JPanel {
 
     private JLabel label;
-    private StackMachine activeMachine = null;
+    private final StackMachine activeMachine;
     private static int boxSize = 50;
 
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
@@ -74,8 +74,12 @@ public class StoreUI extends JPanel {
         String s = "";
         try {
             for (int i = 0; i < activeMachine.STORE_SIZE; i++)
-                s = s + "(" + i + ")" + activeMachine.getStore(i).toString()
-                        + "\n";
+            {
+                // get values from the store.
+                s = s + "(" + i + ")";
+                if (activeMachine.getStore(i) != null) s = s + activeMachine.getStore(i);
+                s = s + "\n";
+            }
         } catch (InvalidAddressException e) {
             // just to make the error go away.
         }
@@ -92,6 +96,8 @@ public class StoreUI extends JPanel {
 
         // listen to the stack machine
         m.stackMachine.addListener(l);
+        
+        activeMachine = m.stackMachine;
 
         this.setBackground(ApplicationFrame.caBlue2L);
         this.setSize(new Dimension(boxSize, boxSize * StackMachine.STORE_SIZE));
