@@ -58,7 +58,7 @@ public class ProgramTextUI extends JLayeredPane {
     // code to be executed when a mode is deactivated
     private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
         public void visit(RunMode m) {
-
+            highlighter.removeAllHighlights();
         }
 
         public void visit(ChallengeMode m) {
