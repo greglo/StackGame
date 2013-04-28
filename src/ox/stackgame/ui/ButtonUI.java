@@ -14,7 +14,7 @@ import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 public class ButtonUI extends JPanel {
-    public ButtonUI(final StateManager modeManager){
+    public ButtonUI(final StateManager modeManager, final ProgramTextUI tui, final RunMode runMode){
 
         this.setBackground(Color.BLACK);
         this.setSize(new Dimension(80,300));
@@ -32,28 +32,26 @@ public class ButtonUI extends JPanel {
         final JButton step1Button = new JButton("Step1");
         step1Button.setForeground(new Color(0, 133, 200));
         step1Button.setSize(r, r);
-//        step1Button.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent arg0) {
-//                // when not in runMode already, feed the text through the lexer,
-//                // switch to RunMode (storing the current mode), pc:=0, call
-//                // 'step'
-//                if (modeManager.getActiveMode() != runMode) {
-//                    // feed text through lexer
-//                    String text = jta.getText();
-//                    List<Instruction> instructions = lex(text);
-//                    // update modeManager.stackMachine
-//                    modeManager.stackMachine.loadInstructions(instructions);
-//                    // switch to RunMode
-//                    modeManager.setActiveMode(runMode);
-//                }
-//                // call step
-//                try {
-//                    modeManager.stackMachine.step();
-//                } catch (StackRuntimeException e) {
-//                    // TODO Handle machine errors
-//                }
-//            }
-//        });
+        step1Button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // when not in runMode already, feed the text through the lexer,
+                // switch to RunMode (storing the current mode), pc:=0, call
+                // 'step'
+                if (modeManager.getActiveMode() != runMode) {
+                    // feed text through lexer
+                    // update modeManager.stackMachine
+                    modeManager.stackMachine.loadInstructions(tui.getProgram());
+                    // switch to RunMode
+                    modeManager.setActiveMode(runMode);
+                }
+                // call step
+                try {
+                    modeManager.stackMachine.step();
+                } catch (StackRuntimeException e) {
+                    // TODO Handle machine errors
+                }
+            }
+        });
         this.add(step1Button);
 
         // create stepAll Button
