@@ -249,7 +249,10 @@ public class StackMachine {
         if (isRunning()) {
             Instruction nextInstruction = instructions.get(programCounter);
             Operation op = Operations.get( nextInstruction.name );
-            setProgramCounter( op.execute( this, nextInstruction.arg ) );
+            if (op != null)
+                setProgramCounter( op.execute( this, nextInstruction.arg ) );
+            else
+                throw new RuntimeException("Invalid instruction passed to StackMachine");
             numInstructions++;
         }
     }
