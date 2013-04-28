@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 import ox.stackgame.blockUI.BlockManager.BlockManagerListener;
 import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.instructions.Instruction;
 import ox.stackgame.ui.StateManager;
@@ -160,9 +161,6 @@ public class BlockUI extends JPanel {
 		}
 
 		//StackMachineListener
-		public void stackInstructionsChanged(List<Instruction> instructions) {
-			repaint();
-		}
 		public void programCounterChanged(int line) {
 			repaint();
 		}
@@ -172,6 +170,11 @@ public class BlockUI extends JPanel {
 		}
 		public void outputChanged() {
 		}
+        public void programChanged(List<Instruction> instructions) {
+            repaint();
+        }
+        public void stackChanged(EvaluationStack stack) {
+        }
 		
 	}
 	
