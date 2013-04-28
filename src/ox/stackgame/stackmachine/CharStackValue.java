@@ -25,25 +25,15 @@ public class CharStackValue extends StackValue<Character> {
     }
 
     private int toInternalCode( char code ) {
-        return ( code - 'A' ) + 1;
+        return code - 'A';
     }
 
     private char fromInternalCode( int code ) {
-        return ( char ) ( ( code - 1 ) + 'A' );
+        return ( char ) ( code + 'A' );
     }
 
     private static int addCodes( int c1, int c2 ) {
-        c1 += c2;
-
-        while( c1 > 26 ) {
-            c1 -= 26;
-        }
-
-        while( c1 < 1 ) {
-            c1 += 26;
-        }
-
-        return c1;
+        return ( ( ( c1 + c2 ) % 26 ) + 26 ) % 26;
     }
 
     public boolean init( String str ) {
