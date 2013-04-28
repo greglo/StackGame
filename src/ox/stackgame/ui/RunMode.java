@@ -23,7 +23,7 @@ import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
 public class RunMode extends Mode {
     
-    protected final StackMachine machine;
+    public final StackMachine machine;
     protected boolean running = false;
     /**
      * Number of ms between steps
