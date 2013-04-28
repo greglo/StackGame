@@ -104,5 +104,4 @@ public class CharStackValue extends StackValue<Character> {
     public boolean equals(CharStackValue other){
         return (charCode == other.charCode);
     }
-
 }
