@@ -50,6 +50,8 @@ public class ButtonUI extends JPanel {
                 } catch (StackRuntimeException e) {
                     // TODO Handle machine errors
                 }
+                
+                // should become disabled when pc is past the end of the program.
             }
         });
         this.add(step1Button);
@@ -59,18 +61,18 @@ public class ButtonUI extends JPanel {
         final JButton stepAllButton = new JButton("StepAll");
         stepAllButton.setForeground(new Color(0, 133, 200));
         stepAllButton.setSize(r, r);
-//        stepAllButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent arg0) {
-//                // for a dirty textarea, lex the text, switch to RunMode
-//                // (storing the current mode), create a timer, call step on the
-//                // timer until machine terminates.
-//                // when clicked in runMode, just do the timer stuff
-//                // disable this button
-//                // enable pausebutton
-//                modeManager.setActiveMode(runMode);
-//                runMode.run();
-//            }
-//        });
+        stepAllButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // for a dirty textarea, lex the text, switch to RunMode
+                // (storing the current mode), create a timer, call step on the
+                // timer until machine terminates.
+                // when clicked in runMode, just do the timer stuff
+                // disable this button
+                // enable pausebutton
+                modeManager.setActiveMode(runMode);
+                runMode.run();
+            }
+        });
         this.add(stepAllButton);
 
         // pauseButton
@@ -79,40 +81,40 @@ public class ButtonUI extends JPanel {
         pauseButton.setEnabled(false);
         pauseButton.setForeground(new Color(0, 133, 200));
         pauseButton.setSize(r, r);
-//        pauseButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent arg0) {
-//                // disabled in designMode.
-//                // enabled if machine is being animated
-//                // when clicked, stop the stepAll timer from calling step
-//                // enable stepAllButton, enable runAllButton
-//            }
-//        });
+        pauseButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // disabled in designMode.
+                // enabled if machine is being animated
+                // when clicked, stop the stepAll timer from calling step
+                // enable stepAllButton, enable runAllButton
+            }
+        });
         this.add(pauseButton);
 
         // create runAll button
         final JButton runAllButton = new JButton("RunAll");
         runAllButton.setForeground(new Color(0, 133, 200));
         runAllButton.setSize(r, r);
-//        runAllButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent arg0) {
-//                // for a dirty textarea, lex the text, switch to RunMode
-//                // (storing the current mode), call runAll on the stackMachine.
-//                // when clicked in RunMode, call runAll
-//                // disable this button
-//            }
-//        });
+        runAllButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // for a dirty textarea, lex the text, switch to RunMode
+                // (storing the current mode), call runAll on the stackMachine.
+                // when clicked in RunMode, call runAll
+                // disable this button
+            }
+        });
         this.add(runAllButton);
 
         // create reset button
         final JButton resetButton = new JButton("Reset");
         resetButton.setEnabled(false);
         resetButton.setSize(r, r);
-//        resetButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent arg0) {
-//                // (should not be enabled in DesignMode)
-//                // switch back to old mode, call reset on the stackmachine
-//            }
-//        });
+        resetButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // (should not be enabled in DesignMode)
+                // switch back to old mode, call reset on the stackmachine
+            }
+        });
         this.add(resetButton);
     }
 }
