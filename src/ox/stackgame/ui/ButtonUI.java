@@ -19,10 +19,34 @@ import ox.stackgame.stackmachine.instructions.Instruction;
 
 public class ButtonUI extends JPanel { 
     
+    private final StateManager sm;
     private Mode oldMode = null;
+    private final RunMode runMode;
+    private final ProgramTextUI tui;
     
+    private final JButton lexButton = new JButton("Check Code");
+    private final JButton step1Button = new JButton("Step1");
+    private final JButton stepAllButton = new JButton("StepAll");
+    private final JButton pauseButton = new JButton("Pause");
+    private final JButton runAllButton = new JButton("RunAll");
+    private final JButton resetButton = new JButton("Reset");
     
-    public ButtonUI(final StateManager modeManager, final ProgramTextUI tui, final RunMode runMode){
+    public void updateButtons() {
+        boolean td = tui.isTextDirty();
+        boolean rm = sm.getActiveMode() == runMode;
+        lexButton.setEnabled(tui.isTextDirty());
+        step1Button.setEnabled((rm || !td) && runMode.machine.isRunning());
+        stepAllButton.setEnabled((rm || !td) && runMode.machine.isRunning());
+        pauseButton.setEnabled(rm && runMode.timerRunning());
+        runAllButton.setEnabled((rm && !runMode.timerRunning() && runMode.machine.isRunning()) || (!td && !rm));
+        resetButton.setEnabled(rm && !runMode.timerRunning());
+    }
+    
+    public ButtonUI(final StateManager sm, final ProgramTextUI tui, final RunMode runMode){
+        
+        this.runMode = runMode;
+        this.sm = sm;
+        this.tui = tui;
         
         this.setBackground(Color.BLACK);
         this.setSize(new Dimension(80,300));
@@ -34,39 +58,33 @@ public class ButtonUI extends JPanel {
         int buttonStartY = p;
 
         // create lex button
-        final JButton lexButton = new JButton("Check Code");
-        lexButton.setEnabled(tui.isTextDirty());
         this.add(lexButton);
 
         // create step1 button
-        final JButton step1Button = new JButton("Step1");
         step1Button.setForeground(new Color(0, 133, 200));
-        step1Button.setEnabled(!tui.isTextDirty());
         this.add(step1Button);
 
         // create stepAll Button
         // allows the user to see each command animated until the machine halts.
-        final JButton stepAllButton = new JButton("StepAll");
+        
         stepAllButton.setForeground(new Color(0, 133, 200));
-        stepAllButton.setEnabled(!tui.isTextDirty());
         this.add(stepAllButton);
 
         // pauseButton
-        final JButton pauseButton = new JButton("Pause");
+        
         pauseButton.setForeground(new Color(0, 133, 200));
-        pauseButton.setEnabled(false);
         this.add(pauseButton);
 
         // create runAll button
-        final JButton runAllButton = new JButton("RunAll");
+        
         runAllButton.setForeground(new Color(0, 133, 200));
-        runAllButton.setEnabled(!tui.isTextDirty());
         this.add(runAllButton);
 
         // create reset button
-        final JButton resetButton = new JButton("Reset");
-        resetButton.setEnabled(false);
         this.add(resetButton);
+        
+        // initialise the buttons
+        updateButtons();
 
         // button logic
         lexButton.addActionListener(new ActionListener() {
@@ -74,15 +92,16 @@ public class ButtonUI extends JPanel {
                 // feed text through lexer
                 // update modeManager.stackMachine
                 System.out.println("Lexed Text input");
-                modeManager.stackMachine.loadInstructions(tui.getProgram()); 
-                
+                // TODO: fix this?
+                sm.stackMachine.loadInstructions(tui.getProgram()); 
+                updateButtons();
                 // enable appropriate buttons
-                step1Button.setEnabled(true);
-                stepAllButton.setEnabled(true);
-                runAllButton.setEnabled(true);
-                
-                // don't relex 
-                lexButton.setEnabled(false);
+//                step1Button.setEnabled(true);
+//                stepAllButton.setEnabled(true);
+//                runAllButton.setEnabled(true);
+//                
+//                // don't relex 
+//                lexButton.setEnabled(false);
             }
         });
         step1Button.addActionListener(new ActionListener() {
@@ -90,17 +109,19 @@ public class ButtonUI extends JPanel {
                 // when not in runMode already, feed the text through the lexer,
                 // switch to RunMode (storing the current mode), pc:=0, call
                 // 'step'
-                if (modeManager.getActiveMode() != runMode) {
-                    oldMode = modeManager.getActiveMode();
+                if (sm.getActiveMode() != runMode) {
+                    oldMode = sm.getActiveMode();
                     // switch to RunMode
-                    modeManager.setActiveMode(runMode);
+                    sm.setActiveMode(runMode);
                 }
                 // call step
                 try {
-                    modeManager.stackMachine.step();
+                    sm.stackMachine.step();
                 } catch (StackRuntimeException e) {
                     // TODO Handle machine errors
                 }
+                
+                updateButtons();
                 
                 // should become disabled when pc is past the end of the program.
             }
@@ -113,13 +134,13 @@ public class ButtonUI extends JPanel {
                 // when clicked in RunMode, call runAll
                 // disable this button
 
-                if (modeManager.getActiveMode() != runMode) {
-                    oldMode = modeManager.getActiveMode();
+                if (sm.getActiveMode() != runMode) {
+                    oldMode = sm.getActiveMode();
                     // switch to RunMode
-                    modeManager.setActiveMode(runMode);
+                    sm.setActiveMode(runMode);
                 }
                 try {
-                    modeManager.stackMachine.runAll();
+                    sm.stackMachine.runAll();
                 } catch (StackRuntimeException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -127,6 +148,8 @@ public class ButtonUI extends JPanel {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+                
+                updateButtons();
             }
         });
         
@@ -137,12 +160,13 @@ public class ButtonUI extends JPanel {
                 // when clicked, stop the stepAll timer from calling step
                 // enable stepAllButton, enable runAllButton
                 
-                assert(modeManager.getActiveMode()==runMode);
+                assert(sm.getActiveMode()==runMode);
                 
                 runMode.pause();
-                pauseButton.setEnabled(false); // cant repause
-                runAllButton.setEnabled(true);
-                stepAllButton.setEnabled(true);
+//                pauseButton.setEnabled(false); // cant repause
+//                runAllButton.setEnabled(true);
+//                stepAllButton.setEnabled(true);
+                updateButtons();
             }
         });
         
@@ -155,17 +179,18 @@ public class ButtonUI extends JPanel {
                 // disable this button
                 // enable pausebutton
 
-                if (modeManager.getActiveMode() != runMode) {
-                    oldMode = modeManager.getActiveMode();
+                if (sm.getActiveMode() != runMode) {
+                    oldMode = sm.getActiveMode();
                     // switch to RunMode
-                    modeManager.setActiveMode(runMode);
+                    sm.setActiveMode(runMode);
                 }
                 
                 runMode.run();
                 
-                stepAllButton.setEnabled(false); // can't repress step All
-                runAllButton.setEnabled(false);
-                pauseButton.setEnabled(true);
+//                stepAllButton.setEnabled(false); // can't repress step All
+//                runAllButton.setEnabled(false);
+//                pauseButton.setEnabled(true);
+                updateButtons();
             }
         });
         
@@ -173,29 +198,31 @@ public class ButtonUI extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 // (should not be enabled in DesignMode)
                 // switch back to old mode, call reset on the stackmachine
-                modeManager.setActiveMode(oldMode);
+                sm.setActiveMode(oldMode);
                 oldMode = null;
-                modeManager.stackMachine.reset();
-                resetButton.setEnabled(false);
-                
-                lexButton.setEnabled(true);
+                sm.stackMachine.reset();
+//                resetButton.setEnabled(false);
+//                
+//                lexButton.setEnabled(true);
+                updateButtons();
             }
         });
         
         // do button enabling/disabling
-        modeManager.stackMachine.addListener( new StackMachineListenerAdapter() {
+        sm.stackMachine.addListener( new StackMachineListenerAdapter() {
             public void programCounterChanged(int line) {
                 // isRunning == true if there are more exceptions to execute
-                Boolean b = modeManager.stackMachine.isRunning();
-                step1Button.setEnabled(b);
-                
-                if (!b) {
-                    pauseButton.setEnabled(false);
-                    stepAllButton.setEnabled(b);
-                    runAllButton.setEnabled(b);
-                }
-                resetButton.setEnabled(modeManager.stackMachine.getProgramCounter() != 0);
-                
+//                Boolean b = sm.stackMachine.isRunning();
+//                step1Button.setEnabled(b);
+//                
+//                if (!b) {
+//                    pauseButton.setEnabled(false);
+//                    stepAllButton.setEnabled(b);
+//                    runAllButton.setEnabled(b);
+//                }
+//                resetButton.setEnabled(sm.stackMachine.getProgramCounter() != 0);
+//                
+                updateButtons();
             }
         });
         

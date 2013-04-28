@@ -59,7 +59,7 @@ public class RunMode extends Mode {
         timer.start();
     }
     
-    public boolean isRunning() { return running; }
+    public boolean timerRunning() { return running; }
 
     public void accept(ModeVisitor v) {
         v.visit(this);

@@ -37,6 +37,7 @@ public class ProgramTextUI extends JLayeredPane {
     public static Color frozenTextColor = new Color(222, 147, 95);
     public static Font f = new Font(Font.MONOSPACED, Font.PLAIN, 15);
     public static int width = 450;
+    private final StateManager sm;
 
     // code to be executed when a mode is activated.
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
@@ -47,11 +48,13 @@ public class ProgramTextUI extends JLayeredPane {
         public void visit(ChallengeMode m) {
             jta.setEditable(true);
             jta.setForeground(editableTextColor);
+            ProgramTextUI.this.antiLex(sm.stackMachine.getInstructions());
         }
 
         public void visit(FreeDesignMode m) {
             jta.setEditable(true);
             jta.setForeground(editableTextColor);
+            ProgramTextUI.this.antiLex(sm.stackMachine.getInstructions());
         }
     };
 
@@ -75,10 +78,6 @@ public class ProgramTextUI extends JLayeredPane {
     private StackMachineListener l = new StackMachineListenerAdapter() {
         public void programCounterChanged(int line) {
             highlight(line -1);
-        }
-
-        public void programChanged(List<Instruction> p) {
-            jta.setText(antiLex(p));
         }
     };
 
@@ -183,6 +182,7 @@ public class ProgramTextUI extends JLayeredPane {
         try {
             p = Lexer.lex(text);
             dirtyText = false;
+            System.out.println("Dirty text false: lexed successfully.");
         } catch (LexerException e) {
             // TODO: decide the best way to handle lexer exceptions
             redHighlight(e.lineNumber);
@@ -201,12 +201,14 @@ public class ProgramTextUI extends JLayeredPane {
             if (i.arg != null)
                 b.append(" " + i.arg.getValue());
         }
+        dirtyText = false;
         return b.toString();
     }
 
     public ProgramTextUI(final StateManager modeManager, final RunMode runMode) {
         super();
 
+        sm = modeManager;
         // appearance
         this.setSize(new Dimension(width, ApplicationFrame.h));
 
