@@ -45,11 +45,6 @@ public class StackUI extends JPanel {
 
     private StackMachineListener l = new StackMachineListener() {
 
-        public void stackInstructionsChanged(List<Instruction> instructions) {
-            // TODO Auto-generated method stub
-            
-        }
-
         public void programCounterChanged(int line) {
             // TODO Auto-generated method stub
             
@@ -66,6 +61,11 @@ public class StackUI extends JPanel {
         }
 
         public void outputChanged() {
+            // TODO Auto-generated method stub
+            
+        }
+
+        public void programChanged(List<Instruction> instructions) {
             // TODO Auto-generated method stub
             
         }
