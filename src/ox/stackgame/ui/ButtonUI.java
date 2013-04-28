@@ -30,7 +30,6 @@ public class ButtonUI extends JPanel {
         int h = ApplicationFrame.h;
         int buttonStartY = p;
 
-        // TODO position the buttons in a more sensible way. Get rid of
         // +p+h+ldfklsdkf....
 
         // create step1 button
@@ -108,6 +107,8 @@ public class ButtonUI extends JPanel {
                 
                 runMode.pause();
                 pauseButton.setEnabled(false); // cant repause
+                runAllButton.setEnabled(true);
+                stepAllButton.setEnabled(true);
             }
         });
         
@@ -122,6 +123,8 @@ public class ButtonUI extends JPanel {
                 modeManager.setActiveMode(runMode);
                 runMode.run();
                 
+                stepAllButton.setEnabled(false); // can't repress step All
+                runAllButton.setEnabled(false);
                 pauseButton.setEnabled(true);
             }
         });
@@ -140,9 +143,12 @@ public class ButtonUI extends JPanel {
                 // isRunning == true if there are more exceptions to execute
                 Boolean b = modeManager.stackMachine.isRunning();
                 step1Button.setEnabled(b);
-                stepAllButton.setEnabled(b);
-                runAllButton.setEnabled(b);
                 
+                if (!b) {
+                    pauseButton.setEnabled(false);
+                    stepAllButton.setEnabled(b);
+                    runAllButton.setEnabled(b);
+                }
                 resetButton.setEnabled(modeManager.stackMachine.getProgramCounter() != 0);
                 
             }

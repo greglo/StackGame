@@ -134,7 +134,7 @@ public class BlockUI extends JPanel {
 	
 	/** Keeps the view synchronised with the Application State Model and Domain Model */
 	//basically, whatever relevant happens, repaint.
-//TODO: listen to cave change
+//TODO: listen to cave change #BANTER
 	protected class GeneralListener implements StackMachineListener, SelectionManagerListener, BlockManagerListener {
 
 		//BlockManagerListener
