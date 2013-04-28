@@ -20,73 +20,79 @@ public class StackMachine {
     public final static int MAX_INSTRUCTIONS = 10000;
     public final static int STORE_SIZE = 4;
 
-    private int 			programCounter; 		
-    private EvaluationStack 		stack; 
-    private StackValue<?>[] 		store; 		
-    private List<Instruction> 		instructions; 
-    private final Map<String, Integer> 	labels;
-    
-    // Track the number of instructions being run on the machine
-    private int numInstructions;	
+    private int programCounter;
+    private EvaluationStack stack;
+    private StackValue<?>[] store;
+    private List<Instruction> instructions;
+    private final Map<String, Integer> labels;
 
-    private final List<StackValue<?>> 	originalInput;
-    private List<StackValue<?>> 	input;
-    private int 			inputIndex;
-    private List<StackValue<?>> 	output;
+    // Track the number of instructions being run on the machine
+    private int numInstructions;
+
+    private final List<StackValue<?>> originalInput;
+    private List<StackValue<?>> input;
+    private int inputIndex;
+    private List<StackValue<?>> output;
 
     private final List<StackMachineListener> listeners;
 
-    
     /**
      * Create a new StackMachine with nothing on the input tape
-     * @param instructions	The program loaded into the machine
+     * 
+     * @param instructions
+     *            The program loaded into the machine
      */
     public StackMachine(List<Instruction> instructions) {
-	this(instructions, new ArrayList<StackValue<?>>());
+        this(instructions, new ArrayList<StackValue<?>>());
     }
-    
+
     /**
      * Create a new StackMachine
-     * @param instructions	The program loaded into the machine
-     * @param input		The values on the input tape
+     * 
+     * @param instructions
+     *            The program loaded into the machine
+     * @param input
+     *            The values on the input tape
      */
     public StackMachine(List<Instruction> instructions, List<StackValue<?>> input) {
-	this.listeners = new ArrayList<StackMachineListener>();
+        this.listeners = new ArrayList<StackMachineListener>();
         this.labels = new HashMap<String, Integer>();
-	this.originalInput = input;
+        this.originalInput = input;
         loadInstructions(instructions);
     }
 
     /**
-     * Resets the stack machine to the state it was in before it started running the 
-     * stack program
+     * Resets the stack machine to the state it was in before it started running
+     * the stack program
      */
     public void reset() {
-        this.programCounter 	= 0;
-        this.stack 		= new EvaluationStack();
-        this.numInstructions 	= 0;
-        this.store 		= new StackValue<?>[STORE_SIZE];
-        this.input 		= originalInput;
-        this.inputIndex 	= 0;
-        this.output 		= new ArrayList<StackValue<?>>();
+        this.programCounter = 0;
+        this.stack = new EvaluationStack();
+        this.numInstructions = 0;
+        this.store = new StackValue<?>[STORE_SIZE];
+        this.input = originalInput;
+        this.inputIndex = 0;
+        this.output = new ArrayList<StackValue<?>>();
         for (int i = 0; i < STORE_SIZE; i++)
             store[i] = new IntStackValue(0);
     }
 
     /**
      * Load a new program into the machine and reset it
-     * @param instructions	The program to load into the machine
+     * 
+     * @param instructions
+     *            The program to load into the machine
      */
     public void loadInstructions(List<Instruction> instructions) {
         this.instructions = instructions;
-        
+
         int i = 0;
-        for(Instruction op : instructions) {
-            if(op.name.equals("label"))
+        for (Instruction op : instructions) {
+            if (op.name.equals("label"))
                 labels.put((String) op.arg.getValue(), i);
             i++;
         }
-        
+
         for (StackMachineListener l : listeners)
             l.programChanged(instructions);
         reset();
@@ -94,8 +100,11 @@ public class StackMachine {
 
     /**
      * Add an instruction into the currently loaded program, and reset
-     * @param line		Line to insert the instruction at
-     * @param instruction	Instruction to insert
+     * 
+     * @param line
+     *            Line to insert the instruction at
+     * @param instruction
+     *            Instruction to insert
      */
     public void addInstruction(int line, Instruction instruction) {
         if (line < 0)
@@ -108,7 +117,9 @@ public class StackMachine {
 
     /**
      * Remove an instruction from the currently loaded program, and reset
-     * @param line		Line to remove the instruction at
+     * 
+     * @param line
+     *            Line to remove the instruction at
      */
     public void removeInstruction(int line) {
         if (line < 0)
@@ -118,12 +129,14 @@ public class StackMachine {
         instructions.remove(line);
         loadInstructions(instructions);
     }
-    
+
     /**
      * Gets the value stored in a particular value in store
-     * @param address		The address to get
-     * @return			The value
-     * @throws 			InvalidAddressException
+     * 
+     * @param address
+     *            The address to get
+     * @return The value
+     * @throws InvalidAddressException
      */
     public StackValue<?> getStore(int address) throws InvalidAddressException {
         if (0 <= address && address < STORE_SIZE)
@@ -131,12 +144,14 @@ public class StackMachine {
         else
             throw new InvalidAddressException(address, programCounter);
     }
-    
+
     /**
      * Set a particular address in store
      * 
-     * @param address 		The address to set
-     * @param value 		The value to set the address to
+     * @param address
+     *            The address to set
+     * @param value
+     *            The value to set the address to
      * @throws InvalidAddressException
      */
     public void setStore(int address, StackValue<?> value) throws InvalidAddressException {
@@ -144,52 +159,54 @@ public class StackMachine {
             store[address] = value;
             for (StackMachineListener l : listeners)
                 l.storeChanged(address);
-        }
-        else
+        } else
             throw new InvalidAddressException(address, programCounter);
     }
-    
+
     public boolean hasInput() {
         return inputIndex < input.size();
     }
 
     /**
      * Consume the first work on the input tape
-     * @return			The word of input
-     * @throws 			EmptyInputException 
+     * 
+     * @return The word of input
+     * @throws EmptyInputException
      */
     public StackValue<?> consumeInput() throws EmptyInputException {
         if (hasInput()) {
             for (StackMachineListener l : listeners)
                 l.inputConsumed(inputIndex);
             return input.get(inputIndex++);
-        }
-        else
+        } else
             throw new EmptyInputException(programCounter);
     }
 
     /**
      * Add a value to the end of the output tape
-     * @param value		The value to add to the output tape
+     * 
+     * @param value
+     *            The value to add to the output tape
      */
     public void addOutput(StackValue<?> value) {
         output.add(value);
         for (StackMachineListener l : listeners)
             l.outputChanged();
     }
-    
+
     /**
      * @return Whether there is at least one more instruction for the machine to
      *         execute
      */
     public boolean isRunning() {
-        return 0 <= programCounter
-            && programCounter < instructions.size();
+        return 0 <= programCounter && programCounter < instructions.size();
     }
-    
+
     /**
      * Get the current instruction being pointed to by programCounter
-     * @return index of the instruction that will be executed next time step() is called
+     * 
+     * @return index of the instruction that will be executed next time step()
+     *         is called
      */
     public int getProgramCounter() {
         return programCounter;
@@ -197,20 +214,23 @@ public class StackMachine {
 
     /**
      * Sets the program counter to the next instruction to be executed
-     * @param programCounter	The line of the next instruction
+     * 
+     * @param programCounter
+     *            The line of the next instruction
      */
     private void setProgramCounter(int programCounter) {
         this.programCounter = programCounter;
         for (StackMachineListener l : listeners)
             l.programCounterChanged(programCounter);
     }
-    
+
     /**
      * Get the location of the next instruction in the program
+     * 
      * @return
      */
     public int nextInstruction() {
-	return getProgramCounter() + 1;
+        return getProgramCounter() + 1;
     }
 
     /**
@@ -222,8 +242,10 @@ public class StackMachine {
 
     /**
      * Get the location in the program of a label
-     * @param identifier	The identifier of the label
-     * @return			The labels location
+     * 
+     * @param identifier
+     *            The identifier of the label
+     * @return The labels location
      * @throws NoSuchLabelException
      */
     public int getLabelLine(String identifier) throws NoSuchLabelException {
@@ -233,30 +255,33 @@ public class StackMachine {
         else
             throw new NoSuchLabelException(identifier, programCounter);
     }
-    
+
     /**
      * Get the line number of a label
-     * @param identifier	The identifier of the label
-     * @return			The labels line number (-1 if it does not exist)
+     * 
+     * @param identifier
+     *            The identifier of the label
+     * @return The labels line number (-1 if it does not exist)
      */
     private int getLabelPosition(String identifier) {
-	if (labels.containsKey(identifier))
-	    return labels.get(identifier);
-	else 
-	    return -1;
+        if (labels.containsKey(identifier))
+            return labels.get(identifier);
+        else
+            return -1;
     }
 
     /**
-     * Execute the next instruction in the program, and ready the 
+     * Execute the next instruction in the program, and ready the
      * programCounter, etc. to run the next instruction after that
+     * 
      * @throws StackRuntimeException
      */
     public void step() throws StackRuntimeException {
         if (isRunning()) {
             Instruction nextInstruction = instructions.get(programCounter);
-            Operation op = Operations.get( nextInstruction.name );
+            Operation op = Operations.get(nextInstruction.name);
             if (op != null)
-                setProgramCounter( op.execute( this, nextInstruction.arg ) );
+                setProgramCounter(op.execute(this, nextInstruction.arg));
             else
                 throw new RuntimeException("Invalid instruction passed to StackMachine");
             numInstructions++;
@@ -264,8 +289,9 @@ public class StackMachine {
     }
 
     /**
-     * Keep executing instructions until the end of the program, or until
-     * more than MAX_INTRUCTIONS have been executed (and then exit with error)
+     * Keep executing instructions until the end of the program, or until more
+     * than MAX_INTRUCTIONS have been executed (and then exit with error)
+     * 
      * @throws StackRuntimeException
      * @throws NotHaltingException
      */
@@ -279,6 +305,7 @@ public class StackMachine {
 
     /**
      * Add a listener to the stack machine
+     * 
      * @param l
      */
     public void addListener(StackMachineListener l) {
@@ -287,6 +314,7 @@ public class StackMachine {
 
     /**
      * Remove a listener from the stack machine
+     * 
      * @param l
      */
     public void removeListener(StackMachineListener l) {
@@ -294,19 +322,21 @@ public class StackMachine {
     }
 
     /**
-     * Should only be used by views.  (Not for execution).
+     * Should only be used by views. (Not for execution).
+     * 
      * @return the instructions in this StackMachine.
      */
-    public List<Instruction> getInstructions(){
+    public List<Instruction> getInstructions() {
         return this.instructions;
     }
 
     /**
      * A wrapper for a Stack<StackValue<?>> which lets us throw
      * StackRuntimeExceptions, rather than the normal Java exception
+     * 
      * @author Greg
      */
-    public class EvaluationStack implements Iterable<StackValue<?>>{
+    public class EvaluationStack implements Iterable<StackValue<?>> {
         private final Stack<StackValue<?>> internalStack;
 
         public EvaluationStack() {
@@ -332,7 +362,7 @@ public class StackMachine {
                 internalStack.push(val);
             else
                 throw new FullStackException(programCounter);
-            
+
             notifyListeners();
         }
 
@@ -345,49 +375,48 @@ public class StackMachine {
             notifyListeners();
         }
 
-        public boolean equals(Object other){
+        public boolean equals(Object other) {
             return false;
         }
 
-        public boolean equals(EvaluationStack other){
+        public boolean equals(EvaluationStack other) {
             return internalStack.equals(other.internalStack);
         }
-        
+
         private void notifyListeners() {
             for (StackMachineListener l : listeners)
                 l.stackChanged(this);
         }
 
-
         public Iterator<StackValue<?>> iterator() {
             return internalStack.iterator();
         }
     }
+
     public void dump() {
         System.out.println("=== PROGRAM ===");
-        
-        for (int i = 0; i < instructions.size(); i++ ) {
-            Instruction op = instructions.get( i );
+
+        for (int i = 0; i < instructions.size(); i++) {
+            Instruction op = instructions.get(i);
 
             System.out.print("  " + VT102.e());
             System.out.print(i == programCounter ? "[1m> " : "[0m  ");
             System.out.print(op.toString());
             System.out.print("  " + VT102.e());
-            
-            System.out.println( VT102.e() + "[0m" );
+
+            System.out.println(VT102.e() + "[0m");
         }
 
         System.out.println();
         System.out.println("=== STACK ===");
-        for( int i = 0; i < stack.size(); i++ )
-            System.out.println("  " + stack.internalStack.get( i ).getValue().toString());
+        for (int i = 0; i < stack.size(); i++)
+            System.out.println("  " + stack.internalStack.get(i).getValue().toString());
 
-        
         System.out.println();
         System.out.println("=== STORE ===");
-        for( int i = 0; i < STORE_SIZE; i++ ) 
-            System.out.println("  " + i + ": " + (store[ i ] == null ? "null" : store[ i ].getValue().toString()));
-        
+        for (int i = 0; i < STORE_SIZE; i++)
+            System.out.println("  " + i + ": " + (store[i] == null ? "null" : store[i].getValue().toString()));
+
         System.out.println();
         System.out.println();
     }
