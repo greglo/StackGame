@@ -224,7 +224,8 @@ public class BlockUI extends JPanel {
 	protected void updateCurrentStackMachine() {
 		StackMachine newMachine = stateManager.stackMachine;
 		if(newMachine != currentStackMachine){
-			currentStackMachine.removeListener(generalListener);
+			if(currentStackMachine!=null)
+			    currentStackMachine.removeListener(generalListener);
 			currentStackMachine = newMachine;
 			currentStackMachine.addListener(generalListener);
 		}
@@ -249,7 +250,7 @@ public class BlockUI extends JPanel {
 		g2d.setColor(Color.LIGHT_GRAY);
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		
-		//cave
+		//the stuff
 		if (currentStackMachine != null) {
 			int codeLength = currentStackMachine.getInstructions().size();
 			int height = codeLength + 1;
