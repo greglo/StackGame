@@ -3,13 +3,18 @@
  */
 package ox.stackgame.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
+import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
@@ -45,6 +50,8 @@ public class StackUI extends JPanel {
 
     private StackMachineListener l = new StackMachineListener() {
 
+        // TODO call updateLab appropriately
+        
         public void programCounterChanged(int line) {
             // TODO Auto-generated method stub
             
@@ -72,6 +79,18 @@ public class StackUI extends JPanel {
         
     };
     
+    private final JLabel lab;
+    
+    private void updateLab(StackMachine sm){
+        EvaluationStack stack = sm.getStack();
+        StringBuilder sb = new StringBuilder();
+        // iterate through stack, display StackValues
+        for(StackValue<?> v : stack){
+            sb.append(v.toString() + "\n");
+        }
+        lab.setText("STACK:\n\n" + sb.toString());
+    }
+    
     public StackUI(StateManager m) {
 
         // pay attention to mode changes
@@ -80,6 +99,13 @@ public class StackUI extends JPanel {
 
         // listen to the stack machine
         m.stackMachine.addListener(l);
+        
+        // draw a label to store stack information
+        lab = new JLabel("HELLO");
+        lab.setForeground(Color.WHITE);
+        this.add(lab);
+        
+        updateLab(m.stackMachine);
         
         this.setBackground(ApplicationFrame.caBlueL);
         this.setSize(new Dimension(300, ApplicationFrame.h));
