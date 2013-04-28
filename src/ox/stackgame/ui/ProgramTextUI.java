@@ -40,7 +40,7 @@ public class ProgramTextUI extends JLayeredPane {
     // code to be executed when a mode is activated.
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
         public void visit(RunMode m) {
-            highlight(0); // TODO check whether this is superfluous
+
         }
 
         public void visit(ChallengeMode m) {
@@ -73,7 +73,7 @@ public class ProgramTextUI extends JLayeredPane {
 
     private StackMachineListener l = new StackMachineListenerAdapter() {
         public void programCounterChanged(int line) {
-            highlight(line);
+            highlight(line -1);
         }
 
         public void programChanged(List<Instruction> p) {
