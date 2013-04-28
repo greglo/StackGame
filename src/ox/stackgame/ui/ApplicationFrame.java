@@ -12,7 +12,7 @@ import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 public class ApplicationFrame {
-    final static int h = 660;
+    final static int h = 590;
     final static int p = 15;
     final static Color caBlue = new Color(35, 44, 49);
     final static Color caBlueL = new Color(50, 57, 60);
