@@ -85,7 +85,7 @@ public class StackMachine {
         }
         
         for (StackMachineListener l : listeners)
-            l.stackInstructionsChanged(instructions);
+            l.programChanged(instructions);
         reset();
     }
 

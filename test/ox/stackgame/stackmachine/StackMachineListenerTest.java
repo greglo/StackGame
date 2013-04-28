@@ -14,14 +14,14 @@ import ox.stackgame.stackmachine.instructions.Instruction;
 public class StackMachineListenerTest {
 
     class MockListener implements StackMachineListener {
-	public boolean stackInstructionsChangedFired = false;
+	public boolean programChangedFired = false;
 	public boolean stackProgramCounterChanged = false;
 	public boolean storeChangedFired = false;
 	public boolean inputConsumedFired = false;
 	public boolean outputChangedFired = false;
 
-	public void stackInstructionsChanged(List<Instruction> instructions) {
-	    this.stackInstructionsChangedFired = true;
+	public void programChanged(List<Instruction> instructions) {
+	    this.programChangedFired = true;
 	}
 
 	public void programCounterChanged(int line) {
@@ -49,7 +49,7 @@ public class StackMachineListenerTest {
 	machine.addListener(l);
 	machine.addInstruction(0, new Instruction("load", new IntStackValue(2)));
 	machine.runAll();
-	assertTrue(l.stackInstructionsChangedFired);
+	assertTrue(l.programChangedFired);
     }
 
     @Test

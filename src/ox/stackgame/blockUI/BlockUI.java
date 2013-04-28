@@ -161,7 +161,7 @@ public class BlockUI extends JPanel {
 		}
 
 		//StackMachineListener
-		public void stackInstructionsChanged(List<Instruction> instructions) {
+		public void programChanged(List<Instruction> instructions) {
 			repaint();
 		}
 		public void programCounterChanged(int line) {
