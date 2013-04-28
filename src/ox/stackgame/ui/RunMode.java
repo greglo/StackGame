@@ -37,6 +37,9 @@ public class RunMode extends Mode {
             public void actionPerformed(ActionEvent e) {
                 try {
                     machine.step();
+                    if (!machine.isRunning()) {
+                        pause();
+                    }
                 } catch (StackRuntimeException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
