@@ -28,9 +28,9 @@ import ox.stackgame.stackmachine.instructions.*;
  * @author danfox
  * 
  */
-public class ProgramTextUI extends JLayeredPane implements ProgramUI {
+public class ProgramTextUI extends JLayeredPane {
     private Mode oldMode = null;
-    private Highlighter highlighter;
+    private Highlighter highlighter, redHighlighter;
     private JTextArea jta;
     public static Color editableTextColor = new Color(186, 96, 96);
     public static Color frozenTextColor = new Color(222, 147, 95);
@@ -76,7 +76,7 @@ public class ProgramTextUI extends JLayeredPane implements ProgramUI {
             highlight(line);
         }
 
-        public void stackInstructionsChanged(List<Instruction> p) {
+        public void programChanged(List<Instruction> p) {
             jta.setText(antiLex(p));
         }
     };
@@ -88,6 +88,17 @@ public class ProgramTextUI extends JLayeredPane implements ProgramUI {
                     .getLineEndOffset(line),
                     new DefaultHighlighter.DefaultHighlightPainter(new Color(
                             129, 162, 190)));
+        } catch (BadLocationException e) {
+            throw new RuntimeException("pc shouldn't be out of bounds");
+        }
+    }
+    
+    private void redHighlight(int line) {
+        try {
+            highlighter.removeAllHighlights();
+            highlighter.addHighlight(jta.getLineStartOffset(line), jta
+                    .getLineEndOffset(line),
+                    new DefaultHighlighter.DefaultHighlightPainter(Color.red));
         } catch (BadLocationException e) {
             throw new RuntimeException("pc shouldn't be out of bounds");
         }
@@ -109,6 +120,8 @@ public class ProgramTextUI extends JLayeredPane implements ProgramUI {
         jta.setFont(f);
         jta.setCaretColor(new Color(150, 150, 150));
         highlighter = jta.getHighlighter();
+        
+        
 
         // create textarea to display linenumbers
         final JTextArea lines = new JTextArea("1");
@@ -160,6 +173,7 @@ public class ProgramTextUI extends JLayeredPane implements ProgramUI {
             p = Lexer.lex(text);
         } catch (LexerException e) {
             // TODO: decide the best way to handle lexer exceptions
+            redHighlight(e.lineNumber);
             System.err.println("Lexer error on line " + e.lineNumber + ": "
                     + e.getMessage());
         }
