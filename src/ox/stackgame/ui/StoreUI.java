@@ -54,6 +54,7 @@ public class StoreUI extends JPanel {
     
     @Override
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         int yOffset = 25;
         g2d.setFont(new Font(g2d.getFont().getName(), Font.PLAIN, 20));
