@@ -7,11 +7,11 @@ import ox.stackgame.stackmachine.StackValue;
 
 public abstract class SeqOperation extends Operation {
     public int execute(StackMachine m, StackValue<?> arg) throws StackRuntimeException {
-	apply(m, arg);
+        apply(m, arg);
 
-	return m.nextInstruction();
+        return m.nextInstruction();
     }
 
     public abstract void apply(StackMachine m, StackValue<?> arg)
-	    throws StackRuntimeException;
+        throws StackRuntimeException;
 }
