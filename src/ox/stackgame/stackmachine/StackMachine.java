@@ -351,9 +351,6 @@ public class StackMachine {
     public void dump() {
         System.out.println("=== PROGRAM ===");
         
-//        int lbound = Math.max(0, programCounter - 5);
-//        int ubound = Math.min(instructions.size(), programCounter + 5);
-        
         for (int i = 0; i < instructions.size(); i++ ) {
             Instruction op = instructions.get( i );
 
