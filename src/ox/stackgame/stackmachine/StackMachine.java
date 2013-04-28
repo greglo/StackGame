@@ -29,7 +29,6 @@ public class StackMachine {
     // Track the number of instructions being run on the machine
     private int numInstructions;
 
-    private final List<StackValue<?>> originalInput;
     private List<StackValue<?>> input;
     private int inputIndex;
     private List<StackValue<?>> output;
@@ -57,7 +56,8 @@ public class StackMachine {
     public StackMachine(List<Instruction> instructions, List<StackValue<?>> input) {
         this.listeners = new ArrayList<StackMachineListener>();
         this.labels = new HashMap<String, Integer>();
-        this.originalInput = input;
+        this.input = input;
+        this.stack = new EvaluationStack();
         loadInstructions(instructions);
     }
 
@@ -67,14 +67,16 @@ public class StackMachine {
      */
     public void reset() {
         this.programCounter = 0;
-        this.stack = new EvaluationStack();
+        this.stack.clear();
         this.numInstructions = 0;
         this.store = new StackValue<?>[STORE_SIZE];
-        this.input = originalInput;
         this.inputIndex = 0;
         this.output = new ArrayList<StackValue<?>>();
-        for (int i = 0; i < STORE_SIZE; i++)
+        for (int i = 0; i < STORE_SIZE; i++) {
             store[i] = new IntStackValue(0);
+            for (StackMachineListener l : listeners)
+                l.storeChanged(i);
+        }
     }
 
     /**
@@ -417,6 +419,17 @@ public class StackMachine {
         for (int i = 0; i < STORE_SIZE; i++)
             System.out.println("  " + i + ": " + (store[i] == null ? "null" : store[i].getValue().toString()));
 
+        System.out.println();
+        System.out.println("=== INPUT ===");
+        for (StackValue<?> val : input)
+            System.out.print(val.toString() + " ");
+
+        System.out.println();
+        System.out.println("=== OUTPUT ===");
+        for (StackValue<?> val : output)
+            System.out.print(val.toString() + " ");
+
+        
         System.out.println();
         System.out.println();
     }

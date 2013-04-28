@@ -61,8 +61,7 @@ public class Operations {
             }
 
             public List<Class<?>> argTypes() {
-                return typeList(IntStackValue.class, CharStackValue.class,
-                    StringStackValue.class);
+                return typeList(IntStackValue.class, CharStackValue.class);
             }
         });
 
@@ -125,6 +124,13 @@ public class Operations {
             @Override
             protected boolean p(StackMachine machine) throws EmptyStackException {
                 return machine.getStack().peek().getValue().equals(0);
+            }
+        });
+        
+        ht.put("jnez", new BranchOperation() {
+            @Override
+            protected boolean p(StackMachine machine) throws EmptyStackException {
+                return !machine.getStack().peek().getValue().equals(0);
             }
         });
 
