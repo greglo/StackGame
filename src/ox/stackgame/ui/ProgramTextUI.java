@@ -155,7 +155,9 @@ public class ProgramTextUI extends JLayeredPane {
         try {
             p = Lexer.lex(text);
         } catch (LexerException e) {
-            System.err.println("Lexer error on line " + e.lineNumber + ": " + e.getMessage());
+            // TODO: decide the best way to handle lexer exceptions
+            System.err.println("Lexer error on line " + e.lineNumber + ": "
+                    + e.getMessage());
         }
         return p;
     }

@@ -40,7 +40,7 @@ public class ApplicationFrame {
 
         // initialise modes
         StateManager modeManager = new StateManager(machine);
-        RunMode runMode = new RunMode();
+        RunMode runMode = new RunMode(machine);
         Mode freeDesignMode = new FreeDesignMode();
         Mode challengeMode = new ChallengeMode(testChallenge);
 
@@ -62,13 +62,13 @@ public class ApplicationFrame {
             contentPane.add(u, new Integer(0));
         }
 
-        // fake StackUI
-        JPanel su = new JPanel();
-        su.setBackground(caBlueL);
-        su.setSize(new Dimension(300, h));
-        su.setLocation(700, 0);
-        contentPane.add(su, new Integer(0));
-
+        // StackUI
+        {
+            JComponent u = new StackUI(modeManager);
+            u.setLocation(700,0);
+            contentPane.add(u,new Integer(0));
+        }
+        
         // StoreUI
         {
             JComponent u = new StoreUI(modeManager);

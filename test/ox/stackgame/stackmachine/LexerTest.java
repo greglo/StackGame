@@ -39,8 +39,7 @@ public class LexerTest {
     @Test
     public void lexertest() throws LexerException {
         List<Instruction> ops = Lexer.lex("jump lab\n" + "const 5\n"
-                + "label lab\n" + "const 7\n" + "const 100\n" + "add\n"
-                + "nop\n");
+                + "label lab\n" + "const 7\n" + "const 100\n" + "add\n");
 
         StackMachine m = new StackMachine(ops);
 

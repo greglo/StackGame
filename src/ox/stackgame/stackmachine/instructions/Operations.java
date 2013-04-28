@@ -3,6 +3,7 @@ package ox.stackgame.stackmachine.instructions;
 import java.util.*;
 
 import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.exceptions.EmptyStackException;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.exceptions.TypeException;
 
@@ -124,8 +125,10 @@ public class Operations {
             }
         });
 
-        ht.put("nop", new SeqOperation() {
-            public void apply(StackMachine m, StackValue<?> arg) {
+        ht.put("jez", new BranchOperation() {
+            @Override
+            protected boolean p(StackMachine machine) throws EmptyStackException {
+                return machine.getStack().peek().getValue().equals(0);
             }
         });
 

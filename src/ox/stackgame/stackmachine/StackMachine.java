@@ -2,6 +2,7 @@ package ox.stackgame.stackmachine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -85,7 +86,7 @@ public class StackMachine {
         }
         
         for (StackMachineListener l : listeners)
-            l.stackInstructionsChanged(instructions);
+            l.programChanged(instructions);
         reset();
     }
 
@@ -296,7 +297,7 @@ public class StackMachine {
      * StackRuntimeExceptions, rather than the normal Java exception
      * @author Greg
      */
-    public class EvaluationStack {
+    public class EvaluationStack implements Iterable<StackValue<?>>{
         private final Stack<StackValue<?>> internalStack;
 
         public EvaluationStack() {
@@ -313,6 +314,7 @@ public class StackMachine {
         public StackValue<?> pop() throws EmptyStackException {
             StackValue<?> val = this.peek();
             internalStack.pop();
+            notifyListeners();
             return val;
         }
 
@@ -321,6 +323,8 @@ public class StackMachine {
                 internalStack.push(val);
             else
                 throw new FullStackException(programCounter);
+            
+            notifyListeners();
         }
 
         public int size() {
@@ -329,6 +333,7 @@ public class StackMachine {
 
         public void clear() {
             internalStack.clear();
+            notifyListeners();
         }
 
         public boolean equals(Object other){
@@ -337,6 +342,16 @@ public class StackMachine {
 
         public boolean equals(EvaluationStack other){
             return internalStack.equals(other.internalStack);
+        }
+        
+        private void notifyListeners() {
+            for (StackMachineListener l : listeners)
+                l.stackChanged(this);
+        }
+
+
+        public Iterator<StackValue<?>> iterator() {
+            return internalStack.iterator();
         }
     }
     public void dump() {

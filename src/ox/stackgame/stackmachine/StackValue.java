@@ -24,4 +24,8 @@ public abstract class StackValue<T> {
     public abstract StackValue<?> div(StackValue<?> y) throws TypeException;
     
     public abstract boolean equals(Object other);
+    
+    public String toString() {
+        return getValue().toString();
+    }
 }
