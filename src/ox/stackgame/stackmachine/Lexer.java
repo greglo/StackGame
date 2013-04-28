@@ -22,7 +22,7 @@ public class Lexer {
         ArrayList<Instruction> program = new ArrayList<Instruction>();
 
         Pattern linesPattern = Pattern.compile("[^\n]+");
-        Pattern commentPattern = Pattern.compile("\".*$");
+        Pattern commentPattern = Pattern.compile("--.*$");
         Pattern trimlPattern = Pattern.compile("^\\s*");
         Pattern trimrPattern = Pattern.compile("\\s*$");
         Pattern wordsPattern = Pattern.compile("[^\\s]+");
