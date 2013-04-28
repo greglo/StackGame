@@ -14,7 +14,7 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  */
 public abstract class AbstractChallenge {
 	public final String description;
-    protected Map<Instruction, Integer> instructionSet;
+    public final Map<Instruction, Integer> instructionSet;
     
 	
     /**
