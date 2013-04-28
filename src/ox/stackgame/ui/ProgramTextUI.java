@@ -32,6 +32,7 @@ public class ProgramTextUI extends JLayeredPane {
     private Mode oldMode = null;
     private Highlighter highlighter, redHighlighter;
     private JTextArea jta;
+    private boolean dirtyText = true;
     public static Color editableTextColor = new Color(186, 96, 96);
     public static Color frozenTextColor = new Color(222, 147, 95);
     public static Font f = new Font(Font.MONOSPACED, Font.PLAIN, 15);
@@ -142,19 +143,24 @@ public class ProgramTextUI extends JLayeredPane {
                 }
                 return text;
             }
+            
+            private void textChanged() {
+                highlighter.removeAllHighlights();
+                dirtyText = true;
+            }
 
             public void changedUpdate(DocumentEvent de) {
-                highlighter.removeAllHighlights();
+                textChanged();
                 lines.setText(getLinesText());
             }
 
             public void insertUpdate(DocumentEvent de) {
-                highlighter.removeAllHighlights();
+                textChanged();
                 lines.setText(getLinesText());
             }
 
             public void removeUpdate(DocumentEvent de) {
-                highlighter.removeAllHighlights();
+                textChanged();
                 lines.setText(getLinesText());
             }
         });
@@ -174,6 +180,7 @@ public class ProgramTextUI extends JLayeredPane {
         ArrayList<Instruction> p = null;
         try {
             p = Lexer.lex(text);
+            dirtyText = false;
         } catch (LexerException e) {
             // TODO: decide the best way to handle lexer exceptions
             redHighlight(e.lineNumber);
