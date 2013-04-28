@@ -28,7 +28,7 @@ import ox.stackgame.stackmachine.instructions.*;
  * @author danfox
  * 
  */
-public class ProgramTextUI extends JLayeredPane {
+public class ProgramTextUI extends JLayeredPane implements ProgramUI {
     private Mode oldMode = null;
     private Highlighter highlighter;
     private JTextArea jta;
@@ -148,6 +148,10 @@ public class ProgramTextUI extends JLayeredPane {
         jsp.setRowHeaderView(lines); // keeps the line numbers in sync.
 
         return jsp;
+    }
+    
+    public List<Instruction> getProgram() {
+        return lex(jta.getText());
     }
 
     private List<Instruction> lex(String text) {
