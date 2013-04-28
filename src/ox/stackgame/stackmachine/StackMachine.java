@@ -146,6 +146,10 @@ public class StackMachine {
         else
             throw new InvalidAddressException(address, programCounter);
     }
+    
+    public boolean hasInput() {
+        return inputIndex < input.size();
+    }
 
     /**
      * Consume the first work on the input tape
@@ -153,7 +157,7 @@ public class StackMachine {
      * @throws 			EmptyInputException 
      */
     public StackValue<?> consumeInput() throws EmptyInputException {
-        if (inputIndex < input.size()) {
+        if (hasInput()) {
             for (StackMachineListener l : listeners)
                 l.inputConsumed(inputIndex);
             return input.get(inputIndex++);

@@ -132,6 +132,13 @@ public class Operations {
             }
         });
 
+        ht.put("jii", new BranchOperation() {
+            @Override
+            protected boolean p(StackMachine machine) throws EmptyStackException {
+                return machine.hasInput();
+            }
+        });
+        
         ht.put("dump", new SeqOperation() {
             public void apply(StackMachine m, StackValue<?> arg) {
                 m.dump();
