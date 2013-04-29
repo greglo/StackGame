@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import ox.stackgame.challenge.StackResultChallenge;
 import ox.stackgame.stackmachine.IntStackValue;
@@ -64,9 +65,14 @@ public class ApplicationFrame {
 
         // StackUI
         {
-            JComponent u = new StackUI(modeManager);
-            u.setLocation(700, 0);
-            contentPane.add(u, new Integer(0));
+            JScrollPane scrollPane = new JScrollPane();
+            scrollPane.setBounds( 700, 0, 300, ApplicationFrame.h );
+            scrollPane.setBorder( new EmptyBorder( 0, 0, 0, 0 ) );
+            scrollPane.setHorizontalScrollBarPolicy( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
+
+            scrollPane.getViewport().add( new StackUI( modeManager ) );
+
+            contentPane.add( scrollPane, new Integer( 0 ) );
         }
 
         // StoreUI
