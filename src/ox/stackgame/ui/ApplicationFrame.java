@@ -25,10 +25,6 @@ public class ApplicationFrame {
      */
     public static void main(String[] args) {
 
-        // Test challenge
-        StackResultChallenge testChallenge = new StackResultChallenge(
-                "This is a test challenge", null, null);
-
         // instantiate the application with a trivial example machine: (5 + 3A)
         // * 2
         List<Instruction> instructions = new ArrayList<Instruction>();
@@ -43,7 +39,7 @@ public class ApplicationFrame {
         StateManager modeManager = new StateManager(machine);
         RunMode runMode = new RunMode(machine);
         Mode freeDesignMode = new FreeDesignMode();
-        Mode challengeMode = new ChallengeMode(testChallenge);
+        Mode challengeMode = new ChallengeMode();
 
         // setup window to display
         final JFrame frame = new JFrame("Stack Game");
@@ -58,7 +54,8 @@ public class ApplicationFrame {
 
         // ChallengeUI
         {
-            JComponent u = new ChallengeUI(modeManager);
+            ChallengeUI u = new ChallengeUI(modeManager);
+            u.switchToChallenge(0);
             u.setLocation(0, 0);
             contentPane.add(u, new Integer(0));
         }

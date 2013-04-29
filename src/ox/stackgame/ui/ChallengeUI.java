@@ -4,14 +4,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.util.*;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ox.stackgame.challenge.AbstractChallenge;
+import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
+import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
  * Allow the user to select a challenge from a predefined list. Listen to the
@@ -26,20 +29,36 @@ import ox.stackgame.stackmachine.StackMachineListenerAdapter;
  */
 public class ChallengeUI extends JPanel {
 
-    protected AbstractChallenge challenge;
+    /**
+     * currentChallenge stores the active challenge. This can be null; denoting
+     * the user has not yet selected a challenge.
+     */
+    protected AbstractChallenge currChallenge = null;
     protected JLabel descLabel;
+    private StackMachine machine;
+
     private StackMachineListener l = new StackMachineListenerAdapter() {
         public void programCounterChanged(int line) {
-            // TODO Check execution hasn't exceeded allowedInstructions
-            // TODO evaluate machine against challenge's hasSucceeded() function
+            if (currChallenge != null){
+                // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
+                if (machine.isRunning()==false) {
+                    String message = currChallenge.hasSucceeded(machine);
+                    System.out.println(message=="" ? "Congratulations" : message);
+                    // TODO display message
+                }
+            }
         }
-
-        // TODO check the stacksize hasn't exceeded challenge's specified
-        // stackSize.
     };
+    
+    public void switchToChallenge(int i){
+        assert 0 <= i && i<ChallengeMode.challengeList.size();
+        System.out.println("Switching to challenge "+i);
+        this.currChallenge=ChallengeMode.challengeList.get(i);
+    }
 
     public ChallengeUI(StateManager m) {
         m.stackMachine.addListener(l);
+        this.machine = m.stackMachine;
 
         // TODO decide how mode switching should work. (Challenge must be
         // selected first!)
@@ -58,30 +77,36 @@ public class ChallengeUI extends JPanel {
         this.add(l);
         descLabel = new JLabel();
         this.add(descLabel);
-        disableMode();
-    }
-
-    private void disableMode() {
-        // TODO: deal with switching out of challenge mode (unregister listener,
-        // etc)
         this.setVisible(false);
-    }
-
-    private void enableMode() {
-        // TODO: deal with switching into challenge mode (register listener,
-        // update display, etc)
-        this.setVisible(true);
     }
 
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
 
         public void visit(RunMode m) {
+            if (currChallenge != null) {
+                // TODO check program against allowedInstructions
+                boolean goodSoFar = true;
+                Map<Instruction, Integer> used = new HashMap<Instruction, Integer>();
+                // go through whole program, ensure that
+//                for (Instruction i : machine.getInstructions()) {
+//                    if(used.get(i) == null)
+//                        used.put(i, 1);
+//                    else
+//                        used.put(i,used.get(i)+1);
+//                    Integer allowedInstances = currChallenge.instructionSet.get(i);
+//                    if (allowedInstances != null && allowedInstances != -1
+//                            && used.get(i) > allowedInstances) {
+//                        // exceeded allowed exceptions.
+//                        throw new IllegalArgumentException(
+//                                "Program doesn't conform to instructionSet");
+//                    }
+//                }
+            }
         }
 
         public void visit(ChallengeMode m) {
-            challenge = m.challenge;
-            descLabel.setText(challenge.description);
-            enableMode();
+            descLabel.setText(currChallenge.description);
+            ChallengeUI.this.setVisible(true);
         }
 
         public void visit(FreeDesignMode m) {
@@ -93,8 +118,9 @@ public class ChallengeUI extends JPanel {
         public void visit(RunMode m) {
         }
 
+        // this mode is deactivated
         public void visit(ChallengeMode m) {
-            disableMode();
+            ChallengeUI.this.setVisible(false);
         }
 
         public void visit(FreeDesignMode m) {
