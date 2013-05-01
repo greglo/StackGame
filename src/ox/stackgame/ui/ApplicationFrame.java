@@ -55,7 +55,7 @@ public class ApplicationFrame {
         // ChallengeUI
         {
             ChallengeUI u = new ChallengeUI(modeManager);
-            u.switchToChallenge(0);
+            u.switchTo(0);
             u.setLocation(0, 0);
             contentPane.add(u, new Integer(0));
         }

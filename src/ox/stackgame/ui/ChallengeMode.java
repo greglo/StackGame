@@ -14,8 +14,6 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  * Allows the user to create a program to solve a specific challenge (limited
  * instruction set, well defined success conditions, specified max stack size).
  * 
- * At the moment, it stores the current challenge.
- * 
  * @author danfox
  * @author rgossiaux
  * 
@@ -33,7 +31,7 @@ public class ChallengeMode extends DesignMode {
         HashMap<Instruction,Integer> instructionSet = new HashMap<Instruction,Integer>();
         instructionSet.put(new Instruction("const", new IntStackValue(1)), -1);
         instructionSet.put(new Instruction("add"), -1);
-        challengeList.add(new StackResultChallenge("Use unlimited 'const 1' and 'add' instructions to produce 5 on the stack.",
+        challengeList.add(new StackResultChallenge("Use only 'const 1' and 'add' instructions to produce 5 on the stack.",
                 instructionSet, new IntStackValue(5) ));
 
         HashMap<Instruction,Integer> iSet2 = new HashMap<Instruction,Integer>();

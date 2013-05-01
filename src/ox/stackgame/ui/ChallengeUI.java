@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ox.stackgame.challenge.AbstractChallenge;
+import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
@@ -50,7 +51,7 @@ public class ChallengeUI extends JPanel {
         }
     };
     
-    public void switchToChallenge(int i){
+    public void switchTo(int i){
         assert 0 <= i && i<ChallengeMode.challengeList.size();
         System.out.println("Switching to challenge "+i);
         this.currChallenge=ChallengeMode.challengeList.get(i);
@@ -59,10 +60,6 @@ public class ChallengeUI extends JPanel {
     public ChallengeUI(StateManager m) {
         m.stackMachine.addListener(l);
         this.machine = m.stackMachine;
-
-        // TODO decide how mode switching should work. (Challenge must be
-        // selected first!)
-        // TODO what happens to this when it's not in challenge mode?
 
         m.registerModeActivationVisitor(modeActivationVisitor);
         m.registerModeDeactivationVisitor(modeDeactivationVisitor);
@@ -77,36 +74,49 @@ public class ChallengeUI extends JPanel {
         this.add(l);
         descLabel = new JLabel();
         this.add(descLabel);
-        this.setVisible(false);
+        //this.setVisible(false);
+    }
+    
+    private void checkMachineInstructions(StackMachine m){
+        if (currChallenge != null) {            
+            System.out.println("Checking machine against challenge's instructionSet");
+            Map<Instruction, Integer> used = new HashMap<Instruction, Integer>();
+            // go through whole program, ensure that
+            for (Instruction i : m.getInstructions()) {
+                Integer numUsed = used.get(i);
+                Integer allowedInstances = currChallenge.instructionSet.get(i);
+                if(numUsed == null)
+                    used.put(i, 1);
+                else
+                    used.put(i,numUsed+1);
+                
+                // TODO currently not working because Instructions are not value types!!!!
+                
+                // allowedInstances = -1 denotes an infinite allowance
+                if (allowedInstances == null
+                        || (allowedInstances != null
+                                && allowedInstances != -1 && numUsed > allowedInstances)) {
+                    // exceeded allowed exceptions.
+                    throw new IllegalArgumentException("Program doesn't conform to instructionSet: "+ i.name);
+                    // TODO handle this better; perhaps give offending instruction?
+                }
+            }
+        }
     }
 
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
 
+        /**
+         * When switching to RunMode, check the program against allowedInstructions.
+         */
         public void visit(RunMode m) {
-            if (currChallenge != null) {
-                // TODO check program against allowedInstructions
-                boolean goodSoFar = true;
-                Map<Instruction, Integer> used = new HashMap<Instruction, Integer>();
-                // go through whole program, ensure that
-//                for (Instruction i : machine.getInstructions()) {
-//                    if(used.get(i) == null)
-//                        used.put(i, 1);
-//                    else
-//                        used.put(i,used.get(i)+1);
-//                    Integer allowedInstances = currChallenge.instructionSet.get(i);
-//                    if (allowedInstances != null && allowedInstances != -1
-//                            && used.get(i) > allowedInstances) {
-//                        // exceeded allowed exceptions.
-//                        throw new IllegalArgumentException(
-//                                "Program doesn't conform to instructionSet");
-//                    }
-//                }
-            }
+            ChallengeUI.this.checkMachineInstructions(machine);
         }
 
+        // this mode is activated!
         public void visit(ChallengeMode m) {
             descLabel.setText(currChallenge.description);
-            ChallengeUI.this.setVisible(true);
+            //ChallengeUI.this.setVisible(true);
         }
 
         public void visit(FreeDesignMode m) {
@@ -120,7 +130,7 @@ public class ChallengeUI extends JPanel {
 
         // this mode is deactivated
         public void visit(ChallengeMode m) {
-            ChallengeUI.this.setVisible(false);
+            //ChallengeUI.this.setVisible(false);
         }
 
         public void visit(FreeDesignMode m) {
