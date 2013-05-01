@@ -78,7 +78,10 @@ public class ChallengeUI extends JPanel {
     }
     
     private void checkMachineInstructions(StackMachine m){
-        if (currChallenge != null) {            
+        if (currChallenge != null) {
+            
+            System.out.println(new Instruction("const", new IntStackValue(1)).equals(new Instruction("const", new IntStackValue(1))));
+            
             System.out.println("Checking machine against challenge's instructionSet");
             Map<Instruction, Integer> used = new HashMap<Instruction, Integer>();
             // go through whole program, ensure that
@@ -90,7 +93,6 @@ public class ChallengeUI extends JPanel {
                 else
                     used.put(i,numUsed+1);
                 
-                // TODO currently not working because Instructions are not value types!!!!
                 
                 // allowedInstances = -1 denotes an infinite allowance
                 if (allowedInstances == null

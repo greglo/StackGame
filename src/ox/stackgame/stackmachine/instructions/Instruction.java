@@ -33,4 +33,16 @@ public class Instruction {
             str += " " + arg.getValue().toString();
         return str;
     }
+    
+    // depends on a good implementation of toString, and sensible toString on arguments.
+
+    @Override
+    public final boolean equals(Object o){
+        return (o instanceof Instruction) ? this.toString().equals(((Instruction) o).toString()) : false;
+    }
+    
+    @Override
+    public final int hashCode(){
+        return this.toString().hashCode();
+    }
 }
