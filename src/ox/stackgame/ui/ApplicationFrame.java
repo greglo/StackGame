@@ -12,10 +12,11 @@ import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 public class ApplicationFrame {
+    final static int MAGIC = 13;
     final static int h = 590;
     final static int p = 15;
     final static int RIGHT_PANEL_WIDTH = 200;
-    final static int TAPE_HEIGHT = 50;
+    final static int TAPE_HEIGHT = TapeUI.UIHeight;
     final static int STORE_HEIGHT = 180;
     final static int STACK_HEIGHT = h - 2 * p - TAPE_HEIGHT - STORE_HEIGHT;
     final static Color caBlue = new Color(35, 44, 49);
@@ -98,7 +99,7 @@ public class ApplicationFrame {
         // TapeUI
         {
             JComponent u = new TapeUI(modeManager);
-            u.setLocation(250 + p, h - p - TAPE_HEIGHT);
+            u.setLocation(250 + p, h - p - TAPE_HEIGHT - MAGIC);
             contentPane.add(u, new Integer(1));// layer 1 is on top of 0
         }
 

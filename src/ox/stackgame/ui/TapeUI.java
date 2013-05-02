@@ -31,8 +31,9 @@ public class TapeUI extends JPanel {
     private List<StackValue<?>> inputTape;
     private List<StackValue<?>> outputTape;
     private StackMachine activeMachine = null;
-    private final int boxSize = 20;
-    private final int padding = 10;
+    private static final int boxSize = 20;
+    private static final int padding = 10;
+    public static final int UIHeight = 2*boxSize + 4*padding;
 
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
         // TODO make input tape editable on DesignMode visitors
