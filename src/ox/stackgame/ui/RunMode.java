@@ -19,8 +19,6 @@ import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
  * @author rgossiaux
  */
 
-// TODO: Think about what this class should do.
-
 public class RunMode extends Mode {
     
     public final StackMachine machine;
@@ -38,21 +36,13 @@ public class RunMode extends Mode {
             public void actionPerformed(ActionEvent e) {
                 try {
                     machine.step();
-                    // machine has halted
+                    // machine has halted nicely
                     if (!machine.isRunning()) {
-                        pause();
-
-                        if (finishedCallback != null) {
-                            finishedCallback.actionPerformed(null);
-                            finishedCallback = null;
-                        }
+                        stopTimerAndCallback();
                     }
                 } catch (StackRuntimeException e1) {
-                    pause();
-                    if (finishedCallback != null) {
-                        finishedCallback.actionPerformed(null);
-                        finishedCallback = null;
-                    }
+                    // machine has ground to a halt
+                    stopTimerAndCallback();
                     eui.displayError(e1.getMessage());
                     e1.printStackTrace();
                 }
@@ -64,6 +54,14 @@ public class RunMode extends Mode {
     public void pause() {
         running = false;
         timer.stop();
+    }
+    
+    public void stopTimerAndCallback(){
+        pause();
+        if (finishedCallback != null) {
+            finishedCallback.actionPerformed(null);
+            finishedCallback = null;
+        }
     }
     
     public void run() {

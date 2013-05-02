@@ -24,7 +24,6 @@ public class StateManager {
     }
 
     public void setActiveMode(Mode newMode) {
-        // TODO check new mode is allowed?
         if (newMode != null) {
             if (newMode != activeMode) {
                 System.out.println("Switching to mode: "+newMode.getClass().getName());

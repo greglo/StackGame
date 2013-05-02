@@ -182,7 +182,6 @@ public class ProgramTextUI extends JLayeredPane {
             dirtyText = false;
             System.out.println("Dirty text false: lexed successfully.");
         } catch (LexerException e) {
-            // TODO: decide the best way to handle lexer exceptions
             redHighlight(e.lineNumber);
             eui.displayError("Lexer error on line " + e.lineNumber + ": "
                     + e.getMessage());

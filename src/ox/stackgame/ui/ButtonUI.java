@@ -103,7 +103,6 @@ public class ButtonUI extends JPanel {
                 // feed text through lexer
                 // update modeManager.stackMachine
                 System.out.println("Lexed Text input");
-                // TODO: fix this when tui.getProgram() doesn't return a nice value.
                 sm.stackMachine.loadInstructions(tui.getProgram()); 
                 updateButtons();
             }
