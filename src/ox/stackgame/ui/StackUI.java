@@ -34,7 +34,7 @@ public class StackUI extends JPanel {
         public void stackChanged( EvaluationStack s ) {
             stack = s;
 
-            setPreferredSize( new Dimension( 300, Math.max( ApplicationFrame.h, stack.size() * BLOCK_HEIGHT ) ) );
+            setPreferredSize( new Dimension( 300, Math.max( ApplicationFrame.STACK_HEIGHT, stack.size() * BLOCK_HEIGHT ) ) );
 
             revalidate();
             repaint();

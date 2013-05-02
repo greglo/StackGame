@@ -16,6 +16,8 @@ public class ApplicationFrame {
     final static int h = 590;
     final static int p = 15;
     final static int TAPE_HEIGHT = 50;
+    final static int STORE_HEIGHT = 180;
+    final static int STACK_HEIGHT = h - 2 * p - TAPE_HEIGHT - STORE_HEIGHT;
     final static Color caBlue = new Color(35, 44, 49);
     final static Color caBlueL = new Color(50, 57, 60);
     final static Color caBlue2L = new Color(82, 88, 92);
@@ -64,7 +66,7 @@ public class ApplicationFrame {
         // StackUI
         {
             JScrollPane scrollPane = new JScrollPane();
-            scrollPane.setBounds( 700, 0, 300, ApplicationFrame.h - 2 * p - TAPE_HEIGHT );
+            scrollPane.setBounds( 700, 180, 300, STACK_HEIGHT );
             scrollPane.setBorder( new EmptyBorder( 0, 0, 0, 0 ) );
             scrollPane.setHorizontalScrollBarPolicy( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
 
@@ -76,7 +78,7 @@ public class ApplicationFrame {
         // StoreUI
         {
             JComponent u = new StoreUI(modeManager);
-            u.setLocation(1000 - u.getWidth() - p, p);
+            u.setBounds(700, 0, 300, STORE_HEIGHT);
             contentPane.add(u, new Integer(1));
         }
 
