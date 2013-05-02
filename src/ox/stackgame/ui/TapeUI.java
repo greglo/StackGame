@@ -135,37 +135,36 @@ public class TapeUI extends JPanel {
 
         // Draw input tape
 
-        int i = 0;
+        int x = padding;
         for (StackValue<?> v : inputTape) {
-            int x = i * (boxSize + padding);
-
+            int thisWidth =  g.getFontMetrics().stringWidth(v.toString()) + 2*boxSize/3;
+            
             g.setColor(Color.gray);
-            g.fillRect(x + padding, padding, boxSize, boxSize);
+            g.fillRect(x, padding, thisWidth, boxSize);
 
             g.setColor(Color.WHITE);
-            g.drawString(v.toString(), x + padding + boxSize / 3, padding
+            g.drawString(v.toString(), x + boxSize / 3, padding
                     + (boxSize - g.getFontMetrics().getAscent())
                     / 2 + g.getFontMetrics().getAscent());
 
-            i++;
+            x += thisWidth + padding;
         }
 
         // Draw output tape
 
-        int j = 0;
-
+        int j = padding;
         for (StackValue<?> v : outputTape) {
-            int x = j * (boxSize + padding);
+            int thisWidth =  g.getFontMetrics().stringWidth(v.toString()) + 2*boxSize/3;
 
             g.setColor(Color.gray);
-            g.fillRect(x + padding, padding * 3 + boxSize, boxSize, boxSize);
+            g.fillRect(j, padding * 3 + boxSize, thisWidth, boxSize);
 
             g.setColor(Color.WHITE);
-            g.drawString(v.toString(), x + padding + boxSize / 3, padding * 3
+            g.drawString(v.toString(), j + boxSize / 3, padding * 3
                     + boxSize + (boxSize - g.getFontMetrics().getAscent())
                     / 2 + g.getFontMetrics().getAscent());
 
-            j++;
+            j += thisWidth + padding;
         }
     }
 
