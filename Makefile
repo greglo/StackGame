@@ -3,7 +3,7 @@ all:
 	javac -d bin -cp bin -sourcepath src src/ox/stackgame/ui/ApplicationFrame.java
 
 run:
-	java -ea -cp bin ox.stackgame.ui.ApplicationFrame
+	java -ea -cp bin:resources ox.stackgame.ui.ApplicationFrame
 
 tests:
 	javac -d bin -cp bin:/usr/share/java/junit.jar -sourcepath src test/ox/stackgame/stackmachine/*.java
