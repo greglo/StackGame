@@ -30,6 +30,7 @@ public class RunMode extends Mode {
      */
     public final int stepDelay = 500;
     protected final Timer timer;
+    private ActionListener finishedCallback = null;
     
     public RunMode(StackMachine m) {
         machine = m;
@@ -37,8 +38,13 @@ public class RunMode extends Mode {
             public void actionPerformed(ActionEvent e) {
                 try {
                     machine.step();
+                    // machine has halted
                     if (!machine.isRunning()) {
                         pause();
+                        if (finishedCallback != null) {
+                            finishedCallback.actionPerformed(null);
+                            finishedCallback = null;
+                        }
                     }
                 } catch (StackRuntimeException e1) {
                     // TODO Auto-generated catch block
@@ -56,6 +62,12 @@ public class RunMode extends Mode {
     
     public void run() {
         running = true;
+        timer.start();
+    }
+    
+    public void run(ActionListener finishedCallback){
+        running=true;
+        this.finishedCallback  = finishedCallback;
         timer.start();
     }
     

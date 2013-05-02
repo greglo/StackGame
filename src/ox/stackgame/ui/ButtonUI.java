@@ -110,13 +110,6 @@ public class ButtonUI extends JPanel {
                 // TODO: fix this when tui.getProgram() doesn't return a nice value.
                 sm.stackMachine.loadInstructions(tui.getProgram()); 
                 updateButtons();
-                // enable appropriate buttons
-//                step1Button.setEnabled(true);
-//                stepAllButton.setEnabled(true);
-//                runAllButton.setEnabled(true);
-//                
-//                // don't relex 
-//                lexButton.setEnabled(false);
             }
         });
         step1Button.addActionListener(new ActionListener() {
@@ -137,8 +130,6 @@ public class ButtonUI extends JPanel {
                 }
                 
                 updateButtons();
-                
-                // should become disabled when pc is past the end of the program.
             }
         });
         
@@ -178,9 +169,6 @@ public class ButtonUI extends JPanel {
                 assert(sm.getActiveMode()==runMode);
                 
                 runMode.pause();
-//                pauseButton.setEnabled(false); // cant repause
-//                runAllButton.setEnabled(true);
-//                stepAllButton.setEnabled(true);
                 updateButtons();
             }
         });
@@ -200,12 +188,11 @@ public class ButtonUI extends JPanel {
                     sm.setActiveMode(runMode);
                 }
                 
-                runMode.run();
-                
-//                stepAllButton.setEnabled(false); // can't repress step All
-//                runAllButton.setEnabled(false);
-//                pauseButton.setEnabled(true);
-                updateButtons();
+                runMode.run(new ActionListener(){
+                    public void actionPerformed(ActionEvent e) {
+                        updateButtons(); // not being called when this finishes.
+                    }
+                });
             }
         });
         
