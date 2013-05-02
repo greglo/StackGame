@@ -47,7 +47,7 @@ public class RunMode extends Mode {
                         }
                     }
                 } catch (StackRuntimeException e1) {
-                    // TODO Auto-generated catch block
+                    // TODO eui should display error
                     e1.printStackTrace();
                 }
             }
