@@ -76,7 +76,7 @@ public class ChallengeUI extends JPanel {
         this.add(l);
         descLabel = new JLabel();
         this.add(descLabel);
-        //this.setVisible(false);
+        this.setVisible(false);
     }
     
     private void checkMachineInstructions(StackMachine m){
