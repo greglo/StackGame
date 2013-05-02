@@ -66,7 +66,7 @@ public class ApplicationFrame {
         // StackUI
         {
             JScrollPane scrollPane = new JScrollPane();
-            scrollPane.setBounds( 700, 180, 300, STACK_HEIGHT );
+            scrollPane.setBounds( 700, STORE_HEIGHT, 300, STACK_HEIGHT );
             scrollPane.setBorder( new EmptyBorder( 0, 0, 0, 0 ) );
             scrollPane.setHorizontalScrollBarPolicy( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
 
