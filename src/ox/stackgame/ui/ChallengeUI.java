@@ -54,7 +54,7 @@ public class ChallengeUI extends JPanel {
 
         this.setLayout(new FlowLayout());
         this.setBackground(Color.white);
-        this.setSize(new Dimension(250, ApplicationFrame.h));
+        this.setSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH, ApplicationFrame.h));
         this.setBorder(new EmptyBorder(15, 15, 15, 15));
         JLabel l = new JLabel("Challenge");
         l.setFont(new Font("Helvetica Neue", Font.BOLD, 23));

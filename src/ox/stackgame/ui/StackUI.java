@@ -3,7 +3,6 @@
  */
 package ox.stackgame.ui;
 
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,8 +16,7 @@ import ox.stackgame.stackmachine.StackMachineListenerAdapter;
 import ox.stackgame.stackmachine.StackValue;
 
 /**
- * @author danfox
- * Visualisation of the evaluation stack of the machine. Scolls.
+ * @author danfox Visualisation of the evaluation stack of the machine. Scolls.
  */
 @SuppressWarnings("serial")
 public class StackUI extends JPanel {
@@ -28,42 +26,46 @@ public class StackUI extends JPanel {
     private EvaluationStack stack;
 
     private StackMachineListener l = new StackMachineListenerAdapter() {
-        public void stackChanged( EvaluationStack s ) {
+        public void stackChanged(EvaluationStack s) {
             stack = s;
 
-            setPreferredSize( new Dimension( 300, Math.max( ApplicationFrame.STACK_HEIGHT, stack.size() * BLOCK_HEIGHT ) ) );
+            setPreferredSize(new Dimension(ApplicationFrame.RIGHT_PANEL_WIDTH,
+                    Math.max(ApplicationFrame.STACK_HEIGHT, stack.size()
+                            * BLOCK_HEIGHT)));
 
             revalidate();
             repaint();
         }
     };
-    
+
     public StackUI(StateManager m) {
         // listen to the stack machine
         m.stackMachine.addListener(l);
-        
+
         this.setBackground(ApplicationFrame.caBlueL);
-        this.setSize(new Dimension(300, ApplicationFrame.h));
+        this.setSize(new Dimension(ApplicationFrame.RIGHT_PANEL_WIDTH,
+                ApplicationFrame.h));
     }
 
-    protected void paintComponent( Graphics graphics ) {
-        super.paintComponent( graphics );
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
 
-        if( stack == null ) {
+        if (stack == null) {
             return;
         }
 
-        Graphics2D g = ( Graphics2D ) graphics;
+        Graphics2D g = (Graphics2D) graphics;
 
         int i = 0;
-        for( StackValue< ? > v : stack ) {
-            int y = i * ( BLOCK_HEIGHT + PADDING );
+        for (StackValue<?> v : stack) {
+            int y = i * (BLOCK_HEIGHT + PADDING);
 
-            g.setColor( Color.RED );
-            g.fillRect( 0, y, 300, BLOCK_HEIGHT );
+            g.setColor(Color.RED);
+            g.fillRect(0, y, 300, BLOCK_HEIGHT);
 
-            g.setColor( Color.WHITE );
-            g.drawString( v.toString(), 5, y + 5 + g.getFontMetrics().getAscent() );
+            g.setColor(Color.WHITE);
+            g.drawString(v.toString(), 5, y + 5
+                    + g.getFontMetrics().getAscent());
 
             i++;
         }

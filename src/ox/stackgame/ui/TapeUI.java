@@ -29,7 +29,7 @@ public class TapeUI extends JPanel {
 
     private List<StackValue<?>> inputTape;
     private List<StackValue<?>> outputTape;
-    private StackMachine activeMachine = null;
+    private final StackMachine machine;
     private static final int boxSize = 20;
     private static final int padding = 10;
     public static final int UIHeight = 2*boxSize + 4*padding;
@@ -39,7 +39,6 @@ public class TapeUI extends JPanel {
         // TODO make input tape editable on DesignMode visitors
 
         public void visit(RunMode m) {
-            activeMachine = m.machine;
             resetTapes();
             resetCursors();
         }
@@ -99,7 +98,7 @@ public class TapeUI extends JPanel {
         m.registerModeActivationVisitor(modeActivationVisitor);
         m.registerModeDeactivationVisitor(modeDeactivationVisitor);
 
-        activeMachine = m.stackMachine;
+        machine = m.stackMachine;
         resetTapes();
 
         // listen to the stack machine
@@ -120,7 +119,7 @@ public class TapeUI extends JPanel {
     protected void resetTapes() {
         outputTape = new LinkedList<StackValue<?>>();
         inputTape = new LinkedList<StackValue<?>>();
-        for (StackValue<?> v : activeMachine.getInput())
+        for (StackValue<?> v : machine.getInput())
             inputTape.add(v);
     }
 

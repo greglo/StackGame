@@ -36,7 +36,6 @@ public class ProgramTextUI extends JLayeredPane {
     public static Color editableTextColor = new Color(186, 96, 96);
     public static Color frozenTextColor = new Color(222, 147, 95);
     public static Font f = new Font(Font.MONOSPACED, Font.PLAIN, 15);
-    public static int width = 450;
     private final StateManager sm;
 
     // code to be executed when a mode is activated.
@@ -110,7 +109,7 @@ public class ProgramTextUI extends JLayeredPane {
     private JScrollPane createScrollPane() {
         // create a scroll pane
         JScrollPane jsp = new JScrollPane();
-        jsp.setBounds(0, 0, ProgramTextUI.width, ApplicationFrame.h);
+        jsp.setBounds(0, 0, ApplicationFrame.CENTER_PANEL_WIDTH, ApplicationFrame.h);
         jsp.setBorder(new EmptyBorder(0, 0, 0, 0));
         // jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -210,7 +209,7 @@ public class ProgramTextUI extends JLayeredPane {
         this.eui = eui;
         sm = stateManager;
         // appearance
-        this.setSize(new Dimension(width, ApplicationFrame.h));
+        this.setSize(new Dimension(ApplicationFrame.CENTER_PANEL_WIDTH, ApplicationFrame.h));
 
         // pay attention to mode changes
         stateManager.registerModeActivationVisitor(modeActivationVisitor);
