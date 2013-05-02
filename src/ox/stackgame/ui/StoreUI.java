@@ -60,6 +60,7 @@ public class StoreUI extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         int yOffset = 25 + Y_PADDING / 2;
+        ImageIcon icon = new ImageIcon(getClass().getResource("/store.png"));
         
         try {
             for (int i = 0; i < activeMachine.STORE_SIZE; i++) {
@@ -71,7 +72,6 @@ public class StoreUI extends JPanel {
                 int addressY = ((TEXT_HEIGHT - (int)addressBox.getHeight()) / 2);
                 g2d.drawString(addressString, addressX, yOffset + addressY + g2d.getFontMetrics().getAscent());
                 
-                ImageIcon icon = new ImageIcon(getClass().getResource("/store.png"));
                 g.drawImage(icon.getImage(), (CONTROL_WIDTH - RAM_WIDTH) / 2, yOffset + TEXT_HEIGHT, RAM_WIDTH, RAM_HEIGHT, null);  
                 
                 g2d.setColor(ApplicationFrame.caBlue2L);
