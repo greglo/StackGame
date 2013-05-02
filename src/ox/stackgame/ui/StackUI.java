@@ -30,13 +30,11 @@ public class StackUI extends JPanel {
 
     private EvaluationStack stack;
 
-    private final StackUI parent = this;
-
     private StackMachineListener l = new StackMachineListenerAdapter() {
         public void stackChanged( EvaluationStack stack ) {
-            parent.stack = stack;
+            stack = stack;
 
-            parent.setPreferredSize( new Dimension( 300, Math.max( ApplicationFrame.h, stack.size() * BLOCK_HEIGHT ) ) );
+            setPreferredSize( new Dimension( 300, Math.max( ApplicationFrame.h, stack.size() * BLOCK_HEIGHT ) ) );
 
             revalidate();
             repaint();
