@@ -99,7 +99,7 @@ public class ApplicationFrame {
             contentPane.add(u, new Integer(1));// layer 1 is on top of 0
         }
 
-        modeManager.setActiveMode(challengeMode);
+        modeManager.setActiveMode(freeDesignMode);
 
         frame.setVisible(true);
     }
