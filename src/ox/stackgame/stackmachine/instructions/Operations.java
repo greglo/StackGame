@@ -148,6 +148,14 @@ public class Operations {
         });
     }
 
+    public static Iterator< String > names() {
+        if( !initialised ) {
+            init();
+        }
+
+        return ht.keySet().iterator();
+    }
+
     public static Operation get(String name) {
         name = name.trim().toLowerCase();
         if (!initialised)
