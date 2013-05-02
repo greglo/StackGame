@@ -90,14 +90,14 @@ public class ApplicationFrame {
         }
 
         // ProgramUI
-        ProgramTextUI programUI = new ProgramTextUI(modeManager, runMode);
+        ProgramTextUI programUI = new ProgramTextUI(modeManager, runMode, eui);
         programUI.setLocation(250, 0);
         contentPane.add(programUI, new Integer(0));
     
         
         // ButtonUI
         {
-            JComponent u = new ButtonUI(modeManager, programUI, runMode);
+            JComponent u = new ButtonUI(modeManager, programUI, runMode, eui);
             u.setLocation(700-p-u.getWidth(),p);
             contentPane.add(u,new Integer(1));
         }

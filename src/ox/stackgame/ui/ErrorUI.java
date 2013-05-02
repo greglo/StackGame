@@ -16,10 +16,12 @@ public class ErrorUI extends JPanel {
 
     public void displayError(String message){
        l.setText("<html><div style='text-align:left;'>"+message+"</div></html>");
+       this.setVisible(true);
     }
     
     public void clearErrors(){
-       
+       l.setText("");
+       this.setVisible(false);
     }
     
     public ErrorUI(){

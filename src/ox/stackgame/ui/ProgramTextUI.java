@@ -80,6 +80,7 @@ public class ProgramTextUI extends JLayeredPane {
             highlight(line -1);
         }
     };
+    private ErrorUI eui;
 
     private void highlight(int line) {
         try {
@@ -183,6 +184,8 @@ public class ProgramTextUI extends JLayeredPane {
         } catch (LexerException e) {
             // TODO: decide the best way to handle lexer exceptions
             redHighlight(e.lineNumber);
+            eui.displayError("Lexer error on line " + e.lineNumber + ": "
+                    + e.getMessage());
             System.err.println("Lexer error on line " + e.lineNumber + ": "
                     + e.getMessage());
         }
@@ -202,9 +205,10 @@ public class ProgramTextUI extends JLayeredPane {
         return b.toString();
     }
 
-    public ProgramTextUI(final StateManager stateManager, final RunMode runMode) {
+    public ProgramTextUI(final StateManager stateManager, final RunMode runMode, ErrorUI eui) {
         super();
 
+        this.eui = eui;
         sm = stateManager;
         // appearance
         this.setSize(new Dimension(width, ApplicationFrame.h));
