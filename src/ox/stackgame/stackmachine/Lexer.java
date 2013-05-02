@@ -63,7 +63,7 @@ public class Lexer {
                             words.end());
 
                     if (argTypes == null)
-                        throw new LexerException(lineno, opName + " doesn't take an argument: Unexpected '" + argString + "'");
+                        throw new LexerException(lineno, opName + " doesn't take an argument, unexpected '" + argString + "'");
 
                     for (Class<?> argType : argTypes) {
                         StackValue<?> value = null;
@@ -82,7 +82,7 @@ public class Lexer {
                         }
                     }
                     if (arg == null)
-                        throw new LexerException(lineno, "couldn't find valid type for `" + argString + "` in op " + opName);
+                        throw new LexerException(lineno, "Argument `" + argString + "` is not valid for " + opName);
                 }
                 else if (argTypes != null)
                     throw new LexerException(lineno, "Argument expected for " + opName);
