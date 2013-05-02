@@ -65,13 +65,6 @@ public class ApplicationFrame {
             u.setLocation(0, 0);
             contentPane.add(u, new Integer(0));
         }
-        
-        // ErrorUI
-        {
-            ErrorUI u = new ErrorUI();
-            u.setLocation(0, h-u.getHeight());
-            contentPane.add(u, new Integer(1));
-        }
 
         // StackUI
         {
@@ -106,10 +99,17 @@ public class ApplicationFrame {
         }
 
         // TapeUI
+        
+        TapeUI tape = new TapeUI(modeManager);
+        tape.setLocation(250 + p, h - p - TAPE_HEIGHT - MAGIC);
+        contentPane.add(tape, new Integer(1));// layer 1 is on top of 0
+    
+        
+        // ErrorUI
         {
-            JComponent u = new TapeUI(modeManager);
-            u.setLocation(250 + p, h - p - TAPE_HEIGHT - MAGIC);
-            contentPane.add(u, new Integer(1));// layer 1 is on top of 0
+            ErrorUI u = new ErrorUI();
+            u.setLocation(250+p, tape.getY()-u.getHeight()-p);
+            contentPane.add(u, new Integer(1));
         }
 
         modeManager.setActiveMode(freeDesignMode);
