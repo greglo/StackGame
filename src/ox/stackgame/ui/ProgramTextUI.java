@@ -202,22 +202,22 @@ public class ProgramTextUI extends JLayeredPane {
         return b.toString();
     }
 
-    public ProgramTextUI(final StateManager modeManager, final RunMode runMode) {
+    public ProgramTextUI(final StateManager stateManager, final RunMode runMode) {
         super();
 
-        sm = modeManager;
+        sm = stateManager;
         // appearance
         this.setSize(new Dimension(width, ApplicationFrame.h));
 
         // pay attention to mode changes
-        modeManager.registerModeActivationVisitor(modeActivationVisitor);
-        modeManager.registerModeDeactivationVisitor(modeDeactivationVisitor);
+        stateManager.registerModeActivationVisitor(modeActivationVisitor);
+        stateManager.registerModeDeactivationVisitor(modeDeactivationVisitor);
 
         // listen to the stack machine
-        modeManager.stackMachine.addListener(l);
+        stateManager.stackMachine.addListener(l);
 
         // add scrollpane
         this.add(createScrollPane(), new Integer(0)); // fills container
-        jta.setText(antiLex(modeManager.stackMachine.getInstructions()));
+        jta.setText(antiLex(stateManager.stackMachine.getInstructions()));
     }
 }
