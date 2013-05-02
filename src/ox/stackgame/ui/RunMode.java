@@ -32,7 +32,7 @@ public class RunMode extends Mode {
     protected final Timer timer;
     private ActionListener finishedCallback = null;
     
-    public RunMode(StackMachine m) {
+    public RunMode(StackMachine m, final ErrorUI eui) {
         machine = m;
         ActionListener timeTrigger = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -41,13 +41,19 @@ public class RunMode extends Mode {
                     // machine has halted
                     if (!machine.isRunning()) {
                         pause();
+
                         if (finishedCallback != null) {
                             finishedCallback.actionPerformed(null);
                             finishedCallback = null;
                         }
                     }
                 } catch (StackRuntimeException e1) {
-                    // TODO eui should display error
+                    pause();
+                    if (finishedCallback != null) {
+                        finishedCallback.actionPerformed(null);
+                        finishedCallback = null;
+                    }
+                    eui.displayError(e1.getMessage());
                     e1.printStackTrace();
                 }
             }

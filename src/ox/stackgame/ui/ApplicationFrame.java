@@ -40,10 +40,13 @@ public class ApplicationFrame {
         instructions.add(new Instruction("mul"));
         instructions.add(new Instruction("output"));
         StackMachine machine = new StackMachine(instructions);
+        
+        // UIs
+        ErrorUI eui = new ErrorUI();
 
         // initialise modes
         StateManager modeManager = new StateManager(machine);
-        RunMode runMode = new RunMode(machine);
+        RunMode runMode = new RunMode(machine,eui);
         Mode freeDesignMode = new FreeDesignMode();
         ChallengeMode challengeMode = new ChallengeMode();
         challengeMode.setChallenge(ChallengeMode.challengeList.get(0));
@@ -60,8 +63,6 @@ public class ApplicationFrame {
         contentPane.setPreferredSize(new Dimension(900, h));
         frame.add(contentPane, BorderLayout.CENTER);
 
-        // UI's =======
-        ErrorUI eui = new ErrorUI();
         
         // ChallengeUI
         {
