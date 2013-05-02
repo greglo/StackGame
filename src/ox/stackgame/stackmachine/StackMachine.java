@@ -88,12 +88,15 @@ public class StackMachine {
     public void loadInstructions(List<Instruction> instructions) {
         this.instructions = instructions;
 
-        int i = 0;
-        for (Instruction op : instructions) {
-            if (op.name.equals("label"))
-                labels.put((String) op.arg.getValue(), i);
-            i++;
-        }
+        if (instructions != null) {
+            int i = 0;
+            for (Instruction op : instructions) {
+                if (op.name.equals("label"))
+                    labels.put((String) op.arg.getValue(), i);
+                i++;
+            }
+        } else
+            instructions = new ArrayList<Instruction>();
 
         for (StackMachineListener l : listeners)
             l.programChanged(instructions);
@@ -429,7 +432,6 @@ public class StackMachine {
         for (StackValue<?> val : output)
             System.out.print(val.toString() + " ");
 
-        
         System.out.println();
         System.out.println();
     }
