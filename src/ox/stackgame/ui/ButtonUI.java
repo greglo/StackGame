@@ -54,12 +54,6 @@ public class ButtonUI extends JPanel {
         
         this.setSize(new Dimension(80,300));
         this.setBackground(ApplicationFrame.caBlue);
-        
-        // create buttons
-        int r = 60;
-        int p = ApplicationFrame.p;
-        int h = ApplicationFrame.h;
-        int buttonStartY = p;
 
         // create lex button
         this.add(lexButton);

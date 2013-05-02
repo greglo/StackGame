@@ -11,13 +11,10 @@ import java.util.List;
 
 import javax.swing.*;
 
-import ox.stackgame.stackmachine.CharStackValue;
-import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
 import ox.stackgame.stackmachine.StackValue;
-import ox.stackgame.stackmachine.exceptions.InvalidCharException;
 
 /**
  * Visualisation of the input and output tapes. Allows user input in design mode

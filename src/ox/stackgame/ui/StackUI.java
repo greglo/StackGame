@@ -3,22 +3,18 @@
  */
 package ox.stackgame.ui;
 
-import java.util.List;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
 import ox.stackgame.stackmachine.StackValue;
-import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
  * @author danfox

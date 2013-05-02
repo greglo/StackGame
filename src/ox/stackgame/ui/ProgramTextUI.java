@@ -110,7 +110,7 @@ public class ProgramTextUI extends JLayeredPane {
     private JScrollPane createScrollPane() {
         // create a scroll pane
         JScrollPane jsp = new JScrollPane();
-        jsp.setBounds(0, 0, this.width, ApplicationFrame.h);
+        jsp.setBounds(0, 0, ProgramTextUI.width, ApplicationFrame.h);
         jsp.setBorder(new EmptyBorder(0, 0, 0, 0));
         // jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 

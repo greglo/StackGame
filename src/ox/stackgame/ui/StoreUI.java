@@ -27,6 +27,7 @@ import ox.stackgame.stackmachine.exceptions.InvalidAddressException;
  * @author danfox
  * 
  */
+@SuppressWarnings("serial")
 public class StoreUI extends JPanel {
     private JLabel label;
     private final StackMachine activeMachine;
@@ -63,7 +64,7 @@ public class StoreUI extends JPanel {
         ImageIcon icon = new ImageIcon(getClass().getResource("/store.png"));
 
         try {
-            for (int i = 0; i < activeMachine.STORE_SIZE; i++) {
+            for (int i = 0; i < StackMachine.STORE_SIZE; i++) {
                 g2d.setColor(new Color(0, 0, 0));
                 g2d.setFont(new Font(g2d.getFont().getName(), Font.PLAIN, 10));
                 String addressString = "0x" + i;
