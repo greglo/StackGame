@@ -4,6 +4,8 @@
 package ox.stackgame.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import java.awt.*;
@@ -31,7 +33,8 @@ import ox.stackgame.stackmachine.instructions.*;
 public class ProgramTextUI extends JLayeredPane {
     private Mode oldMode = null;
     private Highlighter highlighter, redHighlighter;
-    private JTextArea jta;
+    private final JTextArea jta = new JTextArea();
+    public final Document document = jta.getDocument();
     private boolean dirtyText = true;
     public static Color editableTextColor = new Color(186, 96, 96);
     public static Color frozenTextColor = new Color(222, 147, 95);
@@ -114,16 +117,13 @@ public class ProgramTextUI extends JLayeredPane {
         // jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         // create an editable textarea
-        jta = new JTextArea();
         jta.setBackground(ApplicationFrame.caBlue);
         jta.setForeground(editableTextColor);
         jta.setMargin(new Insets(20, 20, 100, 20)); // compensates for the
                                                     // height of the stackUI
         jta.setFont(f);
         jta.setCaretColor(new Color(150, 150, 150));
-        highlighter = jta.getHighlighter();
-        
-        
+        highlighter = jta.getHighlighter();        
 
         // create textarea to display linenumbers
         final JTextArea lines = new JTextArea("1");

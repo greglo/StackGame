@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
@@ -71,12 +73,10 @@ public class ButtonUI extends JPanel {
         this.add(stepAllButton);
 
         // pauseButton
-        
         pauseButton.setForeground(new Color(0, 133, 200));
         this.add(pauseButton);
 
         // create runAll button
-        
         runAllButton.setForeground(new Color(0, 133, 200));
         this.add(runAllButton);
 
@@ -87,6 +87,21 @@ public class ButtonUI extends JPanel {
         updateButtons();
 
         // button logic
+        tui.document.addDocumentListener(new DocumentListener(){
+            public void changedUpdate(DocumentEvent arg0) {
+                updateButtons();
+            }
+
+            public void insertUpdate(DocumentEvent arg0) {
+                updateButtons();
+            }
+
+            public void removeUpdate(DocumentEvent arg0) {
+                updateButtons();
+            }            
+        });
+        
+        
         lexButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // feed text through lexer

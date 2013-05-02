@@ -95,7 +95,7 @@ public class ApplicationFrame {
         // TapeUI
         {
             JComponent u = new TapeUI(modeManager);
-            u.setLocation(250 + p, h - p - 70); // no idea why this needs a 70.
+            u.setLocation(250 + p, h - p - 80); 
             contentPane.add(u, new Integer(1));// layer 1 is on top of 0
         }
 
