@@ -37,6 +37,7 @@ public class ApplicationFrame {
         instructions.add(new Instruction("add"));
         instructions.add(new Instruction("const", new IntStackValue(2)));
         instructions.add(new Instruction("mul"));
+        instructions.add(new Instruction("output"));
         StackMachine machine = new StackMachine(instructions);
 
         // initialise modes
