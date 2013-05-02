@@ -1,6 +1,7 @@
 all:
 	rm -rf bin/*
 	javac -d bin -cp bin -sourcepath src src/ox/stackgame/ui/ApplicationFrame.java
+	jar cf web/gdmb.jar -C bin .
 
 run:
 	java -ea -cp bin:resources ox.stackgame.ui.ApplicationFrame
