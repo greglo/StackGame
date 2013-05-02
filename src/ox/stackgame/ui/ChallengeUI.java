@@ -41,25 +41,14 @@ public class ChallengeUI extends JPanel {
     private StackMachine machine;
     private final StateManager stateManager;
     private final ChallengeMode challengeMode;
+    private ErrorUI eui;
 
-    private StackMachineListener l = new StackMachineListenerAdapter() {
-        public void programCounterChanged(int line) {
-            if (stateManager.getActiveMode() instanceof ChallengeMode && challengeMode.getChallenge() != null){
-                // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
-                if (machine.isRunning()==false) {
-                    String message = challengeMode.getChallenge().hasSucceeded(machine);
-                    System.out.println(message=="" ? "Congratulations" : message);
-                    // TODO display message
-                }
-            }
-        }
-    };
-
-    public ChallengeUI(StateManager m, ChallengeMode cm) {
+    public ChallengeUI(StateManager m, ChallengeMode cm, ErrorUI eui) {
         m.stackMachine.addListener(l);
         this.machine = m.stackMachine;
         this.stateManager = m;
         this.challengeMode = cm;
+        this.eui = eui;
 
         m.registerModeActivationVisitor(modeActivationVisitor);
         m.registerModeDeactivationVisitor(modeDeactivationVisitor);
@@ -76,6 +65,19 @@ public class ChallengeUI extends JPanel {
         this.add(descLabel);
         this.setVisible(false);
     }
+
+    private StackMachineListener l = new StackMachineListenerAdapter() {
+        public void programCounterChanged(int line) {
+            if (stateManager.getActiveMode() instanceof ChallengeMode && challengeMode.getChallenge() != null){
+                // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
+                if (machine.isRunning()==false) {
+                    String message = challengeMode.getChallenge().hasSucceeded(machine);
+                    System.out.println(message=="" ? "Congratulations" : message);
+                    // TODO display message
+                }
+            }
+        }
+    };
     
     private void checkMachineInstructions(StackMachine m){
         if (challengeMode.getChallenge() != null) {
@@ -99,8 +101,7 @@ public class ChallengeUI extends JPanel {
                         || (allowedInstances != null
                                 && allowedInstances != -1 && numUsed > allowedInstances)) {
                     // exceeded allowed exceptions.
-                    throw new IllegalArgumentException("Program doesn't conform to instructionSet: "+ i.name);
-                    // TODO handle this better; perhaps give offending instruction?
+                    eui.displayError("Program doesn't conform to instructionSet: "+ i.name);
                 }
             }
         }

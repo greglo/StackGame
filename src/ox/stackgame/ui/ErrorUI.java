@@ -12,9 +12,10 @@ import javax.swing.JPanel;
  */
 @SuppressWarnings("serial")
 public class ErrorUI extends JPanel {
+    final JLabel l;
 
     public void displayError(String message){
-       
+       l.setText("<html><div style='text-align:left;'>"+message+"</div></html>");
     }
     
     public void clearErrors(){
@@ -22,8 +23,10 @@ public class ErrorUI extends JPanel {
     }
     
     public ErrorUI(){
-        this.setSize(300, 50);
-        JLabel l = new JLabel("<html><div style='text-align:left;'>yo mama yo mama yo mama yo mama yo mama yo mama yo mama yo mamayo mama</div></html>");
+        this.setBackground(ApplicationFrame.caBlue);
+        this.setSize(ApplicationFrame.CENTER_PANEL_WIDTH-2*ApplicationFrame.p, 30);
+        l = new JLabel();
+        displayError("yo mama yo mama yo mama yo mama yo mama yo mama yo mama yo mamayo mama");
         l.setForeground(Color.RED);
         this.add(l);
     }

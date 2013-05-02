@@ -16,6 +16,7 @@ public class ApplicationFrame {
     final static int h = 590;
     final static int p = 15;
     final static int RIGHT_PANEL_WIDTH = 200;
+    final static int CENTER_PANEL_WIDTH = 450;
     final static int TAPE_HEIGHT = TapeUI.UIHeight;
     final static int STORE_HEIGHT = 180;
     final static int STACK_HEIGHT = h - 2 * p - TAPE_HEIGHT - STORE_HEIGHT;
@@ -59,9 +60,12 @@ public class ApplicationFrame {
         contentPane.setPreferredSize(new Dimension(900, h));
         frame.add(contentPane, BorderLayout.CENTER);
 
+        // UI's =======
+        ErrorUI eui = new ErrorUI();
+        
         // ChallengeUI
         {
-            ChallengeUI u = new ChallengeUI(modeManager, challengeMode);
+            ChallengeUI u = new ChallengeUI(modeManager, challengeMode, eui);
             u.setLocation(0, 0);
             contentPane.add(u, new Integer(0));
         }
@@ -107,9 +111,8 @@ public class ApplicationFrame {
         
         // ErrorUI
         {
-            ErrorUI u = new ErrorUI();
-            u.setLocation(250+p, tape.getY()-u.getHeight()-p);
-            contentPane.add(u, new Integer(1));
+            eui.setLocation(250+p, tape.getY()-eui.getHeight()-p);
+            contentPane.add(eui, new Integer(1));
         }
 
         modeManager.setActiveMode(freeDesignMode);
