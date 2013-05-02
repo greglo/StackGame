@@ -28,13 +28,14 @@ import ox.stackgame.stackmachine.exceptions.InvalidCharException;
 @SuppressWarnings("serial")
 public class TapeUI extends JPanel {
 
-    private List<StackValue<?>> inputTape = null;
+    private List<StackValue<?>> inputTape;
+    private List<StackValue<?>> outputTape;
     private StackMachine activeMachine = null;
-    private final int boxSize = 50;
+    private final int boxSize = 20;
     private final int padding = 10;
 
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
-     // TODO make input tape editable on DesignMode visitors
+        // TODO make input tape editable on DesignMode visitors
 
         public void visit(RunMode m) {
             activeMachine = m.machine;
@@ -44,13 +45,13 @@ public class TapeUI extends JPanel {
         @Override
         public void visit(ChallengeMode m) {
             // TODO Auto-generated method stub
-            
+
         }
 
         @Override
         public void visit(FreeDesignMode m) {
             // TODO Auto-generated method stub
-            
+
         }
     };
 
@@ -64,19 +65,20 @@ public class TapeUI extends JPanel {
         @Override
         public void visit(ChallengeMode m) {
             // TODO Auto-generated method stub
-            
+
         }
 
         @Override
         public void visit(FreeDesignMode m) {
             // TODO Auto-generated method stub
-            
+
         }
     };
 
     private StackMachineListener l = new StackMachineListenerAdapter() {
         public void inputConsumed(int startIndex) {
             // TODO update input tape, move cursor
+            inputTape.remove(0);
         }
 
         public void outputChanged() {
@@ -89,8 +91,9 @@ public class TapeUI extends JPanel {
         // pay attention to mode changes
         m.registerModeActivationVisitor(modeActivationVisitor);
         m.registerModeDeactivationVisitor(modeDeactivationVisitor);
-        
+
         inputTape = new LinkedList<StackValue<?>>();
+        outputTape = new LinkedList<StackValue<?>>();
         activeMachine = m.stackMachine;
 
         // listen to the stack machine
@@ -98,42 +101,69 @@ public class TapeUI extends JPanel {
 
         // sort out appearance
         this.setBackground(ApplicationFrame.caBlue2L);
-        this.setSize(new Dimension(750 - 2 * ApplicationFrame.p, boxSize + 2*padding));
-        
+        this.setSize(new Dimension(750 - 2 * ApplicationFrame.p, boxSize * 2
+                + 4 * padding));
+
         inputTape.add(new IntStackValue(4));
         try {
             inputTape.add(new CharStackValue('d'));
         } catch (InvalidCharException e) {
         }
-        
+
+        outputTape.add(new IntStackValue(6));
+        outputTape.add(new IntStackValue(6));
+        outputTape.add(new IntStackValue(6));
+
         resetCursors();
 
         // TODO create scrolling (two scrollbars?) monotype font etc, different
         // colours for input/output
 
     }
-    
-    protected void paintComponent( Graphics graphics ) {
-        super.paintComponent( graphics );
 
-        Graphics2D g = ( Graphics2D ) graphics;
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
+
+        Graphics2D g = (Graphics2D) graphics;
+
+        // Draw input tape
 
         int i = 0;
-        for( StackValue< ? > v : inputTape ) {
-            int x = i * ( boxSize + padding );
+        for (StackValue<?> v : inputTape) {
+            int x = i * (boxSize + padding);
 
-            g.setColor( Color.gray );
-            g.fillRect( x + padding, padding, boxSize, boxSize );
+            g.setColor(Color.gray);
+            g.fillRect(x + padding, padding, boxSize, boxSize);
 
-            g.setColor( Color.WHITE );
-            g.drawString( v.toString(), x + padding + boxSize/3, padding + boxSize/2 );
+            g.setColor(Color.WHITE);
+            g.drawString(v.toString(), x + padding + boxSize / 3, padding
+                    + (boxSize - g.getFontMetrics().getAscent())
+                    / 2 + g.getFontMetrics().getAscent());
 
             i++;
+        }
+
+        // Draw output tape
+
+        int j = 0;
+
+        for (StackValue<?> v : outputTape) {
+            int x = j * (boxSize + padding);
+
+            g.setColor(Color.gray);
+            g.fillRect(x + padding, padding * 3 + boxSize, boxSize, boxSize);
+
+            g.setColor(Color.WHITE);
+            g.drawString(v.toString(), x + padding + boxSize / 3, padding * 3
+                    + boxSize + (boxSize - g.getFontMetrics().getAscent())
+                    / 2 + g.getFontMetrics().getAscent());
+
+            j++;
         }
     }
 
     protected void resetCursors() {
         // TODO Auto-generated method stub
-        
+
     }
 }
