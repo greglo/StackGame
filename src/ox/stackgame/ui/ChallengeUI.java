@@ -122,7 +122,7 @@ public class ChallengeUI extends JPanel {
 
         // this mode is activated!
         public void visit(ChallengeMode m) {
-            descLabel.setText(currChallenge.description);
+            descLabel.setText("<html>"+currChallenge.description+"</html>");
             ChallengeUI.this.setVisible(true);
         }
 
