@@ -14,6 +14,7 @@ import ox.stackgame.stackmachine.instructions.Instruction;
 public class ApplicationFrame {
     final static int h = 590;
     final static int p = 15;
+    final static int RIGHT_PANEL_WIDTH = 200;
     final static int TAPE_HEIGHT = 50;
     final static int STORE_HEIGHT = 180;
     final static int STACK_HEIGHT = h - 2 * p - TAPE_HEIGHT - STORE_HEIGHT;
@@ -65,7 +66,7 @@ public class ApplicationFrame {
         // StackUI
         {
             JScrollPane scrollPane = new JScrollPane();
-            scrollPane.setBounds( 700, STORE_HEIGHT, 300, STACK_HEIGHT );
+            scrollPane.setBounds(800, STORE_HEIGHT, RIGHT_PANEL_WIDTH, STACK_HEIGHT );
             scrollPane.setBorder( new EmptyBorder( 0, 0, 0, 0 ) );
             scrollPane.setHorizontalScrollBarPolicy( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
 
@@ -77,7 +78,7 @@ public class ApplicationFrame {
         // StoreUI
         {
             JComponent u = new StoreUI(modeManager);
-            u.setBounds(700, 0, 300, STORE_HEIGHT);
+            u.setBounds(800, 0, RIGHT_PANEL_WIDTH, STORE_HEIGHT);
             contentPane.add(u, new Integer(1));
         }
 

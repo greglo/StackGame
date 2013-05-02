@@ -30,7 +30,7 @@ import ox.stackgame.stackmachine.exceptions.InvalidAddressException;
 public class StoreUI extends JPanel {
     private JLabel label;
     private final StackMachine activeMachine;
-    private static int CONTROL_WIDTH = 300;
+    private static int CONTROL_WIDTH = 200;
     private static int TEXT_HEIGHT = 20;
     private static int RAM_WIDTH = 80;
     private static int RAM_HEIGHT = 45;
@@ -58,7 +58,7 @@ public class StoreUI extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        int xOffset = RAM_WIDTH / 2;;
+        int xOffset = (CONTROL_WIDTH - 2 * RAM_WIDTH) / 3;
         int yOffset = 25;
         ImageIcon icon = new ImageIcon(getClass().getResource("/store.png"));
 
@@ -83,9 +83,9 @@ public class StoreUI extends JPanel {
                 g2d.drawString(valueString, xOffset + valueX, yOffset + valueY + g2d.getFontMetrics().getAscent());
 
                 if (i % 2 == 0)
-                    xOffset = (RAM_WIDTH + CONTROL_WIDTH) / 2;
+                    xOffset += xOffset + RAM_WIDTH;
                 else {
-                    xOffset = RAM_WIDTH / 2;
+                    xOffset = (CONTROL_WIDTH - 2 * RAM_WIDTH) / 3;
                     yOffset += TEXT_HEIGHT + RAM_HEIGHT + Y_PADDING;
                 }
             }
