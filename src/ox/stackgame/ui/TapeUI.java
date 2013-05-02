@@ -2,6 +2,7 @@ package ox.stackgame.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Iterator;
@@ -35,6 +36,7 @@ public class TapeUI extends JPanel {
     private static final int boxSize = 20;
     private static final int padding = 10;
     public static final int UIHeight = 2*boxSize + 4*padding;
+    private static final Font font = new Font("Monospaced", Font.PLAIN, 12);
 
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
         // TODO make input tape editable on DesignMode visitors
@@ -129,6 +131,7 @@ public class TapeUI extends JPanel {
         super.paintComponent(graphics);
 
         Graphics2D g = (Graphics2D) graphics;
+        g.setFont(font);
 
         // Draw input tape
 
