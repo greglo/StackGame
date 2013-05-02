@@ -27,6 +27,7 @@ public class StateManager {
         // TODO check new mode is allowed?
         if (newMode != null) {
             if (newMode != activeMode) {
+                System.out.println("Switching to mode: "+newMode.getClass().getName());
                 // allow each ControllerComponent to react to the imminent
                 // deactivation of the current activeMode
                 if (activeMode != null) {

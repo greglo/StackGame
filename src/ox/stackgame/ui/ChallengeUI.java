@@ -37,10 +37,11 @@ public class ChallengeUI extends JPanel {
     protected AbstractChallenge currChallenge = null;
     protected JLabel descLabel;
     private StackMachine machine;
+    private final StateManager stateManager;
 
     private StackMachineListener l = new StackMachineListenerAdapter() {
         public void programCounterChanged(int line) {
-            if (currChallenge != null){
+            if (stateManager.getActiveMode() instanceof ChallengeMode && currChallenge != null){
                 // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
                 if (machine.isRunning()==false) {
                     String message = currChallenge.hasSucceeded(machine);
@@ -60,6 +61,7 @@ public class ChallengeUI extends JPanel {
     public ChallengeUI(StateManager m) {
         m.stackMachine.addListener(l);
         this.machine = m.stackMachine;
+        this.stateManager = m;
 
         m.registerModeActivationVisitor(modeActivationVisitor);
         m.registerModeDeactivationVisitor(modeDeactivationVisitor);
@@ -112,13 +114,14 @@ public class ChallengeUI extends JPanel {
          * When switching to RunMode, check the program against allowedInstructions.
          */
         public void visit(RunMode m) {
-            ChallengeUI.this.checkMachineInstructions(machine);
+            if (stateManager.getActiveMode() instanceof ChallengeMode)
+                ChallengeUI.this.checkMachineInstructions(machine);
         }
 
         // this mode is activated!
         public void visit(ChallengeMode m) {
             descLabel.setText(currChallenge.description);
-            //ChallengeUI.this.setVisible(true);
+            ChallengeUI.this.setVisible(true);
         }
 
         public void visit(FreeDesignMode m) {
@@ -132,7 +135,7 @@ public class ChallengeUI extends JPanel {
 
         // this mode is deactivated
         public void visit(ChallengeMode m) {
-            //ChallengeUI.this.setVisible(false);
+            ChallengeUI.this.setVisible(false);
         }
 
         public void visit(FreeDesignMode m) {
