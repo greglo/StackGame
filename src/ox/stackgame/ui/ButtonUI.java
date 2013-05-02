@@ -4,21 +4,18 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
-import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
-import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.exceptions.NotHaltingException;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
-import ox.stackgame.stackmachine.instructions.Instruction;
 
+
+@SuppressWarnings("serial")
 public class ButtonUI extends JPanel { 
     
     private final StateManager sm;
@@ -213,17 +210,6 @@ public class ButtonUI extends JPanel {
         // do button enabling/disabling
         sm.stackMachine.addListener( new StackMachineListenerAdapter() {
             public void programCounterChanged(int line) {
-                // isRunning == true if there are more exceptions to execute
-//                Boolean b = sm.stackMachine.isRunning();
-//                step1Button.setEnabled(b);
-//                
-//                if (!b) {
-//                    pauseButton.setEnabled(false);
-//                    stepAllButton.setEnabled(b);
-//                    runAllButton.setEnabled(b);
-//                }
-//                resetButton.setEnabled(sm.stackMachine.getProgramCounter() != 0);
-//                
                 updateButtons();
             }
         });

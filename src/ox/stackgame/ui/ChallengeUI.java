@@ -28,6 +28,8 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  * @author rgossiaux
  * 
  */
+
+@SuppressWarnings("serial")
 public class ChallengeUI extends JPanel {
 
     /**

@@ -24,6 +24,8 @@ import ox.stackgame.stackmachine.exceptions.InvalidCharException;
  * @author danfox
  * 
  */
+
+@SuppressWarnings("serial")
 public class TapeUI extends JPanel {
 
     private List<StackValue<?>> inputTape = null;

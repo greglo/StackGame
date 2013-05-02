@@ -4,12 +4,9 @@
 package ox.stackgame.ui;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -18,7 +15,6 @@ import javax.swing.text.*;
 
 import ox.stackgame.stackmachine.*;
 import ox.stackgame.stackmachine.Lexer.LexerException;
-import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.instructions.*;
 
 /**
@@ -30,9 +26,10 @@ import ox.stackgame.stackmachine.instructions.*;
  * @author danfox
  * 
  */
+
+@SuppressWarnings("serial")
 public class ProgramTextUI extends JLayeredPane {
-    private Mode oldMode = null;
-    private Highlighter highlighter, redHighlighter;
+    private Highlighter highlighter;
     private final JTextArea jta = new JTextArea();
     public final Document document = jta.getDocument();
     private boolean dirtyText = true;

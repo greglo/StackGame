@@ -24,6 +24,7 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  * @author danfox
  * Visualisation of the evaluation stack of the machine. Scolls.
  */
+@SuppressWarnings("serial")
 public class StackUI extends JPanel {
     private final int BLOCK_HEIGHT = 23;
     private final int PADDING = 5;
