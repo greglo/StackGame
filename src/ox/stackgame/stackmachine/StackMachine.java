@@ -167,6 +167,10 @@ public class StackMachine {
         } else
             throw new InvalidAddressException(address, programCounter);
     }
+    
+    public List<StackValue<?>> getInput() {
+        return input;
+    }
 
     public boolean hasInput() {
         return inputIndex < input.size();
@@ -180,9 +184,10 @@ public class StackMachine {
      */
     public StackValue<?> consumeInput() throws EmptyInputException {
         if (hasInput()) {
+            StackValue<?> value = input.get(inputIndex++);
             for (StackMachineListener l : listeners)
                 l.inputConsumed(inputIndex);
-            return input.get(inputIndex++);
+            return value;
         } else
             throw new EmptyInputException(programCounter);
     }
@@ -196,7 +201,7 @@ public class StackMachine {
     public void addOutput(StackValue<?> value) {
         output.add(value);
         for (StackMachineListener l : listeners)
-            l.outputChanged();
+            l.outputChanged(output.iterator());
     }
 
     /**

@@ -3,6 +3,7 @@
  */
 package ox.stackgame.stackmachine;
 
+import java.util.Iterator;
 import java.util.List;
 
 import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
@@ -20,7 +21,7 @@ public class StackMachineListenerAdapter implements StackMachineListener {
 
     public void inputConsumed(int startIndex) { }
 
-    public void outputChanged() { }
+    public void outputChanged(Iterator<StackValue<?>> output) { }
 
     public void programChanged(List<Instruction> instructions) { }
 

@@ -1,5 +1,6 @@
 package ox.stackgame.stackmachine;
 
+import java.util.Iterator;
 import java.util.List;
 
 import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
@@ -11,5 +12,5 @@ public interface StackMachineListener {
     public void stackChanged(EvaluationStack stack);
     public void storeChanged(int address);
     public void inputConsumed(int startIndex);
-    public void outputChanged();
+    public void outputChanged(Iterator<StackValue<?>> outputs);
 }
