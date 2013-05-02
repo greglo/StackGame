@@ -43,7 +43,7 @@ public class ButtonUI extends JPanel {
         resetButton.setEnabled(rm && !runMode.timerRunning());
     }
     
-    public ButtonUI(final StateManager sm, final ProgramTextUI tui, final RunMode runMode, ErrorUI eui){
+    public ButtonUI(final StateManager sm, final ProgramTextUI tui, final RunMode runMode, final ErrorUI eui){
         
         this.runMode = runMode;
         this.sm = sm;
@@ -126,7 +126,7 @@ public class ButtonUI extends JPanel {
                 try {
                     sm.stackMachine.step();
                 } catch (StackRuntimeException e) {
-                    // TODO Handle machine errors
+                    eui.displayError(e.getMessage());
                 }
                 
                 updateButtons();
@@ -148,10 +148,10 @@ public class ButtonUI extends JPanel {
                 try {
                     sm.stackMachine.runAll();
                 } catch (StackRuntimeException e) {
-                    // TODO Auto-generated catch block
+                    eui.displayError(e.getMessage());
                     e.printStackTrace();
                 } catch (NotHaltingException e) {
-                    // TODO Auto-generated catch block
+                    eui.displayError(e.getMessage());
                     e.printStackTrace();
                 }
                 
