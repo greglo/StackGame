@@ -48,6 +48,7 @@ public class ButtonUI extends JPanel {
         this.tui = tui;
         
         this.setSize(new Dimension(80,300));
+        this.setBackground(ApplicationFrame.caBlue);
         
         // create buttons
         int r = 60;

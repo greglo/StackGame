@@ -47,13 +47,13 @@ public class ApplicationFrame {
 
         // setup window to display
         final JFrame frame = new JFrame("Stack Game");
-        frame.setBounds(200, 100, 1000, h);
+        frame.setBounds(200, 100, 900, h);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // window contents
         JLayeredPane contentPane = new JLayeredPane();
-        contentPane.setPreferredSize(new Dimension(1000, h));
+        contentPane.setPreferredSize(new Dimension(900, h));
         frame.add(contentPane, BorderLayout.CENTER);
 
         // ChallengeUI
@@ -63,11 +63,18 @@ public class ApplicationFrame {
             u.setLocation(0, 0);
             contentPane.add(u, new Integer(0));
         }
+        
+        // ErrorUI
+        {
+            ErrorUI u = new ErrorUI();
+            u.setLocation(0, h-u.getHeight());
+            contentPane.add(u, new Integer(1));
+        }
 
         // StackUI
         {
             JScrollPane scrollPane = new JScrollPane();
-            scrollPane.setBounds(800, STORE_HEIGHT, RIGHT_PANEL_WIDTH, STACK_HEIGHT );
+            scrollPane.setBounds(700, STORE_HEIGHT, RIGHT_PANEL_WIDTH, STACK_HEIGHT );
             scrollPane.setBorder( new EmptyBorder( 0, 0, 0, 0 ) );
             scrollPane.setHorizontalScrollBarPolicy( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
 
@@ -79,7 +86,7 @@ public class ApplicationFrame {
         // StoreUI
         {
             JComponent u = new StoreUI(modeManager);
-            u.setBounds(800, 0, RIGHT_PANEL_WIDTH, STORE_HEIGHT);
+            u.setBounds(700, 0, RIGHT_PANEL_WIDTH, STORE_HEIGHT);
             contentPane.add(u, new Integer(1));
         }
 

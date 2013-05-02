@@ -26,7 +26,7 @@ public class ErrorUI extends JPanel {
     
     public ErrorUI(){
         this.setSize(100, 100);
-        jsp.setBackground(Color.RED);
+        this.setBackground(Color.RED);
         this.add(jsp);
     }
 }
