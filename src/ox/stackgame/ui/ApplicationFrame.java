@@ -15,6 +15,7 @@ import ox.stackgame.stackmachine.instructions.Instruction;
 public class ApplicationFrame {
     final static int h = 590;
     final static int p = 15;
+    final static int TAPE_HEIGHT = 50;
     final static Color caBlue = new Color(35, 44, 49);
     final static Color caBlueL = new Color(50, 57, 60);
     final static Color caBlue2L = new Color(82, 88, 92);
@@ -63,7 +64,7 @@ public class ApplicationFrame {
         // StackUI
         {
             JScrollPane scrollPane = new JScrollPane();
-            scrollPane.setBounds( 700, 0, 300, ApplicationFrame.h );
+            scrollPane.setBounds( 700, 0, 300, ApplicationFrame.h - 2 * p - TAPE_HEIGHT );
             scrollPane.setBorder( new EmptyBorder( 0, 0, 0, 0 ) );
             scrollPane.setHorizontalScrollBarPolicy( ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
 
@@ -95,7 +96,7 @@ public class ApplicationFrame {
         // TapeUI
         {
             JComponent u = new TapeUI(modeManager);
-            u.setLocation(250 + p, h - p - 80); 
+            u.setLocation(250 + p, h - p - TAPE_HEIGHT);
             contentPane.add(u, new Integer(1));// layer 1 is on top of 0
         }
 
