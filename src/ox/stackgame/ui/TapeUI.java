@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class TapeUI extends JPanel {
 
         public void visit(RunMode m) {
             activeMachine = m.machine;
+            resetTapes();
             resetCursors();
         }
 
@@ -82,8 +84,13 @@ public class TapeUI extends JPanel {
             inputTape.remove(0);
         }
 
-        public void outputChanged() {
+        public void outputChanged(Iterator<StackValue<?>> outputs) {
             // TODO update output tape
+            StackValue<?> mostRecent = null;
+            while (outputs.hasNext())
+                mostRecent = outputs.next();
+            outputTape.add(mostRecent);
+            repaint();
         }
     };
 
@@ -93,9 +100,8 @@ public class TapeUI extends JPanel {
         m.registerModeActivationVisitor(modeActivationVisitor);
         m.registerModeDeactivationVisitor(modeDeactivationVisitor);
 
-        inputTape = new LinkedList<StackValue<?>>();
-        outputTape = new LinkedList<StackValue<?>>();
         activeMachine = m.stackMachine;
+        resetTapes();
 
         // listen to the stack machine
         m.stackMachine.addListener(l);
@@ -105,21 +111,18 @@ public class TapeUI extends JPanel {
         this.setSize(new Dimension(750 - 2 * ApplicationFrame.p, boxSize * 2
                 + 4 * padding));
 
-        inputTape.add(new IntStackValue(4));
-        try {
-            inputTape.add(new CharStackValue('d'));
-        } catch (InvalidCharException e) {
-        }
-
-        outputTape.add(new IntStackValue(6));
-        outputTape.add(new IntStackValue(6));
-        outputTape.add(new IntStackValue(6));
-
         resetCursors();
 
         // TODO create scrolling (two scrollbars?) monotype font etc, different
         // colours for input/output
 
+    }
+    
+    protected void resetTapes() {
+        outputTape = new LinkedList<StackValue<?>>();
+        inputTape = new LinkedList<StackValue<?>>();
+        for (StackValue<?> v : activeMachine.getInput())
+            inputTape.add(v);
     }
 
     protected void paintComponent(Graphics graphics) {
