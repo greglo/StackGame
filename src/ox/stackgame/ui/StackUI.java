@@ -29,31 +29,6 @@ public class StackUI extends JPanel {
     private final int PADDING = 5;
 
     private EvaluationStack stack;
-    
-    private ModeVisitor modeActivationVisitor = new ModeVisitor() {
-        public void visit(RunMode m) {
-            // TODO
-        }
-
-        public void visit(ChallengeMode m) {
-            // TODO Auto-generated method stub            
-        }
-        public void visit(FreeDesignMode m) {
-            // TODO Auto-generated method stub            
-        }
-    }; 
-    private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
-        public void visit(RunMode m) {
-            // TODO
-        }
-
-        public void visit(ChallengeMode m) {
-            // TODO Auto-generated method stub            
-        }
-        public void visit(FreeDesignMode m) {
-            // TODO Auto-generated method stub            
-        }
-    }; 
 
     private final StackUI parent = this;
 
@@ -69,10 +44,6 @@ public class StackUI extends JPanel {
     };
     
     public StackUI(StateManager m) {
-        // pay attention to mode changes
-        m.registerModeActivationVisitor(modeActivationVisitor);
-        m.registerModeDeactivationVisitor(modeDeactivationVisitor);
-
         // listen to the stack machine
         m.stackMachine.addListener(l);
         
