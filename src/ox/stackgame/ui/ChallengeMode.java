@@ -20,9 +20,22 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  */
 public class ChallengeMode extends DesignMode {
     public static final List<AbstractChallenge> challengeList = new LinkedList<AbstractChallenge>();
+    private AbstractChallenge currChallenge = null;
 
     public void accept(ModeVisitor v) {
         v.visit(this);
+    }
+    
+    /**
+     * 
+     * @return the current challenge, or null if nothing is selected.
+     */
+    public AbstractChallenge getChallenge(){
+        return this.currChallenge;
+    }
+    
+    public void setChallenge(AbstractChallenge challenge){
+        this.currChallenge = challenge;
     }
 
     public ChallengeMode() {

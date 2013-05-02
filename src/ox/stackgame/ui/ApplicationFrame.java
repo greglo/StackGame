@@ -44,7 +44,9 @@ public class ApplicationFrame {
         StateManager modeManager = new StateManager(machine);
         RunMode runMode = new RunMode(machine);
         Mode freeDesignMode = new FreeDesignMode();
-        Mode challengeMode = new ChallengeMode();
+        ChallengeMode challengeMode = new ChallengeMode();
+        challengeMode.setChallenge(ChallengeMode.challengeList.get(0));
+
 
         // setup window to display
         final JFrame frame = new JFrame("Stack Game");
@@ -59,8 +61,7 @@ public class ApplicationFrame {
 
         // ChallengeUI
         {
-            ChallengeUI u = new ChallengeUI(modeManager);
-            u.switchTo(0);
+            ChallengeUI u = new ChallengeUI(modeManager, challengeMode);
             u.setLocation(0, 0);
             contentPane.add(u, new Integer(0));
         }

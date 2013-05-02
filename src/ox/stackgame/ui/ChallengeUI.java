@@ -36,34 +36,30 @@ public class ChallengeUI extends JPanel {
      * currentChallenge stores the active challenge. This can be null; denoting
      * the user has not yet selected a challenge.
      */
-    protected AbstractChallenge currChallenge = null;
+    //protected AbstractChallenge currChallenge = null;
     protected JLabel descLabel;
     private StackMachine machine;
     private final StateManager stateManager;
+    private final ChallengeMode challengeMode;
 
     private StackMachineListener l = new StackMachineListenerAdapter() {
         public void programCounterChanged(int line) {
-            if (stateManager.getActiveMode() instanceof ChallengeMode && currChallenge != null){
+            if (stateManager.getActiveMode() instanceof ChallengeMode && challengeMode.getChallenge() != null){
                 // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
                 if (machine.isRunning()==false) {
-                    String message = currChallenge.hasSucceeded(machine);
+                    String message = challengeMode.getChallenge().hasSucceeded(machine);
                     System.out.println(message=="" ? "Congratulations" : message);
                     // TODO display message
                 }
             }
         }
     };
-    
-    public void switchTo(int i){
-        assert 0 <= i && i<ChallengeMode.challengeList.size();
-        System.out.println("Switching to challenge "+i);
-        this.currChallenge=ChallengeMode.challengeList.get(i);
-    }
 
-    public ChallengeUI(StateManager m) {
+    public ChallengeUI(StateManager m, ChallengeMode cm) {
         m.stackMachine.addListener(l);
         this.machine = m.stackMachine;
         this.stateManager = m;
+        this.challengeMode = cm;
 
         m.registerModeActivationVisitor(modeActivationVisitor);
         m.registerModeDeactivationVisitor(modeDeactivationVisitor);
@@ -82,7 +78,7 @@ public class ChallengeUI extends JPanel {
     }
     
     private void checkMachineInstructions(StackMachine m){
-        if (currChallenge != null) {
+        if (challengeMode.getChallenge() != null) {
             
             System.out.println(new Instruction("const", new IntStackValue(1)).equals(new Instruction("const", new IntStackValue(1))));
             
@@ -91,7 +87,7 @@ public class ChallengeUI extends JPanel {
             // go through whole program, ensure that
             for (Instruction i : m.getInstructions()) {
                 Integer numUsed = used.get(i);
-                Integer allowedInstances = currChallenge.instructionSet.get(i);
+                Integer allowedInstances = challengeMode.getChallenge().instructionSet.get(i);
                 if(numUsed == null)
                     used.put(i, 1);
                 else
@@ -122,7 +118,7 @@ public class ChallengeUI extends JPanel {
 
         // this mode is activated!
         public void visit(ChallengeMode m) {
-            descLabel.setText("<html>"+currChallenge.description+"</html>");
+            descLabel.setText("<html>"+challengeMode.getChallenge().description+"</html>");
             ChallengeUI.this.setVisible(true);
         }
 
