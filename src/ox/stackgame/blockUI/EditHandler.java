@@ -101,7 +101,11 @@ class EditHandler extends AbstractStretchBoxHandler {
 			int y = e.getY() + moveY;
 			Dimension caveSize = blockUI.getCurrentCave().getCaveSize();
 			possible = (0<=x && 0<=y && x<caveSize.width && y<caveSize.height);
-		}*/
+		}
+		
+		#yolo #yolo #yolo #yolo #yolo #yolo #yolo #yolo #yolo #yolo #yolo #yolo #yolo #yolo 
+		
+		*/
 		
 //		if (possible){
 			//Moving the elements one by one might break Cave invariant 3 if the region being moved overlaps with itself
