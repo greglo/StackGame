@@ -14,7 +14,7 @@ public class TypeException extends StackRuntimeException {
     }
 
     @Override
-    public String toString() {
+    public String getMessage() {
         return "Line " + this.getLine() + ": Type error, '" + type.toString() + "' not valid";
     }
 }

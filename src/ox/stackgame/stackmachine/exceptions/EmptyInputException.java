@@ -7,7 +7,7 @@ public class EmptyInputException extends StackRuntimeException {
     }
 
     @Override
-    public String toString() {
+    public String getMessage() {
         return "Line " + this.getLine() + ": Cannot read from the input because it is empty";
     }
 }

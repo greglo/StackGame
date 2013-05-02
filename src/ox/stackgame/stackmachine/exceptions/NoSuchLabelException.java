@@ -10,7 +10,7 @@ public class NoSuchLabelException extends StackRuntimeException {
     }
 
     @Override
-    public String toString() {
+    public String getMessage() {
         return "Line " + this.getLine() + ": Label '" + labelName + "' does not exist";
     }
 }

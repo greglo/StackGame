@@ -7,7 +7,7 @@ public class EmptyStackException extends StackRuntimeException {
     }
 
     @Override
-    public String toString() {
+    public String getMessage() {
         return "Line " + this.getLine() + ": Cannot read from the stack because it is empty";
     }
 }

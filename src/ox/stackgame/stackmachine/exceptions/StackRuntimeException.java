@@ -13,5 +13,5 @@ public abstract class StackRuntimeException extends Exception {
     }
 
     @Override
-    public abstract String toString();
+    public abstract String getMessage();
 }

@@ -14,7 +14,7 @@ public class InvalidAddressException extends StackRuntimeException {
     }
 
     @Override
-    public String toString() {
+    public String getMessage() {
         return "Line " + this.getLine() + ": Address '" + address + "' is not valid";
     }
 }

@@ -7,7 +7,7 @@ public class FullStackException extends StackRuntimeException {
     }
 
     @Override
-    public String toString() {
+    public String getMessage() {
         return "Line " + this.getLine() + ": Cannot push on to stack because it is full";
     }
 }
