@@ -22,6 +22,7 @@ public class ButtonUI extends JPanel {
     private Mode oldMode = null;
     private final RunMode runMode;
     private final ProgramTextUI tui;
+   
     
     private final JButton lexButton = new JButton("Check Code");
     private final JButton step1Button = new JButton("Step1");
@@ -29,6 +30,7 @@ public class ButtonUI extends JPanel {
     private final JButton pauseButton = new JButton("Pause");
     private final JButton runAllButton = new JButton("RunAll");
     private final JButton resetButton = new JButton("Reset");
+    private final ErrorUI eui;
     
     public void updateButtons() {
         boolean td = tui.isTextDirty();
@@ -41,11 +43,12 @@ public class ButtonUI extends JPanel {
         resetButton.setEnabled(rm && !runMode.timerRunning());
     }
     
-    public ButtonUI(final StateManager sm, final ProgramTextUI tui, final RunMode runMode){
+    public ButtonUI(final StateManager sm, final ProgramTextUI tui, final RunMode runMode, final ErrorUI eui){
         
         this.runMode = runMode;
         this.sm = sm;
         this.tui = tui;
+        this.eui = eui;
         
         this.setSize(new Dimension(80,300));
         this.setBackground(ApplicationFrame.caBlue);
@@ -123,7 +126,7 @@ public class ButtonUI extends JPanel {
                 try {
                     sm.stackMachine.step();
                 } catch (StackRuntimeException e) {
-                    // TODO Handle machine errors
+                    eui.displayError(e.getMessage());
                 }
                 
                 updateButtons();
@@ -145,10 +148,10 @@ public class ButtonUI extends JPanel {
                 try {
                     sm.stackMachine.runAll();
                 } catch (StackRuntimeException e) {
-                    // TODO Auto-generated catch block
+                    eui.displayError(e.getMessage());
                     e.printStackTrace();
                 } catch (NotHaltingException e) {
-                    // TODO Auto-generated catch block
+                    eui.displayError(e.getMessage());
                     e.printStackTrace();
                 }
                 
