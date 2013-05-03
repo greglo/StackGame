@@ -124,14 +124,14 @@ public class Operations {
         ht.put("jez", new BranchOperation() {
             @Override
             protected boolean p(StackMachine machine) throws EmptyStackException {
-                return machine.getStack().peek().getValue().equals(0);
+                return machine.getStack().pop().getValue().equals(0);
             }
         });
         
         ht.put("jnez", new BranchOperation() {
             @Override
             protected boolean p(StackMachine machine) throws EmptyStackException {
-                return !machine.getStack().peek().getValue().equals(0);
+                return !machine.getStack().pop().getValue().equals(0);
             }
         });
 
