@@ -37,7 +37,6 @@ public class ButtonUI extends JPanel {
         boolean td = textDirty;
         boolean rm = sm.getActiveMode() == runMode;
         lexButton.setEnabled(td);
-        System.out.println(lexButton.isEnabled());
         step1Button.setEnabled((rm || !td) && runMode.machine.isRunning());
         if (rm && runMode.timerRunning()) {
             stepAllButton.setText("Pause");
