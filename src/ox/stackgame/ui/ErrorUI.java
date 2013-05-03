@@ -27,7 +27,6 @@ public class ErrorUI extends JPanel {
         this.setBackground(ApplicationFrame.caBlue);
         this.setSize(ApplicationFrame.CENTER_PANEL_WIDTH-2*ApplicationFrame.p, 30);
         l = new JLabel();
-        displayError("yo mama yo mama yo mama yo mama yo mama yo mama yo mama yo mamayo mama");
         l.setForeground(Color.RED);
         this.add(l);
     }
