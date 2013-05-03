@@ -42,7 +42,7 @@ public class ButtonUI extends JPanel {
         runAllButton.setEnabled((rm && !runMode.timerRunning() && runMode.machine.isRunning()) || (!td && !rm));
         resetButton.setEnabled(rm && !runMode.timerRunning());
         
-        eui.clearErrors();
+        //eui.clearErrors();
     }
     
     public ButtonUI(final StateManager sm, final ProgramTextUI tui, final RunMode runMode, final ErrorUI eui){
