@@ -29,14 +29,14 @@ public class IntStackValueTest {
     }
 
     @Test
-    public void testDiv() throws TypeException {
+    public void testDiv() throws TypeException, DivisionByZeroException {
         IntStackValue a = new IntStackValue(2);
         IntStackValue b = new IntStackValue(5);
         assertEquals(new Integer(2), b.div(a).getValue());
     }
 
     @Test(expected=TypeException.class)
-    public void testTypeException() throws TypeException, InvalidCharException {
+    public void testTypeException() throws TypeException, InvalidCharException, DivisionByZeroException {
         IntStackValue a = new IntStackValue(2);
         CharStackValue b = new CharStackValue('A');
         a.div(b);

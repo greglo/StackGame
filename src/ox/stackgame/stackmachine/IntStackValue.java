@@ -1,5 +1,7 @@
 package ox.stackgame.stackmachine;
 
+import ox.stackgame.stackmachine.exceptions.DivisionByZeroException;
+import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.exceptions.TypeException;
 
 public class IntStackValue extends StackValue<Integer> {
@@ -12,12 +14,12 @@ public class IntStackValue extends StackValue<Integer> {
         this.value = value;
     }
 
-    public boolean init( String str ) {
+    public boolean init(String str) {
         try {
-            this.value = Integer.parseInt( str );
+            this.value = Integer.parseInt(str);
 
             return true;
-        } catch( NumberFormatException e ) {
+        } catch (NumberFormatException e) {
             return false;
         }
     }
@@ -42,8 +44,7 @@ public class IntStackValue extends StackValue<Integer> {
         if (y instanceof IntStackValue)
             return new IntStackValue(this.getValue() - (Integer) y.getValue());
         else if (y instanceof CharStackValue)
-            return new IntStackValue(this.getValue()
-                    - ((CharStackValue) y).getCharCode());
+            return new IntStackValue(this.getValue() - ((CharStackValue) y).getCharCode());
         else
             throw new TypeException(0, y.getClass());
     }
@@ -59,10 +60,14 @@ public class IntStackValue extends StackValue<Integer> {
     }
 
     @Override
-    public StackValue<?> div(StackValue<?> y) throws TypeException {
-        if (y instanceof IntStackValue)
-            return new IntStackValue(this.getValue() / (Integer) y.getValue());
-        else
+    public StackValue<?> div(StackValue<?> y) throws TypeException, DivisionByZeroException {
+        if (y instanceof IntStackValue) {
+            int denominator = (Integer) y .getValue();
+            if (denominator != 0)
+                return new IntStackValue(this.getValue() / denominator);
+            else
+                throw new DivisionByZeroException(0);
+        } else
             throw new TypeException(0, y.getClass());
     }
 

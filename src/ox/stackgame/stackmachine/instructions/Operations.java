@@ -3,6 +3,7 @@ package ox.stackgame.stackmachine.instructions;
 import java.util.*;
 
 import ox.stackgame.stackmachine.StackMachine;
+import ox.stackgame.stackmachine.exceptions.DivisionByZeroException;
 import ox.stackgame.stackmachine.exceptions.EmptyStackException;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.exceptions.TypeException;
@@ -49,7 +50,7 @@ public class Operations {
 
         ht.put("div", new BinOperation() {
             public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
-                    throws TypeException {
+                    throws TypeException, DivisionByZeroException {
                 return x.div(y);
             }
         });
