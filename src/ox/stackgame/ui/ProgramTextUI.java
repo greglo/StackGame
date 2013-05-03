@@ -29,20 +29,20 @@ import ox.stackgame.stackmachine.instructions.*;
 
 @SuppressWarnings("serial")
 public class ProgramTextUI extends JLayeredPane {
-    private Highlighter highlighter;
-    private final JTextArea jta = new JTextArea();
-    public final Document document = jta.getDocument();
-    private boolean dirtyText = true;
+    public static Font font = new Font(Font.MONOSPACED, Font.PLAIN, 15);
     public static Color editableTextColor = new Color(186, 96, 96);
     public static Color frozenTextColor = new Color(222, 147, 95);
-    public static Font f = new Font(Font.MONOSPACED, Font.PLAIN, 15);
+    
+    private final JTextArea jta = new JTextArea();
+    public final Document document = jta.getDocument();
+   
+    private Highlighter highlighter;
+    private boolean dirtyText = true;
     private final StateManager sm;
+    private ErrorUI eui;
 
-    // code to be executed when a mode is activated.
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
-        public void visit(RunMode m) {
-
-        }
+        public void visit(RunMode m) {  }
 
         public void visit(ChallengeMode m) {
             jta.setEditable(true);
@@ -57,7 +57,6 @@ public class ProgramTextUI extends JLayeredPane {
         }
     };
 
-    // code to be executed when a mode is deactivated
     private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
         public void visit(RunMode m) {
             highlighter.removeAllHighlights();
@@ -73,56 +72,54 @@ public class ProgramTextUI extends JLayeredPane {
             jta.setForeground(frozenTextColor);
         }
     };
-
+    
     private StackMachineListener l = new StackMachineListenerAdapter() {
         public void programCounterChanged(int line) {
-            highlight(line -1);
+            highlight(line - 1);
         }
     };
-    private ErrorUI eui;
+    
+    /**
+     * 
+     * @param stateManager
+     * @param runMode
+     * @param eui               Output stream for errors
+     */
+    public ProgramTextUI(final StateManager stateManager, final RunMode runMode, ErrorUI eui) {
+        super();
+
+        this.eui = eui;
+        this.sm = stateManager;
+
+        stateManager.registerModeActivationVisitor(modeActivationVisitor);
+        stateManager.registerModeDeactivationVisitor(modeDeactivationVisitor);
+        stateManager.stackMachine.addListener(l);
+
+        this.setSize(new Dimension(ApplicationFrame.CENTER_PANEL_WIDTH, ApplicationFrame.h));
+        this.add(createScrollPane(), new Integer(0)); // fills container
+        jta.setText(antiLex(stateManager.stackMachine.getInstructions()));
+    }
+    
 
     private void highlight(int line) {
         try {
             highlighter.removeAllHighlights();
-            highlighter.addHighlight(jta.getLineStartOffset(line), jta
-                    .getLineEndOffset(line),
-                    new DefaultHighlighter.DefaultHighlightPainter(new Color(
-                            129, 162, 190)));
+            highlighter.addHighlight(jta.getLineStartOffset(line), jta.getLineEndOffset(line), new DefaultHighlighter.DefaultHighlightPainter(
+                    new Color(129, 162, 190)));
         } catch (BadLocationException e) {
             throw new RuntimeException("pc shouldn't be out of bounds");
         }
     }
-    
-    private void highlight(int line, int start, int end) {
-        try {
-            highlighter.removeAllHighlights();
-            highlighter.addHighlight(jta.getLineStartOffset(line) + start, jta
-                    .getLineEndOffset(line) - end,
-                    new DefaultHighlighter.DefaultHighlightPainter(new Color(
-                            129, 162, 190)));
-        } catch (BadLocationException e) {
-            throw new RuntimeException("pc shouldn't be out of bounds");
-        }
+
+    public boolean isTextDirty() {
+        return dirtyText;
     }
-    
-    public boolean isTextDirty() { return dirtyText; }
-    
-    private void redHighlight(int line) {
-        try {
-            highlighter.removeAllHighlights();
-            highlighter.addHighlight(jta.getLineStartOffset(line), jta
-                    .getLineEndOffset(line),
-                    new DefaultHighlighter.DefaultHighlightPainter(Color.red));
-        } catch (BadLocationException e) {
-            throw new RuntimeException("pc shouldn't be out of bounds");
-        }
-    }
-    
+
     private void redHighlight(int line, int start, int end) {
         try {
             highlighter.removeAllHighlights();
             highlighter.addHighlight(jta.getLineStartOffset(line) + start, jta.getLineStartOffset(line) + end,
-                    new DefaultHighlighter.DefaultHighlightPainter(Color.red));
+                    new DefaultHighlighter.DefaultHighlightPainter(new Color(150, 30, 30)));
         } catch (BadLocationException e) {
             throw new RuntimeException("pc shouldn't be out of bounds");
         }
@@ -140,16 +137,16 @@ public class ProgramTextUI extends JLayeredPane {
         jta.setForeground(editableTextColor);
         jta.setMargin(new Insets(20, 20, 100, 20)); // compensates for the
                                                     // height of the stackUI
-        jta.setFont(f);
+        jta.setFont(font);
         jta.setCaretColor(new Color(150, 150, 150));
-        highlighter = jta.getHighlighter();        
+        highlighter = jta.getHighlighter();
 
         // create textarea to display linenumbers
         final JTextArea lines = new JTextArea("1");
         lines.setMargin(new Insets(20, 20, 100, 0));
         lines.setForeground(new Color(150, 150, 150));
         lines.setBackground(ApplicationFrame.caBlue);
-        lines.setFont(f);
+        lines.setFont(font);
         lines.setEditable(false);
 
         // listen for changes in jta and update linenumbers
@@ -163,7 +160,7 @@ public class ProgramTextUI extends JLayeredPane {
                 }
                 return text;
             }
-            
+
             private void textChanged() {
                 highlighter.removeAllHighlights();
                 dirtyText = true;
@@ -191,13 +188,14 @@ public class ProgramTextUI extends JLayeredPane {
 
         return jsp;
     }
-    
+
     public List<Instruction> getProgram() {
-        return lex(jta.getText());
+        List<Instruction> program = lex(jta.getText());
+        return program != null ? program : new ArrayList<Instruction>();
     }
 
     private List<Instruction> lex(String text) {
-        ArrayList<Instruction> p = null;
+        ArrayList<Instruction> p = new ArrayList<Instruction>();
         try {
             p = Lexer.lex(text);
             eui.clearErrors();
@@ -205,44 +203,26 @@ public class ProgramTextUI extends JLayeredPane {
             System.out.println("Dirty text false: lexed successfully.");
         } catch (LexerException e) {
             redHighlight(e.lineNumber, e.wordStart, e.wordEnd);
-            eui.displayError("Lexer Error on line " + (e.lineNumber + 1) + ": "
-                    + e.getMessage());
-            System.err.println("Lexer error on line " + (e.lineNumber + 1) + ": "
-                    + e.getMessage());
+            eui.displayError("Lexer Error on line " + (e.lineNumber + 1) + ": " + e.getMessage());
+            System.err.println("Lexer error on line " + (e.lineNumber + 1) + ": " + e.getMessage());
         }
         return p;
     }
 
     private String antiLex(List<Instruction> program) {
         StringBuilder b = new StringBuilder();
-        for (Instruction i : program) {
+        
+        for (Instruction instr : program) {
             if (b.length() != 0)
                 b.append("\n");
-            b.append(i.name);
-            if (i.arg != null)
-                b.append(" " + i.arg.getValue());
+            
+            b.append(instr.name);
+            
+            if (instr.arg != null)
+                b.append(" " + instr.arg.getValue());
         }
+        
         dirtyText = false;
         return b.toString();
-    }
-
-    public ProgramTextUI(final StateManager stateManager, final RunMode runMode, ErrorUI eui) {
-        super();
-
-        this.eui = eui;
-        sm = stateManager;
-        // appearance
-        this.setSize(new Dimension(ApplicationFrame.CENTER_PANEL_WIDTH, ApplicationFrame.h));
-
-        // pay attention to mode changes
-        stateManager.registerModeActivationVisitor(modeActivationVisitor);
-        stateManager.registerModeDeactivationVisitor(modeDeactivationVisitor);
-
-        // listen to the stack machine
-        stateManager.stackMachine.addListener(l);
-
-        // add scrollpane
-        this.add(createScrollPane(), new Integer(0)); // fills container
-        jta.setText(antiLex(stateManager.stackMachine.getInstructions()));
     }
 }

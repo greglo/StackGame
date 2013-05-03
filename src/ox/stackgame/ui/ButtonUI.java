@@ -30,7 +30,6 @@ public class ButtonUI extends JPanel {
     private final JButton pauseButton = new JButton("Pause");
     private final JButton runAllButton = new JButton("RunAll");
     private final JButton resetButton = new JButton("Reset");
-    private final ErrorUI eui;
     
     public void updateButtons() {
         boolean td = tui.isTextDirty();
@@ -50,7 +49,6 @@ public class ButtonUI extends JPanel {
         this.runMode = runMode;
         this.sm = sm;
         this.tui = tui;
-        this.eui = eui;
         
         this.setSize(new Dimension(80,300));
         this.setBackground(ApplicationFrame.caBlue);

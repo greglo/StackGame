@@ -19,7 +19,7 @@ public class ErrorUI extends JPanel {
        this.setVisible(true);
     }
     
-    public void clearErrors(){
+    public void clearErrors() {
        this.setVisible(false);
     }
     
