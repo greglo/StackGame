@@ -18,6 +18,7 @@ public class ApplicationFrame {
     final static int RIGHT_PANEL_WIDTH = 200;
     final static int CENTER_PANEL_WIDTH = 450;
     final static int LEFT_PANEL_WIDTH = 250;
+    final static int BUTTONUI_HEIGHT = 30;
     final static int TAPE_HEIGHT = TapeUI.UIHeight;
     final static int STORE_HEIGHT = 180;
     final static int STACK_HEIGHT = h - 2 * p - TAPE_HEIGHT - STORE_HEIGHT;
@@ -58,6 +59,7 @@ public class ApplicationFrame {
         frame.setBounds(200, 100, LEFT_PANEL_WIDTH+CENTER_PANEL_WIDTH+RIGHT_PANEL_WIDTH, h);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setBackground(caBlue);
 
         // window contents
         JLayeredPane contentPane = new JLayeredPane();
@@ -93,14 +95,14 @@ public class ApplicationFrame {
 
         // ProgramUI
         ProgramTextUI programUI = new ProgramTextUI(modeManager, runMode, eui);
-        programUI.setLocation(LEFT_PANEL_WIDTH, 0);
+        programUI.setLocation(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT);
         contentPane.add(programUI, new Integer(0));
     
         
         // ButtonUI
         {
             JComponent u = new ButtonUI(modeManager, programUI, runMode, eui);
-            u.setLocation(LEFT_PANEL_WIDTH+CENTER_PANEL_WIDTH-p-u.getWidth(),p);
+            u.setBounds(LEFT_PANEL_WIDTH, 0, CENTER_PANEL_WIDTH, BUTTONUI_HEIGHT);
             contentPane.add(u,new Integer(1));
         }
 

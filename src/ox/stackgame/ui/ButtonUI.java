@@ -14,74 +14,86 @@ import ox.stackgame.stackmachine.StackMachineListenerAdapter;
 import ox.stackgame.stackmachine.exceptions.NotHaltingException;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 
-
 @SuppressWarnings("serial")
-public class ButtonUI extends JPanel { 
-    
+public class ButtonUI extends JPanel {
+
     private final StateManager sm;
     private Mode oldMode = null;
     private final RunMode runMode;
     private final ProgramTextUI tui;
-   
-    
-    private final JButton lexButton = new JButton("Check Code");
-    private final JButton step1Button = new JButton("Step1");
-    private final JButton stepAllButton = new JButton("StepAll");
+
+    private final JButton lexButton = new JButton("Check");
+    private final JButton step1Button = new JButton("Step");
+    private final JButton stepAllButton = new JButton("Step All");
+    private final JButton runAllButton = new JButton("Run All");
     private final JButton pauseButton = new JButton("Pause");
-    private final JButton runAllButton = new JButton("RunAll");
     private final JButton resetButton = new JButton("Reset");
-    
+
     public void updateButtons() {
         boolean td = tui.isTextDirty();
         boolean rm = sm.getActiveMode() == runMode;
         lexButton.setEnabled(tui.isTextDirty());
         step1Button.setEnabled((rm || !td) && runMode.machine.isRunning());
-        stepAllButton.setEnabled((rm || !td) && runMode.machine.isRunning());
-        pauseButton.setEnabled(rm && runMode.timerRunning());
+        if (rm && runMode.timerRunning()) {
+            stepAllButton.setText("Pause");
+            stepAllButton.setEnabled(true);
+        } else if ((rm || !td) && runMode.machine.isRunning()) {
+            stepAllButton.setText("Step All");
+            stepAllButton.setEnabled(true);
+        } else {
+            stepAllButton.setText("Step All");
+            stepAllButton.setEnabled(false);
+        }
+
         runAllButton.setEnabled((rm && !runMode.timerRunning() && runMode.machine.isRunning()) || (!td && !rm));
         resetButton.setEnabled(rm && !runMode.timerRunning());
-        
-        //eui.clearErrors();
+
+        // eui.clearErrors();
     }
-    
-    public ButtonUI(final StateManager sm, final ProgramTextUI tui, final RunMode runMode, final ErrorUI eui){
-        
+
+    public ButtonUI(final StateManager sm, final ProgramTextUI tui, final RunMode runMode, final ErrorUI eui) {
+
         this.runMode = runMode;
         this.sm = sm;
         this.tui = tui;
-        
-        this.setSize(new Dimension(80,300));
+
+        this.setSize(new Dimension(80, 300));
         this.setBackground(ApplicationFrame.caBlue);
 
         // create lex button
+        lexButton.setPreferredSize(new Dimension(ApplicationFrame.CENTER_PANEL_WIDTH / 6, ApplicationFrame.BUTTONUI_HEIGHT - 5));
         this.add(lexButton);
 
         // create step1 button
         step1Button.setForeground(new Color(0, 133, 200));
+        step1Button.setPreferredSize(new Dimension(ApplicationFrame.CENTER_PANEL_WIDTH / 6, ApplicationFrame.BUTTONUI_HEIGHT - 5));
         this.add(step1Button);
 
         // create stepAll Button
         // allows the user to see each command animated until the machine halts.
-        
-        stepAllButton.setForeground(new Color(0, 133, 200));
-        this.add(stepAllButton);
 
-        // pauseButton
-        pauseButton.setForeground(new Color(0, 133, 200));
-        this.add(pauseButton);
+        stepAllButton.setForeground(new Color(0, 133, 200));
+        stepAllButton.setPreferredSize(new Dimension(ApplicationFrame.CENTER_PANEL_WIDTH / 6 + 5, ApplicationFrame.BUTTONUI_HEIGHT - 5));
+        this.add(stepAllButton);
 
         // create runAll button
         runAllButton.setForeground(new Color(0, 133, 200));
+        runAllButton.setPreferredSize(new Dimension(ApplicationFrame.CENTER_PANEL_WIDTH / 6, ApplicationFrame.BUTTONUI_HEIGHT - 5));
         this.add(runAllButton);
 
+        // pauseButton
+        pauseButton.setForeground(new Color(0, 133, 200));
+        // this.add(pauseButton);
+
         // create reset button
+        resetButton.setPreferredSize(new Dimension(ApplicationFrame.CENTER_PANEL_WIDTH / 6, ApplicationFrame.BUTTONUI_HEIGHT - 5));
         this.add(resetButton);
-        
+
         // initialise the buttons
         updateButtons();
 
         // button logic
-        tui.document.addDocumentListener(new DocumentListener(){
+        tui.document.addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent arg0) {
                 updateButtons();
             }
@@ -92,17 +104,15 @@ public class ButtonUI extends JPanel {
 
             public void removeUpdate(DocumentEvent arg0) {
                 updateButtons();
-            }            
+            }
         });
-        
-        
+
         lexButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // feed text through lexer
                 // update modeManager.stackMachine
                 System.out.println("Lexed Text input");
-                // TODO should be be passing null if lexing fails to the sm here, or doing nothing?
-                sm.stackMachine.loadInstructions(tui.getProgram()); 
+                sm.stackMachine.loadInstructions(tui.getProgram());
                 updateButtons();
             }
         });
@@ -122,11 +132,11 @@ public class ButtonUI extends JPanel {
                 } catch (StackRuntimeException e) {
                     eui.displayError(e.getMessage());
                 }
-                
+
                 updateButtons();
             }
         });
-        
+
         runAllButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // for a dirty textarea, lex the text, switch to RunMode
@@ -148,25 +158,25 @@ public class ButtonUI extends JPanel {
                     eui.displayError(e.getMessage());
                     e.printStackTrace();
                 }
-                
+
                 updateButtons();
             }
         });
-        
+
         pauseButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // disabled in designMode.
                 // enabled if machine is being animated
                 // when clicked, stop the stepAll timer from calling step
                 // enable stepAllButton, enable runAllButton
-                
-                assert(sm.getActiveMode()==runMode);
-                
+
+                assert (sm.getActiveMode() == runMode);
+
                 runMode.pause();
                 updateButtons();
             }
         });
-        
+
         stepAllButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // for a dirty textarea, lex the text, switch to RunMode
@@ -176,20 +186,26 @@ public class ButtonUI extends JPanel {
                 // disable this button
                 // enable pausebutton
 
-                if (sm.getActiveMode() != runMode) {
-                    oldMode = sm.getActiveMode();
-                    // switch to RunMode
-                    sm.setActiveMode(runMode);
-                }
-                
-                runMode.run(new ActionListener(){
-                    public void actionPerformed(ActionEvent e) {
-                        updateButtons(); // not being called when this finishes.
+                if (stepAllButton.getText() == "Pause") {
+                    runMode.pause();
+                    updateButtons();
+                } else {
+                    if (sm.getActiveMode() != runMode) {
+                        oldMode = sm.getActiveMode();
+                        // switch to RunMode
+                        sm.setActiveMode(runMode);
                     }
-                });
+
+                    runMode.run(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            updateButtons(); // not being called when this
+                                             // finishes.
+                        }
+                    });
+                }
             }
         });
-        
+
         resetButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 // (should not be enabled in DesignMode)
@@ -197,19 +213,19 @@ public class ButtonUI extends JPanel {
                 sm.setActiveMode(oldMode);
                 oldMode = null;
                 sm.stackMachine.reset();
-//                resetButton.setEnabled(false);
-//                
-//                lexButton.setEnabled(true);
+                // resetButton.setEnabled(false);
+                //
+                // lexButton.setEnabled(true);
                 updateButtons();
             }
         });
-        
+
         // do button enabling/disabling
-        sm.stackMachine.addListener( new StackMachineListenerAdapter() {
+        sm.stackMachine.addListener(new StackMachineListenerAdapter() {
             public void programCounterChanged(int line) {
                 updateButtons();
             }
         });
-        
+
     }
 }
