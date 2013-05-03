@@ -412,7 +412,6 @@ public class StackMachine {
             System.out.print("  " + VT102.e());
             System.out.print(i == programCounter ? "[1m> " : "[0m  ");
             System.out.print(op.toString());
-            System.out.print("  " + VT102.e());
 
             System.out.println(VT102.e() + "[0m");
         }
