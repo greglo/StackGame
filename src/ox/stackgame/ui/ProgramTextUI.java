@@ -93,6 +93,18 @@ public class ProgramTextUI extends JLayeredPane {
         }
     }
     
+    private void highlight(int line, int start, int end) {
+        try {
+            highlighter.removeAllHighlights();
+            highlighter.addHighlight(jta.getLineStartOffset(line) + start, jta
+                    .getLineEndOffset(line) - end,
+                    new DefaultHighlighter.DefaultHighlightPainter(new Color(
+                            129, 162, 190)));
+        } catch (BadLocationException e) {
+            throw new RuntimeException("pc shouldn't be out of bounds");
+        }
+    }
+    
     public boolean isTextDirty() { return dirtyText; }
     
     private void redHighlight(int line) {
@@ -100,6 +112,16 @@ public class ProgramTextUI extends JLayeredPane {
             highlighter.removeAllHighlights();
             highlighter.addHighlight(jta.getLineStartOffset(line), jta
                     .getLineEndOffset(line),
+                    new DefaultHighlighter.DefaultHighlightPainter(Color.red));
+        } catch (BadLocationException e) {
+            throw new RuntimeException("pc shouldn't be out of bounds");
+        }
+    }
+    
+    private void redHighlight(int line, int start, int end) {
+        try {
+            highlighter.removeAllHighlights();
+            highlighter.addHighlight(jta.getLineStartOffset(line) + start, jta.getLineStartOffset(line) + end,
                     new DefaultHighlighter.DefaultHighlightPainter(Color.red));
         } catch (BadLocationException e) {
             throw new RuntimeException("pc shouldn't be out of bounds");
@@ -178,10 +200,11 @@ public class ProgramTextUI extends JLayeredPane {
         ArrayList<Instruction> p = null;
         try {
             p = Lexer.lex(text);
+            eui.clearErrors();
             dirtyText = false;
             System.out.println("Dirty text false: lexed successfully.");
         } catch (LexerException e) {
-            redHighlight(e.lineNumber);
+            redHighlight(e.lineNumber, e.wordStart, e.wordEnd);
             eui.displayError("Lexer Error on line " + (e.lineNumber + 1) + ": "
                     + e.getMessage());
             System.err.println("Lexer error on line " + (e.lineNumber + 1) + ": "

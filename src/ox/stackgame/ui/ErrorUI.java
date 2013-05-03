@@ -20,7 +20,7 @@ public class ErrorUI extends JPanel {
     }
     
     public void clearErrors(){
-       l.setText("[no errors]");
+       this.setVisible(false);
     }
     
     public ErrorUI(){

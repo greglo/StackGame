@@ -10,10 +10,14 @@ public class Lexer {
     @SuppressWarnings("serial")
     public static class LexerException extends Exception {
         public final int lineNumber;
+        public final int wordStart;
+        public final int wordEnd;
 
-        public LexerException(int lineNumber, String message) {
+        public LexerException(int lineNumber, int start, int end, String message) {
             super(message);
             this.lineNumber = lineNumber;
+            this.wordStart = start;
+            this.wordEnd = end;
         }
     }
 
@@ -51,7 +55,7 @@ public class Lexer {
                 Operation op = Operations.get(opName);
 
                 if (op == null)
-                    throw new LexerException(lineno, opName
+                    throw new LexerException(lineno, words.start(), words.end(), opName
                             + " is not a valid Instruction");
 
                 StackValue<?> arg = null;
@@ -63,7 +67,7 @@ public class Lexer {
                             words.end());
 
                     if (argTypes == null)
-                        throw new LexerException(lineno, opName + " doesn't take an argument, unexpected '" + argString + "'");
+                        throw new LexerException(lineno, words.start(), words.end(), opName + " doesn't take an argument, unexpected '" + argString + "'");
 
                     for (Class<?> argType : argTypes) {
                         StackValue<?> value = null;
@@ -82,13 +86,13 @@ public class Lexer {
                         }
                     }
                     if (arg == null)
-                        throw new LexerException(lineno, "Argument `" + argString + "` is not valid for " + opName);
+                        throw new LexerException(lineno, words.start(), words.end(), "Argument `" + argString + "` is not valid for " + opName);
                 }
                 else if (argTypes != null)
-                    throw new LexerException(lineno, "Argument expected for " + opName);
+                    throw new LexerException(lineno, 0, opName.length(), "Argument expected for " + opName);
 
                 if (words.find())
-                    throw new LexerException(lineno, "Too many arguments were provided");
+                    throw new LexerException(lineno, words.start(), words.end(), "Too many arguments were provided");
 
                 program.add(new Instruction(opName, arg));
             }
