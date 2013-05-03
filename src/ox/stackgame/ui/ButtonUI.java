@@ -185,6 +185,9 @@ public class ButtonUI extends JPanel {
                 // when clicked in runMode, just do the timer stuff
                 // disable this button
                 // enable pausebutton
+                
+                // WARNING: If you read this method, you WILL vomit on your own face.
+                // Feel free to change this (Please God change it)
 
                 if (stepAllButton.getText() == "Pause") {
                     runMode.pause();
