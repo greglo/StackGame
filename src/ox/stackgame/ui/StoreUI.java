@@ -32,8 +32,8 @@ public class StoreUI extends JPanel {
     private JLabel label;
     private final StackMachine activeMachine;
     private static int TEXT_HEIGHT = 20;
-    private static int RAM_WIDTH = 80;
-    private static int RAM_HEIGHT = 45;
+    private static int RAM_WIDTH = 85;
+    private static int RAM_HEIGHT = 42;
     private static int Y_PADDING = 15;
 
     public StoreUI(StateManager m) {
@@ -64,7 +64,7 @@ public class StoreUI extends JPanel {
 
         try {
             for (int i = 0; i < StackMachine.STORE_SIZE; i++) {
-                g2d.setColor(new Color(0, 0, 0));
+                g2d.setColor(ApplicationFrame.caBlue2L);
                 g2d.setFont(new Font(g2d.getFont().getName(), Font.PLAIN, 10));
                 String addressString = "0x" + i;
                 Rectangle2D addressBox = g2d.getFontMetrics().getStringBounds(addressString, g2d);
@@ -74,7 +74,7 @@ public class StoreUI extends JPanel {
 
                 g.drawImage(icon.getImage(), xOffset, yOffset + TEXT_HEIGHT, RAM_WIDTH, RAM_HEIGHT, null);
 
-                g2d.setColor(ApplicationFrame.caBlue2L);
+                g2d.setColor(new Color(190, 185, 55));
                 g2d.setFont(new Font(g2d.getFont().getName(), Font.PLAIN, 20));
                 String valueString = activeMachine.getStore(i).toString();
                 Rectangle2D valueBox = g2d.getFontMetrics().getStringBounds(valueString, g2d);

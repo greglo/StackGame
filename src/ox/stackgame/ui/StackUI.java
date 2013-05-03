@@ -20,6 +20,7 @@ import ox.stackgame.stackmachine.StackValue;
  */
 @SuppressWarnings("serial")
 public class StackUI extends JPanel {
+    private final int BLOCK_WIDTH = ApplicationFrame.RIGHT_PANEL_WIDTH - 10;
     private final int BLOCK_HEIGHT = 23;
     private final int PADDING = 5;
 
@@ -61,7 +62,7 @@ public class StackUI extends JPanel {
             int y = i * (BLOCK_HEIGHT + PADDING);
 
             g.setColor(Color.RED);
-            g.fillRect(0, y, 300, BLOCK_HEIGHT);
+            g.fillRect((ApplicationFrame.RIGHT_PANEL_WIDTH - BLOCK_WIDTH) / 2, y, BLOCK_WIDTH, BLOCK_HEIGHT);
 
             g.setColor(Color.WHITE);
             g.drawString(v.toString(), 5, y + 5
