@@ -13,7 +13,7 @@ public class Lexer {
 
         public LexerException(int lineNumber, String message) {
             super(message);
-            this.lineNumber = lineNumber;
+            this.lineNumber = lineNumber + 1;
         }
     }
 

@@ -103,6 +103,7 @@ public class ButtonUI extends JPanel {
                 // feed text through lexer
                 // update modeManager.stackMachine
                 System.out.println("Lexed Text input");
+                // TODO should be be passing null if lexing fails to the sm here, or doing nothing?
                 sm.stackMachine.loadInstructions(tui.getProgram()); 
                 updateButtons();
             }
