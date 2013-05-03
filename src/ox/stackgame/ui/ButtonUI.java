@@ -30,9 +30,14 @@ public class ButtonUI extends JPanel {
     private final JButton resetButton = new JButton("Reset");
 
     public void updateButtons() {
-        boolean td = tui.isTextDirty();
+        updateButtons(false);
+    }
+    
+    public void updateButtons(boolean textDirty) {
+        boolean td = textDirty;
         boolean rm = sm.getActiveMode() == runMode;
-        lexButton.setEnabled(tui.isTextDirty());
+        lexButton.setEnabled(td);
+        System.out.println(lexButton.isEnabled());
         step1Button.setEnabled((rm || !td) && runMode.machine.isRunning());
         if (rm && runMode.timerRunning()) {
             stepAllButton.setText("Pause");
@@ -95,15 +100,15 @@ public class ButtonUI extends JPanel {
         // button logic
         tui.document.addDocumentListener(new DocumentListener() {
             public void changedUpdate(DocumentEvent arg0) {
-                updateButtons();
+                updateButtons(true);
             }
 
             public void insertUpdate(DocumentEvent arg0) {
-                updateButtons();
+                updateButtons(true);
             }
 
             public void removeUpdate(DocumentEvent arg0) {
-                updateButtons();
+                updateButtons(true);
             }
         });
 
