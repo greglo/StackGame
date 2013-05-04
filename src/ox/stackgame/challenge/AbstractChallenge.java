@@ -47,13 +47,18 @@ public abstract class AbstractChallenge {
         // check each instruction
         for (Instruction i : instructions){
             String line = i.toString();
+            String starredLine = i.name + " *";
 
             if (instructionSet.containsKey(line)) { // entry exists for this
                                                     // specific instruction
                 used.put(line, used.containsKey(line) ? used.get(line) + 1 : 1);
                 // if this line exceeds a non-null specification, return false
                 if (instructionSet.get(line) != null && used.get(line) > instructionSet.get(line)) return false;
-            } else if (!instructionSet.containsKey(i.name + " *")) {
+            } else if (instructionSet.containsKey(starredLine)) {
+                used.put(starredLine, used.containsKey(starredLine) ? used.get(starredLine) + 1 : 1);
+                // if this line exceeds a non-null specification, return false
+                if (instructionSet.get(starredLine) != null && used.get(starredLine) > instructionSet.get(starredLine)) return false;
+            } else {
                 // instruction is not allowed
                 return false;
             }
