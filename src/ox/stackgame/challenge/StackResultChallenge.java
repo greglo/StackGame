@@ -23,7 +23,7 @@ public class StackResultChallenge extends AbstractChallenge {
     protected String message = "";
 
     public StackResultChallenge(String title, String description,
-            Map<Instruction, Integer> instructionSet,
+            Map<String, Integer> instructionSet,
             StackValue<?> correctAnswer) {
         super(title, description, instructionSet);
         this.correctAnswer = correctAnswer;

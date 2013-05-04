@@ -15,7 +15,7 @@ public class TapeChallenge extends AbstractChallenge {
     public final List<StackValue<?>> outputTape;
 
     public TapeChallenge(String title, String description,
-            Map<Instruction, Integer> instructionSet,
+            Map<String, Integer> instructionSet,
             ArrayList<StackValue<?>> startTape,
             ArrayList<StackValue<?>> finalTape) {
 

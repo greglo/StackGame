@@ -22,7 +22,7 @@ public class StackAndTapeChallenge extends StackResultChallenge {
     public final List<StackValue<?>> outputTape;
 
     public StackAndTapeChallenge(String title, String description,
-            Map<Instruction, Integer> instructionSet,
+            Map<String, Integer> instructionSet,
             StackValue<?> correctAnswer, ArrayList<StackValue<?>> inputTape,
             ArrayList<StackValue<?>> outputTape) {
         

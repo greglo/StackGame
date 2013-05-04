@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import ox.stackgame.challenge.AbstractChallenge;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachineListener;
@@ -82,28 +83,16 @@ public class ChallengeUI extends JPanel {
     
     private void checkMachineInstructions(StackMachine m){
         if (challengeMode.getChallenge() != null) {
+            AbstractChallenge c = challengeMode.getChallenge();
+            Map<String, Integer> iSet = c.instructionSet;
             
             System.out.println(new Instruction("const", new IntStackValue(1)).equals(new Instruction("const", new IntStackValue(1))));
             
             System.out.println("Checking machine against challenge's instructionSet");
-            Map<Instruction, Integer> used = new HashMap<Instruction, Integer>();
             // go through whole program, ensure that it conforms
-            for (Instruction i : m.getInstructions()) {
-                Integer numUsed = used.get(i);
-                Integer allowedInstances = challengeMode.getChallenge().instructionSet.get(i);
-                if(numUsed == null)
-                    used.put(i, 1);
-                else
-                    used.put(i,numUsed+1);
-                
-                
-                // allowedInstances = -1 denotes an infinite allowance
-                if (allowedInstances == null
-                        || (allowedInstances != null
-                                && allowedInstances != -1 && numUsed > allowedInstances)) {
-                    // exceeded allowed exceptions.
-                    eui.displayError("Program doesn't conform to instructionSet: "+ i.name); // TODO more descriptive
-                }
+            if (c.checkProgram(m.getInstructions())==false){
+                System.out.println("Program doesn't conform to Challenge's instructionSet");
+                eui.displayError("Your program doesn't use the allowed instructions");
             }
         }
     }

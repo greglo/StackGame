@@ -3,6 +3,8 @@
  */
 package ox.stackgame.challenge;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ox.stackgame.stackmachine.*;
@@ -18,7 +20,7 @@ import ox.stackgame.stackmachine.instructions.Instruction;
 public abstract class AbstractChallenge {
     public final String description;
     public final String title;
-    public final Map<Instruction, Integer> instructionSet;
+    public final Map<String, Integer> instructionSet;
 
     /**
      * Create a new challenge.
@@ -32,11 +34,31 @@ public abstract class AbstractChallenge {
      *            A map from instructions to the number of that instruction
      *            permitted in the challenge; -1 for infinite
      */
-    AbstractChallenge(String title, String description,
-            Map<Instruction, Integer> instructionSet) {
+    public AbstractChallenge(String title, String description,
+            Map<String, Integer> instructionSet) {
         this.title = title;
         this.description = description;
         this.instructionSet = instructionSet;
+    }
+    
+    public Boolean checkProgram(List<Instruction> instructions){
+        Map<String,Integer> used = new HashMap<String,Integer>();
+        
+        // check each instruction
+        for (Instruction i : instructions){
+            String line = i.toString();
+
+            if (instructionSet.containsKey(line)) { // entry exists for this
+                                                    // specific instruction
+                used.put(line, used.containsKey(line) ? used.get(line) + 1 : 1);
+                // if this line exceeds a non-null specification, return false
+                if (instructionSet.get(line) != null && used.get(line) > instructionSet.get(line)) return false;
+            } else if (!instructionSet.containsKey(i.name + " *")) {
+                // instruction is not allowed
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
