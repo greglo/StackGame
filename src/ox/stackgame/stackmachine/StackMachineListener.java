@@ -13,4 +13,5 @@ public interface StackMachineListener {
     public void storeChanged(int address);
     public void inputConsumed(int startIndex);
     public void outputChanged(Iterator<StackValue<?>> outputs);
+    public void machineReset();
 }

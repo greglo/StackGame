@@ -26,4 +26,6 @@ public class StackMachineListenerAdapter implements StackMachineListener {
     public void programChanged(List<Instruction> instructions) { }
 
     public void stackChanged(EvaluationStack stack) { }
+
+    public void machineReset() { }
 }

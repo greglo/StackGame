@@ -77,6 +77,8 @@ public class StackMachine {
             for (StackMachineListener l : listeners)
                 l.storeChanged(i);
         }
+        for (StackMachineListener l : listeners)
+            l.machineReset();
     }
 
     /**

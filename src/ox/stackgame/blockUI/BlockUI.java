@@ -196,6 +196,12 @@ public class BlockUI extends JPanel {
 
         }
 
+        @Override
+        public void machineReset() {
+            // TODO Auto-generated method stub
+            
+        }
+
     }
 
     /** Display error messages */

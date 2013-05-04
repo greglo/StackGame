@@ -22,6 +22,7 @@ public class StackMachineListenerTest {
         public boolean inputConsumedFired = false;
         public boolean outputChangedFired = false;
         public boolean stackChangedFired = false;
+        public boolean machineResetFired = false;
 
         public void programChanged(List<Instruction> instructions) {
             this.programChangedFired = true;
@@ -45,6 +46,10 @@ public class StackMachineListenerTest {
 
         public void stackChanged(EvaluationStack stack) {
             stackChangedFired = true;
+        }
+
+        public void machineReset() {
+            machineResetFired = true;
         }
 
     }
@@ -124,5 +129,17 @@ public class StackMachineListenerTest {
         l.outputChangedFired = false;
         machine.step();
         assertTrue(l.stackChangedFired);
+    }
+    
+    @Test
+    public void testMachineReset() throws StackRuntimeException, NotHaltingException {
+        List<Instruction> instructions = new ArrayList<Instruction>();
+        StackMachine machine = new StackMachine(instructions);
+        MockListener l = new MockListener();
+        machine.addListener(l);
+        machine.addInstruction(0, new Instruction("const", new IntStackValue(2)));
+        machine.addInstruction(1, new Instruction("output"));
+        machine.reset();
+        assertTrue(l.machineResetFired);
     }
 }
