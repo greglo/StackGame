@@ -11,6 +11,7 @@ import ox.stackgame.challenge.TapeChallenge;
 import ox.stackgame.stackmachine.CharStackValue;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackValue;
+import ox.stackgame.stackmachine.StringStackValue;
 import ox.stackgame.stackmachine.exceptions.InvalidCharException;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
@@ -118,7 +119,7 @@ public class ChallengeMode extends DesignMode {
                     {
                         put(new Instruction("input"), 1);
                         put(new Instruction("output"), 1);
-                        put(new Instruction("jii"), 1);
+                        put(new Instruction("jii", new StringStackValue("")), 1);
                         // PROBLEM WITH allowing entire label family
                     }
                 }, new IntStackValue(17), new ArrayList<StackValue<?>>() {
