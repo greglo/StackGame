@@ -74,7 +74,7 @@ public class ChallengeUI extends JPanel {
                     String message = challengeMode.getChallenge().getMessage();
                     System.out.println(hasSucceeded ? "Passed" : "Failed");
                     System.out.println(message);
-                    // TODO display message
+                    // TODO display message in GUI
                 }
             }
         }
@@ -87,7 +87,7 @@ public class ChallengeUI extends JPanel {
             
             System.out.println("Checking machine against challenge's instructionSet");
             Map<Instruction, Integer> used = new HashMap<Instruction, Integer>();
-            // go through whole program, ensure that
+            // go through whole program, ensure that it conforms
             for (Instruction i : m.getInstructions()) {
                 Integer numUsed = used.get(i);
                 Integer allowedInstances = challengeMode.getChallenge().instructionSet.get(i);
@@ -102,7 +102,7 @@ public class ChallengeUI extends JPanel {
                         || (allowedInstances != null
                                 && allowedInstances != -1 && numUsed > allowedInstances)) {
                     // exceeded allowed exceptions.
-                    eui.displayError("Program doesn't conform to instructionSet: "+ i.name);
+                    eui.displayError("Program doesn't conform to instructionSet: "+ i.name); // TODO more descriptive
                 }
             }
         }

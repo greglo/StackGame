@@ -9,25 +9,26 @@ import java.util.Map;
 
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackValue;
+import ox.stackgame.stackmachine.exceptions.EmptyStackException;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
  * @author danfox
  * 
  */
-public class TapeChallenge extends StackResultChallenge {
+public class StackAndTapeChallenge extends StackResultChallenge {
 
     public final List<StackValue<?>> inputTape;
     public final List<StackValue<?>> outputTape;
 
-    public TapeChallenge(String title, String description,
+    public StackAndTapeChallenge(String title, String description,
             Map<Instruction, Integer> instructionSet,
             StackValue<?> correctAnswer, ArrayList<StackValue<?>> inputTape,
             ArrayList<StackValue<?>> outputTape) {
+        
         super(title, description, instructionSet, correctAnswer);
         this.inputTape = inputTape;
         this.outputTape = outputTape;
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -35,7 +36,23 @@ public class TapeChallenge extends StackResultChallenge {
      * Returns the appropriate boolean, sets this.message appropriately.
      */
     public Boolean hasSucceeded(StackMachine m) {
-        // TODO Auto-generated method stub
+        //  TODO check stack
+        
+        try {
+            if (m.getStack().peek().equals(correctAnswer)) {
+                
+            } else {
+                this.message= "Your answer: " + m.getStack().peek().toString()
+                        + "; correct answer: " + correctAnswer.toString();
+                
+            }
+        } catch (EmptyStackException e) {
+            message = "Empty stack"; 
+            return false;
+        }
+        
+        // TODO check tape
+        
         return null;
     }
 

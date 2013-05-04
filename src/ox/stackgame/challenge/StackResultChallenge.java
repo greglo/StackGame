@@ -19,8 +19,8 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  */
 public class StackResultChallenge extends AbstractChallenge {
 
-    private final StackValue<?> correctAnswer;
-    private String message = "";
+    protected final StackValue<?> correctAnswer;
+    protected String message = "";
 
     public StackResultChallenge(String title, String description,
             Map<Instruction, Integer> instructionSet,
