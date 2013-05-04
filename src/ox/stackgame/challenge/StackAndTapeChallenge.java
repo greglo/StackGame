@@ -35,24 +35,20 @@ public class StackAndTapeChallenge extends StackResultChallenge {
      * Returns the appropriate boolean, sets this.message appropriately.
      */
     public Boolean hasSucceeded(StackMachine m) {
-        //  TODO check stack
-        
+        // top stack value && output tape must be equal
         try {
-            if (m.getStack().peek().equals(correctAnswer)) {
-                
+            if ((m.getStack().peek().equals(correctAnswer) && m.getOutputTape().equals(this.outputTape))){
+                message = "Congratulations";
+                return true;
             } else {
                 this.message= "Your answer: " + m.getStack().peek().toString()
                         + "; correct answer: " + correctAnswer.toString();
-                
+                return false;
             }
         } catch (EmptyStackException e) {
             message = "Empty stack"; 
             return false;
         }
-        
-        // TODO check tape
-        
-        return null;
     }
 
 }

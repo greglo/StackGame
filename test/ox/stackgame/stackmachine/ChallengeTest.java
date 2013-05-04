@@ -9,6 +9,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import ox.stackgame.challenge.AbstractChallenge;
+import ox.stackgame.challenge.StackAndTapeChallenge;
 import ox.stackgame.challenge.TapeChallenge;
 import ox.stackgame.stackmachine.Lexer.LexerException;
 import ox.stackgame.stackmachine.exceptions.NotHaltingException;
@@ -139,22 +140,68 @@ public class ChallengeTest {
         }}));
     }
 
+    // Tape Challenge .hasSucceeded()
     @SuppressWarnings("serial")
-    public void testTapeChallenge() {
+    @Test
+    public void testTapeChallengeHasSucceeded() {
         // set up challenge
-        AbstractChallenge c = new TapeChallenge("t", "desc", unlimitedISet(
+        TapeChallenge c = new TapeChallenge("t", "desc", unlimitedISet(
                 "const *", "output"), new ArrayList<StackValue<?>>(),
                 new ArrayList<StackValue<?>>() {
                     {
-                        add(new IntStackValue(1));
-                        add(new IntStackValue(2));
-                        add(new IntStackValue(3));
                         add(new IntStackValue(4));
+                        add(new IntStackValue(3));
+                        add(new IntStackValue(2));
+                        add(new IntStackValue(1));
                     }
                 });
         // set up machine
         try {
             StackMachine m = new StackMachine(Lexer.lex("const 1\n"
+                    + "const 2\n" + "const 3\n" + "const 4\n" + "output\n"
+                    + "output\n" + "output\n" + "output"));
+            m.runAll();
+
+            assertEquals(true, c.hasSucceeded(m));
+
+            StackMachine m2 = new StackMachine(Lexer.lex("const 9\n"
+                    + "const 9\n" + "const 9\n" + "const 9\n" + "output\n"
+                    + "output\n" + "output\n" + "output"));
+            m2.runAll();
+
+            assertEquals(false, c.hasSucceeded(m2));
+
+        } catch (LexerException e) {
+            System.out.println("Test configured wrong");
+            e.printStackTrace();
+        } catch (StackRuntimeException e) {
+            System.out.println("Test configured wrong");
+            e.printStackTrace();
+        } catch (NotHaltingException e) {
+            System.out.println("Test configured wrong");
+            e.printStackTrace();
+        }
+
+    }
+    
+    @SuppressWarnings("serial")
+    @Test
+    public void testStackAndTapeChallengeHasSucceeded() {
+        // set up challenge
+        AbstractChallenge c = new StackAndTapeChallenge("t", "desc", unlimitedISet(
+                "const *", "output"), new IntStackValue(17), new ArrayList<StackValue<?>>(),
+                new ArrayList<StackValue<?>>() {
+                    {
+                        add(new IntStackValue(4));
+                        add(new IntStackValue(3));
+                        add(new IntStackValue(2));
+                        add(new IntStackValue(1));
+                    }
+                });
+        // set up machine
+        try {
+            StackMachine m = new StackMachine(Lexer.lex("const 17\n" +
+            		"const 1\n"
                     + "const 2\n" + "const 3\n" + "const 4\n" + "output\n"
                     + "output\n" + "output\n" + "output"));
             m.runAll();

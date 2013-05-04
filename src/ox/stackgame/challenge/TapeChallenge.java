@@ -23,12 +23,15 @@ public class TapeChallenge extends AbstractChallenge {
         this.outputTape = finalTape;
     }
 
+    @Override
     public Boolean hasSucceeded(StackMachine m) {
         Boolean hs = m.getOutputTape().equals(outputTape);
-        message = hs ? "Congratulations" : "Not quite, try again";
+        this.message = hs ? "Congratulations" : "Not quite, try again";
+        System.out.println("Machine: "+m.getOutputTape()+", Challenge: "+outputTape+". hasSucceeded returning: "+hs+", message: "+message);
         return hs;
     }
 
+    @Override
     public String getMessage() {
         return this.message;
     }

@@ -26,6 +26,8 @@ public abstract class StackValue<T> {
     
     public abstract boolean equals(Object other);
     
+    public abstract int hashCode();
+    
     public String toString() {
         return getValue().toString();
     }
