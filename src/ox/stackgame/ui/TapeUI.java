@@ -80,6 +80,7 @@ public class TapeUI extends JPanel {
         public void inputConsumed(int startIndex) {
             // TODO update input tape, move cursor
             inputTape.remove(0);
+            repaint();
         }
 
         public void outputChanged(Iterator<StackValue<?>> outputs) {
@@ -125,6 +126,7 @@ public class TapeUI extends JPanel {
         inputTape = new LinkedList<StackValue<?>>();
         for (StackValue<?> v : machine.getInput())
             inputTape.add(v);
+        repaint();
     }
 
     protected void paintComponent(Graphics graphics) {
