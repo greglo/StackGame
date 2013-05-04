@@ -7,8 +7,10 @@ import java.util.*;
 
 import ox.stackgame.challenge.AbstractChallenge;
 import ox.stackgame.challenge.StackResultChallenge;
+import ox.stackgame.challenge.TapeChallenge;
 import ox.stackgame.stackmachine.CharStackValue;
 import ox.stackgame.stackmachine.IntStackValue;
+import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.exceptions.InvalidCharException;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
@@ -90,17 +92,44 @@ public class ChallengeMode extends DesignMode {
                 }, new IntStackValue(17)));
         
         // tape challenge
-//        ops: input, output
-//        in: 1
-//        out: 1
-//
-//        Our computer is bleeding edge and has TWO data streams for you to play with -
-//        input and output. INPUT and OUTPUT read/write one value from/to their respective
-//        streams.
-//
-//        input output
+        cl.add(new TapeChallenge(
+                "tapes",
+                "Our computer is bleeding edge and has TWO data streams for you to play with input and output. INPUT and OUTPUT read/write one value from/to their respective streams.",
+                new HashMap<Instruction, Integer>() {
+                    {
+                        put(new Instruction("input"), 1);
+                        put(new Instruction("output"), 1);
+                    }
+                }, new IntStackValue(17), new ArrayList<StackValue<?>>() {
+                    {
+                        add(new IntStackValue(1));
+                    }
+                }, new ArrayList<StackValue<?>>() {
+                    {
+                        add(new IntStackValue(1));
+                    }
+                }));
         
         // why don't we BRANCH OUT?!?!?!
+        cl.add(new TapeChallenge(
+                "why don't we BRANCH OUT?!?!?!",
+                "Our computer is bleeding edge and has TWO data streams for you to play with input and output. INPUT and OUTPUT read/write one value from/to their respective streams.",
+                new HashMap<Instruction, Integer>() {
+                    {
+                        put(new Instruction("input"), 1);
+                        put(new Instruction("output"), 1);
+                        put(new Instruction("jii"), 1);
+                        // PROBLEM WITH allowing entire label family
+                    }
+                }, new IntStackValue(17), new ArrayList<StackValue<?>>() {
+                    {
+                        add(new IntStackValue(1));
+                    }
+                }, new ArrayList<StackValue<?>>() {
+                    {
+                        add(new IntStackValue(1));
+                    }
+                }));
 //
 //        ops: input, output, label, jii
 //        stack:

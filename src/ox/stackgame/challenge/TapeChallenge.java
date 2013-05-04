@@ -3,6 +3,7 @@
  */
 package ox.stackgame.challenge;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +20,10 @@ public class TapeChallenge extends StackResultChallenge {
     public final List<StackValue<?>> inputTape;
     public final List<StackValue<?>> outputTape;
 
-    TapeChallenge(String title, String description,
+    public TapeChallenge(String title, String description,
             Map<Instruction, Integer> instructionSet,
-            StackValue<?> correctAnswer, List<StackValue<?>> inputTape,
-            List<StackValue<?>> outputTape) {
+            StackValue<?> correctAnswer, ArrayList<StackValue<?>> inputTape,
+            ArrayList<StackValue<?>> outputTape) {
         super(title, description, instructionSet, correctAnswer);
         this.inputTape = inputTape;
         this.outputTape = outputTape;
