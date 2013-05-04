@@ -72,11 +72,12 @@ public class IntStackValue extends StackValue<Integer> {
 
     @Override
     public boolean equals(Object other) {
-        return false;
+        return (other instanceof IntStackValue) ? (value == ((IntStackValue)other).value) : false;
     }
 
-    public boolean equals(IntStackValue other) {
-        return (value == other.value);
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 
 }

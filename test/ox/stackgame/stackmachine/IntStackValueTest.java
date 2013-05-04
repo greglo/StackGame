@@ -7,6 +7,16 @@ import org.junit.Test;
 import ox.stackgame.stackmachine.exceptions.*;
 
 public class IntStackValueTest {
+    
+    @Test
+    public void testValueType(){
+        IntStackValue x = new IntStackValue(2);
+        IntStackValue y = new IntStackValue(2);
+        IntStackValue z = new IntStackValue(3);
+        assertEquals(x, y);
+        assertEquals(false, x==y);
+    }
+    
     @Test
     public void testAdd() throws TypeException {
         IntStackValue a = new IntStackValue(2);

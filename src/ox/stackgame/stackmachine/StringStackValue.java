@@ -47,8 +47,12 @@ public class StringStackValue extends StackValue<String> {
     public boolean equals(Object other) {
         if (other instanceof StackValue<?>) {
             StackValue<?> otherStackValue = (StackValue<?>) other;
-            return value.equals(otherStackValue);
+            return value.equals(otherStackValue); // TODO is this self referential?
         } else
             return false;
+    }
+
+    public int hashCode() {
+        return value.hashCode();
     }
 }

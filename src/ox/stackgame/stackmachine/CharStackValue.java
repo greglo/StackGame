@@ -98,10 +98,10 @@ public class CharStackValue extends StackValue<Character> {
 
     @Override
     public boolean equals(Object other) {
-        return false;
+        return (other instanceof CharStackValue) ? (this.charCode == ((CharStackValue)other).charCode) : false;
     }
 
-    public boolean equals(CharStackValue other){
-        return (charCode == other.charCode);
+    public int hashCode() {
+        return new Integer(charCode).hashCode();
     }
 }
