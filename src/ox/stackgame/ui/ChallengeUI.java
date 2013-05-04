@@ -4,13 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.util.*;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import ox.stackgame.challenge.AbstractChallenge;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachineListener;
@@ -83,16 +81,13 @@ public class ChallengeUI extends JPanel {
     
     private void checkMachineInstructions(StackMachine m){
         if (challengeMode.getChallenge() != null) {
-            AbstractChallenge c = challengeMode.getChallenge();
-            Map<String, Integer> iSet = c.instructionSet;
             
             System.out.println(new Instruction("const", new IntStackValue(1)).equals(new Instruction("const", new IntStackValue(1))));
             
-            System.out.println("Checking machine against challenge's instructionSet");
-            // go through whole program, ensure that it conforms
-            if (c.checkProgram(m.getInstructions())==false){
+            // check the program is allowed by the challenge
+            if (challengeMode.getChallenge().checkProgram(m.getInstructions())==false){
                 System.out.println("Program doesn't conform to Challenge's instructionSet");
-                eui.displayError("Your program doesn't use the allowed instructions");
+                eui.displayError("Your program must use only the allowed instructions");
             }
         }
     }

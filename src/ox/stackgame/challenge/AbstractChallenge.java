@@ -44,6 +44,8 @@ public abstract class AbstractChallenge {
     public Boolean checkProgram(List<Instruction> instructions){
         Map<String,Integer> used = new HashMap<String,Integer>();
         
+        System.out.println("Checking machine against challenge's instructionSet (checkProgram)");
+        
         // check each instruction
         for (Instruction i : instructions){
             String line = i.toString();

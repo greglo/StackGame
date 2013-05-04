@@ -5,7 +5,6 @@ import java.util.Map;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.exceptions.EmptyStackException;
-import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
  * A simple type of challenge that simply presents a problem and then allows the

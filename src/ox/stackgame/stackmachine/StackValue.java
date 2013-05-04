@@ -1,7 +1,6 @@
 package ox.stackgame.stackmachine;
 
 import ox.stackgame.stackmachine.exceptions.DivisionByZeroException;
-import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
 import ox.stackgame.stackmachine.exceptions.TypeException;
 
 

@@ -10,7 +10,6 @@ import java.util.Map;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.exceptions.EmptyStackException;
-import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
  * @author danfox

@@ -7,14 +7,11 @@ import java.util.*;
 
 import ox.stackgame.challenge.AbstractChallenge;
 import ox.stackgame.challenge.StackResultChallenge;
-import ox.stackgame.challenge.StackAndTapeChallenge;
 import ox.stackgame.challenge.TapeChallenge;
 import ox.stackgame.stackmachine.CharStackValue;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackValue;
-import ox.stackgame.stackmachine.StringStackValue;
 import ox.stackgame.stackmachine.exceptions.InvalidCharException;
-import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
  * Allows the user to create a program to solve a specific challenge (limited
@@ -69,7 +66,7 @@ public class ChallengeMode extends DesignMode {
             cl.add(new StackResultChallenge("hey it works with letters too",
                     "fo reals", new HashMap<String, Integer>() {
                         {
-                            put("const a", 1); // TODO check this is the correct way to use 
+                            put("const a", 1); 
                             put("const 1", 1);
                             put("add", 1);
                         }

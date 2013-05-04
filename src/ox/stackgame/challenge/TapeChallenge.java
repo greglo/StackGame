@@ -6,7 +6,6 @@ import java.util.Map;
 
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackValue;
-import ox.stackgame.stackmachine.instructions.Instruction;
 
 public class TapeChallenge extends AbstractChallenge {
     
