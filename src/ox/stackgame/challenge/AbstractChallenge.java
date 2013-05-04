@@ -14,11 +14,12 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  */
 public abstract class AbstractChallenge {
     public final String description;
+    public final String title;
     public final Map<Instruction, Integer> instructionSet;
 
     /**
      * Create a new challenge.
-     * 
+     * @param title
      * @param description
      *            Plaintext string explaining to the user what the aim is (e.g.
      *            Divide [expr] by [expr] with a stack size of x.) Could include
@@ -27,8 +28,9 @@ public abstract class AbstractChallenge {
      *            A map from instructions to the number of that instruction
      *            permitted in the challenge; -1 for infinite
      */
-    AbstractChallenge(String description,
+    AbstractChallenge(String title, String description,
             Map<Instruction, Integer> instructionSet) {
+        this.title = title;
         this.description = description;
         this.instructionSet = instructionSet;
     }

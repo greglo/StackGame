@@ -20,10 +20,10 @@ public class StackResultChallenge extends AbstractChallenge {
 
     private final StackValue<?> correctAnswer;
 
-    public StackResultChallenge(String description,
+    public StackResultChallenge(String title, String description,
             Map<Instruction, Integer> instructionSet,
             StackValue<?> correctAnswer) {
-        super(description, instructionSet);
+        super(title, description, instructionSet);
         this.correctAnswer = correctAnswer;
     }
 

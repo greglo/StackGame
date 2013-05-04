@@ -44,7 +44,7 @@ public class ChallengeMode extends DesignMode {
         HashMap<Instruction,Integer> instructionSet = new HashMap<Instruction,Integer>();
         instructionSet.put(new Instruction("const", new IntStackValue(1)), -1);
         instructionSet.put(new Instruction("add"), -1);
-        challengeList.add(new StackResultChallenge("Use only 'const 1' and 'add' instructions to produce 5 on the stack.",
+        challengeList.add(new StackResultChallenge("demo1", "Use only 'const 1' and 'add' instructions to produce 5 on the stack.",
                 instructionSet, new IntStackValue(5) ));
 
         HashMap<Instruction,Integer> iSet2 = new HashMap<Instruction,Integer>();
@@ -52,8 +52,10 @@ public class ChallengeMode extends DesignMode {
         iSet2.put(new Instruction("const", new IntStackValue(3)), -1);
         iSet2.put(new Instruction("add"), -1);
         iSet2.put(new Instruction("div"), -1);
-        challengeList.add(new StackResultChallenge("Combine 'const 3', 'const 4', 'add' and 'div' to produce 5 on the stack.",
+        challengeList.add(new StackResultChallenge("demo2", "Combine 'const 3', 'const 4', 'add' and 'div' to produce 5 on the stack.",
                 iSet2, new IntStackValue(5) ));
+        
+        
        
     }
 
