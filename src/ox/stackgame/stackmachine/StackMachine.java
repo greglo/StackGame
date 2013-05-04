@@ -341,6 +341,14 @@ public class StackMachine {
     public List<Instruction> getInstructions() {
         return this.instructions;
     }
+    
+    /**
+     * Should only be used by views. (Not for execution).
+     * @return the current tape
+     */
+    public List<StackValue<?>> getOutputTape(){
+        return this.output;
+    }
 
     /**
      * A wrapper for a Stack<StackValue<?>> which lets us throw

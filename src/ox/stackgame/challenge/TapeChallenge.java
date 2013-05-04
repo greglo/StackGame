@@ -24,10 +24,9 @@ public class TapeChallenge extends AbstractChallenge {
     }
 
     public Boolean hasSucceeded(StackMachine m) {
-        // TODO make stackMachine's output tape accessible.
-        //Boolean hs = m.getTape().equals(outputTape)
-        //message = hs ? "Congratulations" : "Not quite, try again";
-        return null;
+        Boolean hs = m.getOutputTape().equals(outputTape);
+        message = hs ? "Congratulations" : "Not quite, try again";
+        return hs;
     }
 
     public String getMessage() {
