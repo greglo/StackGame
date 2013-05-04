@@ -90,6 +90,10 @@ public class TapeUI extends JPanel {
             outputTape.add(mostRecent);
             repaint();
         }
+        
+        public void machineReset() {
+            resetTapes();
+        }
     };
 
     public TapeUI(StateManager m) {
