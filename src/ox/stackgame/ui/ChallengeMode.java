@@ -7,7 +7,7 @@ import java.util.*;
 
 import ox.stackgame.challenge.AbstractChallenge;
 import ox.stackgame.challenge.StackResultChallenge;
-import ox.stackgame.challenge.TapeChallenge;
+import ox.stackgame.challenge.StackAndTapeChallenge;
 import ox.stackgame.stackmachine.CharStackValue;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackValue;
@@ -46,6 +46,8 @@ public class ChallengeMode extends DesignMode {
     @SuppressWarnings("serial")
     public ChallengeMode() {
         List<AbstractChallenge> cl = challengeList;
+        
+        
 
         // simple Challenge
         cl.add(new StackResultChallenge(
@@ -93,7 +95,7 @@ public class ChallengeMode extends DesignMode {
                 }, new IntStackValue(17)));
         
         // tape challenge
-        cl.add(new TapeChallenge(
+        cl.add(new StackAndTapeChallenge(
                 "tapes",
                 "Our computer is bleeding edge and has TWO data streams for you to play with input and output. INPUT and OUTPUT read/write one value from/to their respective streams.",
                 new HashMap<Instruction, Integer>() {
@@ -112,9 +114,9 @@ public class ChallengeMode extends DesignMode {
                 }));
         
         // why don't we BRANCH OUT?!?!?!
-        cl.add(new TapeChallenge(
+        cl.add(new StackAndTapeChallenge(
                 "why don't we BRANCH OUT?!?!?!",
-                "Our computer is bleeding edge and has TWO data streams for you to play with input and output. INPUT and OUTPUT read/write one value from/to their respective streams.",
+                "Today, the input stream contains all the numbers from 1 to 100. Copy it all to output using four instructions.",
                 new HashMap<Instruction, Integer>() {
                     {
                         put(new Instruction("input"), 1);
@@ -126,17 +128,7 @@ public class ChallengeMode extends DesignMode {
                     {
                         add(new IntStackValue(1));
                     }
-                }, new ArrayList<StackValue<?>>() {
-                    {
-                        add(new IntStackValue(1));
-                    }
-                }));
-//
-//        ops: input, output, label, jii
-//        stack:
-//        in: [1..100]
-//        out: [1..100]
-//
+                }, null)); // TODO generate [1..100] tapes
 //        *Obviously if streaming was limited to the last level it would be beyond
 //        worthless, which is why we've helpfully provided an instruction to check if
 //        there's anything left on the input stream. This brings us to the idea of
@@ -150,11 +142,24 @@ public class ChallengeMode extends DesignMode {
 //        input
 //        output
 //        jii loop
-//
-//        Today, the input stream contains all the numbers from 1 to 100. Copy it all to
-//        output using four instructions.*
+
 
         // more branching
+        cl.add(new StackAndTapeChallenge(
+                "more branching",
+                "JNEZ/JEZ (jump [not] equal zero) are instructions that pop a value off the stack, compare it with 0 and branch if they are not equal/equal respectively. JUMP jumps all the time. Output all the numbers from 1 to 100. Hint: a == b is the same as ( a - b ) == 0",
+                new HashMap<Instruction, Integer>() {
+                    {
+                        put(new Instruction("const", new IntStackValue(1)), -1);
+                        put(new Instruction("const", new IntStackValue(100)), -1);
+                        put(new Instruction("add"), -1);
+                        put(new Instruction("sub"), -1);
+                        //put(new Instruction("jump"), -1);  //PROBLEMS
+                        //put(new Instruction("jez"), -1);
+                        //put(new Instruction("jnez"), -1);
+                        put(new Instruction("add"), -1);
+                    }
+                }, new IntStackValue(17), new ArrayList<StackValue<?>>(), null)); // TODO replace null with [1-100]
 //
 //        ops: const 1, const 100, add, sub, jump, jez, jnez, label, output, dup
 //        in:
@@ -178,6 +183,27 @@ public class ChallengeMode extends DesignMode {
 //        jump loop
 
         // storegame
+        cl.add(new StackAndTapeChallenge(
+                "storegame",
+                "Being caring and thoughtful the authors have made the extra effort to give users four boxes for storing intermediate results in. LOAD/STORE need to know which box you are accessing and otherwise do exactly what you think they do. Using this, take the pair of numbers from input and output them backwards.",
+                new HashMap<Instruction, Integer>() {
+                    {
+                        //put(new Instruction("load"), -1); // TODO fix unparameterised instructions
+                        //put(new Instruction("store"), -1);
+                        put(new Instruction("input"), -1);
+                        put(new Instruction("output"), -1);
+                    }
+                }, new IntStackValue(17), new ArrayList<StackValue<?>>() { // TODO Change to just Tape Challenge (unspec Stack Result)
+                    {
+                        add(new IntStackValue(1));
+                        add(new IntStackValue(2));
+                    }
+                }, new ArrayList<StackValue<?>>() {
+                    {
+                        add(new IntStackValue(2));
+                        add(new IntStackValue(1));
+                    }
+                }));
 //
 //        ops: load, store, input, output
 //        in: 1 2
