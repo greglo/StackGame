@@ -70,8 +70,10 @@ public class ChallengeUI extends JPanel {
             if (stateManager.getActiveMode() instanceof ChallengeMode && challengeMode.getChallenge() != null){
                 // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
                 if (machine.isRunning()==false) {
-                    String message = challengeMode.getChallenge().hasSucceeded(machine);
-                    System.out.println(message=="" ? "Congratulations" : message);
+                    Boolean hasSucceeded = challengeMode.getChallenge().hasSucceeded(machine);
+                    String message = challengeMode.getChallenge().getMessage();
+                    System.out.println(hasSucceeded ? "Passed" : "Failed");
+                    System.out.println(message);
                     // TODO display message
                 }
             }

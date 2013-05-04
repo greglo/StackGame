@@ -14,11 +14,13 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  * top value on the stack).
  * 
  * @author rgossiaux
+ * @author iamdanfox
  * 
  */
 public class StackResultChallenge extends AbstractChallenge {
 
     private final StackValue<?> correctAnswer;
+    private String message = "";
 
     public StackResultChallenge(String title, String description,
             Map<Instruction, Integer> instructionSet,
@@ -29,19 +31,25 @@ public class StackResultChallenge extends AbstractChallenge {
 
     @Override
     /**
-     * Returns "Your answer: x; correct answer: y" if the provided answer is wrong and "Empty stack" if stack is empty
+     * Returns the appropriate boolean, sets this.message appropriately.
      */
-    public String hasSucceeded(StackMachine m) {
+    public Boolean hasSucceeded(StackMachine m) {
         try {
             if (m.getStack().peek().equals(correctAnswer)) {
-                return "";
+                return true;
             } else {
-                return "Your answer: " + m.getStack().peek().toString()
+                message= "Your answer: " + m.getStack().peek().toString()
                         + "; correct answer: " + correctAnswer.toString();
+                return false;
             }
         } catch (EmptyStackException e) {
-            return "Empty stack";
+            message = "Empty stack"; // TODO make this more descriptive?
+            return false;
         }
+    }
+
+    public String getMessage() {
+        return this.message;
     }
 
 }

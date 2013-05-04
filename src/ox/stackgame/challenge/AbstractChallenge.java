@@ -19,6 +19,7 @@ public abstract class AbstractChallenge {
 
     /**
      * Create a new challenge.
+     * 
      * @param title
      * @param description
      *            Plaintext string explaining to the user what the aim is (e.g.
@@ -41,8 +42,15 @@ public abstract class AbstractChallenge {
      * 
      * @param m
      *            a StackMachine to test.
-     * @return "" if the machine has passed, a message otherwise. Note, the
-     *         failure message could include a helpful tip.
+     * @return true if the machine has passed, false otherwise.
      */
-    public abstract String hasSucceeded(StackMachine m);
+    public abstract Boolean hasSucceeded(StackMachine m);
+
+    /**
+     * 
+     * @return a message to be displayed by the UI. Either a helpful tip when
+     *         the user fails or perhaps a congratulatory message if the user
+     *         gets the optimal program
+     */
+    public abstract String getMessage();
 }
