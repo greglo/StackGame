@@ -9,8 +9,11 @@ import ox.stackgame.stackmachine.*;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 /**
- * @author rgossiaux A representation of the concept of a 'challenge', involving
- *         instructions, success conditions etc.
+ * A representation of the concept of a 'challenge', involving instructions,
+ * success conditions etc.
+ * 
+ * @author rgossiaux
+ * @author iamdanfox
  */
 public abstract class AbstractChallenge {
     public final String description;
