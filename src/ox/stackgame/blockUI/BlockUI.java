@@ -201,6 +201,10 @@ public class BlockUI extends JPanel {
             
         }
 
+        public void programCounterChanged(int line, Instruction instruction) {
+            repaint();
+        }
+
     }
 
     /** Display error messages */
