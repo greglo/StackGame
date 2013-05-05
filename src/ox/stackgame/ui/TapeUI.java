@@ -138,7 +138,11 @@ public class TapeUI extends JPanel {
                     try {
                         addInput(new CharStackValue(s.charAt(0)));
                     } catch (InvalidCharException f) {
+                        eui.displayError(s + " is not a valid stack value.");
                     }
+                }
+                else {
+                    eui.displayError(s + " is not a valid stack value.");
                 }
             }
         }
@@ -149,6 +153,7 @@ public class TapeUI extends JPanel {
         //The repaint method updates the addInputBoxX (needed for mouse handler), since
         //we need to know the width of the string to do so
         inputTape.add(i);
+        eui.clearErrors();
         repaint();
     }
 
