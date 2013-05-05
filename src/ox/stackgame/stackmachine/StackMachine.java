@@ -166,7 +166,7 @@ public class StackMachine {
         if (0 <= address && address < STORE_SIZE)
             return store[address];
         else
-            throw new InvalidAddressException(address, programCounter);
+            throw new InvalidAddressException(address, getLine());
     }
 
     /**
@@ -184,7 +184,7 @@ public class StackMachine {
             for (StackMachineListener l : listeners)
                 l.storeChanged(address);
         } else
-            throw new InvalidAddressException(address, programCounter);
+            throw new InvalidAddressException(address, getLine());
     }
 
     public List<StackValue<?>> getInput() {
@@ -208,7 +208,7 @@ public class StackMachine {
                 l.inputConsumed(inputIndex);
             return value;
         } else
-            throw new EmptyInputException(programCounter);
+            throw new EmptyInputException(getLine());
     }
 
     /**
@@ -282,7 +282,7 @@ public class StackMachine {
         if (line > -1)
             return line;
         else
-            throw new NoSuchLabelException(identifier, programCounter);
+            throw new NoSuchLabelException(identifier, getLine());
     }
 
     /**
@@ -363,6 +363,12 @@ public class StackMachine {
         return instructions.get( pc );
     }
 
+    public int getLine() {
+        Instruction instruction = instructions.get( programCounter );
+
+        return 1 + ( instruction.line == -1 ? programCounter : instruction.line );
+    }
+
     /**
      * Should only be used by views. (Not for execution).
      * 
@@ -389,7 +395,7 @@ public class StackMachine {
             if (!internalStack.isEmpty())
                 return internalStack.peek();
             else
-                throw new EmptyStackException(programCounter);
+                throw new EmptyStackException(getLine());
         }
 
         public StackValue<?> pop() throws EmptyStackException {
@@ -403,7 +409,7 @@ public class StackMachine {
             if (internalStack.size() < STACK_SIZE)
                 internalStack.push(val);
             else
-                throw new FullStackException(programCounter);
+                throw new FullStackException(getLine());
 
             notifyListeners();
         }
