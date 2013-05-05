@@ -265,6 +265,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
                     //Get the y'th key... ugly
                     List<String> keyList = new ArrayList<String>(availableInstructions.keySet());
                     java.util.Collections.sort(keyList);
+                    manager.setInstruction(keyList.get(y));
 
                     //highlight the selected item
                     selected = y;           

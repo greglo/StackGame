@@ -92,6 +92,7 @@ public class BlockUI extends JPanel {
         currentEventHandler = editHandler;
         this.selectionManager = new SelectionManager();
         this.blockManager = blockManager;
+        blockManager.addListener(generalListener);
         this.stateManager = stateManager;
 
         updateCurrentStackMachine();
@@ -121,6 +122,7 @@ public class BlockUI extends JPanel {
     }
 
     protected void updateEventHandler() {
+        System.out.println("Handler is being updated: " + blockManager.getMode());
         if (currentStackMachine == null)
             currentEventHandler = NullHandler.INSTANCE;
         else {
@@ -142,7 +144,6 @@ public class BlockUI extends JPanel {
      * Model
      */
     // basically, whatever relevant happens, repaint.
-    // TODO: listen to stackMachine change
     protected class GeneralListener implements StackMachineListener, SelectionManagerListener, BlockManagerListener {
 
         // BlockManagerListener
@@ -153,6 +154,7 @@ public class BlockUI extends JPanel {
         }
 
         public void modeChanged(String s) {
+            updateEventHandler();
             repaint();
         }
 
@@ -187,13 +189,11 @@ public class BlockUI extends JPanel {
         public void stackChanged(EvaluationStack stack) {
         }
 
-        @Override
         public void outputChanged(Iterator<StackValue<?>> outputs) {
         }
 
-        @Override
         public void machineReset() {
-            // TODO Auto-generated method stub
+// TODO Auto-generated method stub
             
         }
 
