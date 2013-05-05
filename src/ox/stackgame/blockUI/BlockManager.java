@@ -14,8 +14,10 @@ public class BlockManager {
 	private String mode = EDIT;
 	
 	public String getMode(){return mode;}
+	
 	public void setMode(String mode){
 		assert mode==DELETE || mode==EDIT || mode==CREATE;
+		System.out.println("BlockManager mode: " + mode);
 		this.mode=mode;
 		for (BlockManagerListener l : listeners)
 			l.modeChanged(mode);
@@ -23,10 +25,10 @@ public class BlockManager {
 	
 	
 	//active instruction
-//	private String instruction = null;
 	private String instruction = null;
 
 	public String getInstruction(){return instruction;}
+	
 	public void setInstruction(String instruction){
 		this.instruction=instruction;
 		for (BlockManagerListener l : listeners)
@@ -65,16 +67,4 @@ public class BlockManager {
 
 	}
 	
-    //very simple, self-explanatory structure
-    //note that if instruction is null, the user will be prompted for arguments for the instruction
-/*    public static class NameOrInstruction{
-        public String name;
-        public Instruction instruction;
-        public NameOrInstruction(Instruction instruction, String name){
-           this.instruction = instruction;
-           this.name = name;
-        }
-    }*/
-
-
 }
