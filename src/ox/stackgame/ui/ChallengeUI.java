@@ -188,7 +188,7 @@ public class ChallengeUI extends JPanel {
                         "<td><code>%s</code></td>" +
                         "<td style='font-weight: bold; text-align: right'><code>%s</code></td>" +
                     "</tr>"
-                , line, count == null ? "" : ( "x" + count ) ) );
+                , line, count == null ? "\u221e" : ( "x" + count ) ) );
             }
 
             sb.append(
