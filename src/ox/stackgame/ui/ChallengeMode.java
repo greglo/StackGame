@@ -38,6 +38,7 @@ public class ChallengeMode extends DesignMode {
     }
 
     public void setChallenge(AbstractChallenge challenge) {
+        System.out.println("Set current challenge: "+challenge.title);
         this.currChallenge = challenge;
     }
 
