@@ -7,9 +7,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
 
@@ -34,6 +36,8 @@ public class TapeUI extends JPanel {
 
     private List<StackValue<?>> inputTape;
     private List<StackValue<?>> outputTape;
+    private Map<StackValue<?>, Integer> sizeMap; // Maps values to the width of
+                                                 // the blocks they create
     private final StackMachine machine;
     private static final int boxSize = 20;
     private static final int padding = 10;
@@ -44,7 +48,7 @@ public class TapeUI extends JPanel {
     private boolean editable = true;
     private ErrorUI eui;
 
-     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
+    private ModeVisitor modeActivationVisitor = new ModeVisitor() {
         // TODO make input tape editable on DesignMode visitors
 
         public void visit(RunMode m) {
@@ -114,10 +118,25 @@ public class TapeUI extends JPanel {
         this.setSize(new Dimension(750 - 2 * ApplicationFrame.p, boxSize * 2
                 + 4 * padding));
         
+        sizeMap = new HashMap<StackValue<?>, Integer>();
+
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (editable && addInputBoxX <= e.getX() && e.getX() <= addInputBoxX + boxSize && padding <= e.getY() && e.getY() < padding + boxSize) {
-                    getInput();
+                if (editable && padding <= e.getY()
+                        && e.getY() < padding + boxSize) {
+                    int x = padding;
+                    int i = 0;
+                    for (StackValue<?> v : inputTape) {
+                        if (x <= e.getX() && e.getX() <= x + sizeMap.get(v)) {
+                            getInput(i);
+                            break;
+                        }
+                        x += padding + sizeMap.get(v);
+                        ++i;
+                    }
+                    if (addInputBoxX <= e.getX()
+                            && e.getX() <= addInputBoxX + boxSize)
+                        getInput(-1);
                 }
             }
         });
@@ -126,36 +145,47 @@ public class TapeUI extends JPanel {
         // colours for input/output
 
     }
-    
 
-    protected void getInput() {
-        String s = (String) JOptionPane.showInputDialog(this,
-                "Enter an input value to be added: ", "Input",
-                JOptionPane.PLAIN_MESSAGE, null, null, null);
+    protected void getInput(int i) {
+        String s;
+        if (i == -1) {
+            s = (String) JOptionPane.showInputDialog(this,
+                    "Enter an input value to be added: ", "Input",
+                    JOptionPane.PLAIN_MESSAGE, null, null, null);
+        } else {
+            s = (String) JOptionPane.showInputDialog(this,
+                    "Enter a new value: ", "Edit", JOptionPane.PLAIN_MESSAGE,
+                    null, null, null);
+        }
         if (s != null && s.length() > 0) {
             try {
                 int x = Integer.parseInt(s);
-                addInput(new IntStackValue(x));
-            } catch(NumberFormatException e) {
+                addInput(new IntStackValue(x), i);
+            } catch (NumberFormatException e) {
                 if (s.length() == 1) {
                     try {
-                        addInput(new CharStackValue(s.charAt(0)));
+                        addInput(new CharStackValue(s.charAt(0)), i);
                     } catch (InvalidCharException f) {
-                        eui.displayError(s + " is not a valid stack value.");
+                        eui.displayError("\"" + s + "\" is not a valid stack value.");
                     }
-                }
-                else {
-                    eui.displayError(s + " is not a valid stack value.");
+                } else {
+                    eui.displayError("\"" + s + "\" is not a valid stack value.");
                 }
             }
         }
     }
-    
-    protected void addInput(StackValue<?> i) {
-        //This stuff is magic so watch out
-        //The repaint method updates the addInputBoxX (needed for mouse handler), since
-        //we need to know the width of the string to do so
-        inputTape.add(i);
+
+    protected void addInput(StackValue<?> i, int loc) {
+        // This stuff is magic so watch out
+        // The repaint method updates the addInputBoxX (needed for mouse
+        // handler), since
+        // we need to know the width of the string to do so
+        if (loc == -1) {
+            inputTape.add(i);
+        } else {
+            inputTape.remove(loc);
+            inputTape.add(loc, i);
+        }
         eui.clearErrors();
         repaint();
     }
@@ -178,8 +208,11 @@ public class TapeUI extends JPanel {
 
         int x = padding;
         for (StackValue<?> v : inputTape) {
-            int thisWidth = g.getFontMetrics().stringWidth(v.toString()) + 2
-                    * boxSize / 3;
+            if (!sizeMap.containsKey(v)) {
+                sizeMap.put(v, g.getFontMetrics().stringWidth(v.toString()) + 2
+                        * boxSize / 3);
+            }
+            int thisWidth = sizeMap.get(v);
 
             g.setColor(Color.gray);
             g.fillRect(x, padding, thisWidth, boxSize);
@@ -191,24 +224,29 @@ public class TapeUI extends JPanel {
 
             x += thisWidth + padding;
         }
-        //dumb place for this but w/e
+        // dumb place for this but w/e
         addInputBoxX = x;
-        
+
         // Draw input box
         if (editable) {
             g.setColor(Color.gray);
             g.drawLine(addInputBoxX, padding, addInputBoxX + boxSize, padding);
             g.drawLine(addInputBoxX, padding, addInputBoxX, padding + boxSize);
-            g.drawLine(addInputBoxX + boxSize, padding, addInputBoxX + boxSize, boxSize + padding);
-            g.drawLine(addInputBoxX, boxSize + padding, addInputBoxX + boxSize, boxSize + padding);
+            g.drawLine(addInputBoxX + boxSize, padding, addInputBoxX + boxSize,
+                    boxSize + padding);
+            g.drawLine(addInputBoxX, boxSize + padding, addInputBoxX + boxSize,
+                    boxSize + padding);
         }
 
         // Draw output tape
 
         int j = padding;
         for (StackValue<?> v : outputTape) {
-            int thisWidth = g.getFontMetrics().stringWidth(v.toString()) + 2
-                    * boxSize / 3;
+            if (!sizeMap.containsKey(v)) {
+                sizeMap.put(v, g.getFontMetrics().stringWidth(v.toString()) + 2
+                        * boxSize / 3);
+            }
+            int thisWidth = sizeMap.get(v);
 
             g.setColor(Color.gray);
             g.fillRect(j, padding * 3 + boxSize, thisWidth, boxSize);
