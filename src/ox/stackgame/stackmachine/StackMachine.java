@@ -82,6 +82,17 @@ public class StackMachine {
     }
 
     /**
+     * Load a new list on stack values as the program input
+     * @param input
+     */
+    public void loadInput(List<StackValue<?>> input) {
+        if (input == null)
+            input = new ArrayList<StackValue<?>>();
+        this.input = input;
+        reset();
+    }
+
+    /**
      * Load a new program into the machine and reset it
      * 
      * @param instructions
@@ -169,7 +180,7 @@ public class StackMachine {
         } else
             throw new InvalidAddressException(address, programCounter);
     }
-    
+
     public List<StackValue<?>> getInput() {
         return input;
     }
@@ -341,12 +352,13 @@ public class StackMachine {
     public List<Instruction> getInstructions() {
         return this.instructions;
     }
-    
+
     /**
      * Should only be used by views. (Not for execution).
+     * 
      * @return the current tape
      */
-    public List<StackValue<?>> getOutputTape(){
+    public List<StackValue<?>> getOutputTape() {
         return this.output;
     }
 
