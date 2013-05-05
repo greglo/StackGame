@@ -48,7 +48,10 @@ public class ChallengeUI extends JPanel {
     private ErrorUI eui;
     
     // appearance stuff
-    private final CardLayout cardLayout =new CardLayout(); 
+    private final CardLayout cardLayout =new CardLayout();
+    private final SelectorPanel selectorPanel;
+    private final DetailPanel detailPanel;
+    
 
     public ChallengeUI(final StateManager m, final ChallengeMode cm, ErrorUI eui) {
         m.stackMachine.addListener(l);
@@ -63,22 +66,10 @@ public class ChallengeUI extends JPanel {
         // appearance
         this.setLayout(cardLayout);
         this.setSize(ApplicationFrame.LEFT_PANEL_WIDTH, ApplicationFrame.h);
-        
-        this.add(new SelectorPanel(m, cm), "selectorPanel");      
-        this.add(new DetailPanel(), "detailPanel");
-        
-        
-        
-        
-        
-//        this.setLayout(new FlowLayout());
-//        this.setBackground(Color.white);
-//        JLabel l = new JLabel("Challenge");
-//        l.setFont(new Font("Helvetica Neue", Font.BOLD, 23));
-//        l.setForeground(new Color(66, 66, 66));
-//        this.add(l);
-//        descLabel = new JLabel();
-//        this.add(descLabel);
+        selectorPanel =new SelectorPanel(); 
+        this.add(selectorPanel, "selectorPanel");     
+        detailPanel = new DetailPanel();
+        this.add(detailPanel, "detailPanel");
         
         this.setVisible(true);
     }
@@ -87,7 +78,7 @@ public class ChallengeUI extends JPanel {
         final Color listItemBg =  new Color(250,250,250);
         final Color listItemBgHover =  new Color(250,210,250);
 
-        SelectorPanel(final StateManager stateManager, final ChallengeMode challengeMode){
+        SelectorPanel(){
             this.setBackground(Color.white);
             
             // title
@@ -231,8 +222,8 @@ public class ChallengeUI extends JPanel {
             //ChallengeUI.this.setVisible(true);
             
             // display detail panel
+            detailPanel.updateFromChallenge(challengeMode.getChallenge());
             cardLayout.show(ChallengeUI.this,"detailPanel");
-            
         }
 
         public void visit(FreeDesignMode m) {
