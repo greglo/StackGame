@@ -25,8 +25,8 @@ import ox.stackgame.stackmachine.StackValue;
 @SuppressWarnings("serial")
 public class StackUI extends JPanel {
     private final int TEXT_HEIGHT = 30;
-    private final int BLOCK_WIDTH = ApplicationFrame.RIGHT_PANEL_WIDTH - 30;
-    private final int BLOCK_HEIGHT = 23;
+    private final int BLOCK_WIDTH = ApplicationFrame.RIGHT_PANEL_WIDTH - 2 * ApplicationFrame.p;
+    private final int BLOCK_HEIGHT = 33;
     private final int PADDING = 5;
 
     private EvaluationStack stack;
@@ -64,8 +64,8 @@ public class StackUI extends JPanel {
         }
 
         Graphics2D g = (Graphics2D) graphics;
-        g.setFont(new Font(g.getFont().getName(), Font.PLAIN, 13));
-        
+        g.setFont(new Font(g.getFont().getName(), Font.PLAIN, 20));
+
         int i = 0;
         for (StackValue<?> v : stack) {
             int y = (i) * (BLOCK_HEIGHT + PADDING) + TEXT_HEIGHT + 10;
@@ -81,7 +81,6 @@ public class StackUI extends JPanel {
             int valueY = ((BLOCK_HEIGHT - (int) valueBox.getHeight()) / 2);
             g.setColor(new Color(51, 68, 46));
             g.drawString(valueString, valueX, y + valueY + g.getFontMetrics().getAscent());
-
 
             i++;
         }
