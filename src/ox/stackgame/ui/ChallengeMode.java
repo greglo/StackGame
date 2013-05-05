@@ -46,9 +46,9 @@ public class ChallengeMode extends DesignMode {
     public ChallengeMode() {
         List<AbstractChallenge> cl = challengeList;
 
-        ArrayList<StackValue<?>> tape1to100 = new ArrayList<StackValue<?>>() {
+        ArrayList<StackValue<?>> tape1to10 = new ArrayList<StackValue<?>>() {
             {
-                for (int i = 1; i <= 100; i++)
+                for (int i = 1; i <= 10; i++)
                     add(new IntStackValue(i));
             }
         };
@@ -87,7 +87,7 @@ public class ChallengeMode extends DesignMode {
                     }
                 }, new IntStackValue(6)));
 
-        cl.add(new TapeChallenge("The tape",
+        cl.add(new TapeChallenge("The Tape",
                 "The machine has two tapes you can use, an input tape and an output tape.<br/>"
                 + "The input tape is used to pass information to your program. The INPUT instruction will take the first value from the input tape, and push it on the stack."
                 + "<br/>The output tape starts empty. The OUTPUT instruction will pop a value off the stack, and append it to the output tape."
@@ -108,9 +108,11 @@ public class ChallengeMode extends DesignMode {
                     }
                 }));
 
-        // why don't we BRANCH OUT?!?!?!
-        cl.add(new TapeChallenge("why don't we BRANCH OUT?!?!?!",
-                "Today, the input stream contains all the numbers from 1 to 100. Copy it all to output using four instructions.",
+        cl.add(new TapeChallenge("Branching and Loops",
+                "The LABEL <name> instruction does nothing but name a point in a program. You may JUMP to this point in the program from anywhere using one of the branch instructions."
+                + "<br/>JII <name> jumps to the appropriate label if there is something on the input tape."
+                + "<br/>"
+                + "<br/>Copy the numbers 1-10 from the input tape to the output tape, using only 4 instructions.",
                 new HashMap<String, Integer>() {
                     {
                         put("input", 1);
@@ -118,77 +120,11 @@ public class ChallengeMode extends DesignMode {
                         put("jii *", 1);
                         put("label *", 1);
                     }
-                }, new ArrayList<StackValue<?>>() {
-                    {
-                        add(new IntStackValue(1));
-                    }
-                }, tape1to100));
-        // *Obviously if streaming was limited to the last level it would be
-        // beyond
-        // worthless, which is why we've helpfully provided an instruction to
-        // check if
-        // there's anything left on the input stream. This brings us to the idea
-        // of
-        // branching. There are several instructions which will test something
-        // about the
-        // machine and make the program jump to a "label" on success, or fall
-        // through to
-        // the next instruction if it fails. The one we are introducing here is
-        // JII (jump
-        // if input), which will jump to a given label if there is anything left
-        // on the
-        // input stream.
-        //
-        // label loop
-        // input
-        // output
-        // jii loop
+                }, tape1to10, tape1to10));
 
-        // more branching
         cl.add(new TapeChallenge(
-                "more branching",
-                "JNEZ/JEZ (jump [not] equal zero) are instructions that pop a value off the stack, compare it with 0 and branch if they are not equal/equal respectively. JUMP jumps all the time. Output all the numbers from 1 to 100. Hint: a == b is the same as ( a - b ) == 0",
-                new HashMap<String, Integer>() {
-                    {
-                        put("const 1", null);
-                        put("const 100", null);
-                        put("add", null);
-                        put("sub", null);
-                        put("jump *", null); // PROBLEMS
-                        put("jez *", null);
-                        put("jnez *", null);
-                        put("add", null);
-                    }
-                }, new ArrayList<StackValue<?>>(), tape1to100));
-        //
-        // ops: const 1, const 100, add, sub, jump, jez, jnez, label, output,
-        // dup
-        // in:
-        // out: [1..100]
-        //
-        // *JNEZ/JEZ (jump [not] equal zero) are instructions that pop a value
-        // off the
-        // stack, compare it with 0 and branch if they are not equal/equal
-        // respectively.
-        // JUMP jumps all the time. Output all the numbers from 1 to 100.
-        //
-        // Hint: a == b is the same as ( a - b ) == 0*
-        //
-        // const 1
-        // label loop
-        // dup
-        // const 100
-        // sub
-        // jez end
-        // output
-        // const 1
-        // add
-        // jump loop
-
-        // storegame
-        cl.add(new TapeChallenge(
-                "storegame",
-                "Being caring and thoughtful the authors have made the extra effort to give users four boxes for storing intermediate results in. LOAD/STORE need to know which box you are accessing and otherwise do exactly what you think they do. Using this, take the pair of numbers from input and output them backwards.",
+                "Store / Memory",
+                "Being caring and thoughtful, the authors have given users four boxes for storing intermediate results. <br/><br/>LOAD/STORE need to know which box you are accessing, but otherwise do exactly what you'd expect. <br/><br/>Take the pair of numbers from input and output them backwards.",
                 new HashMap<String, Integer>() {
                     {
                         put("load *", null);
@@ -207,27 +143,71 @@ public class ChallengeMode extends DesignMode {
                         add(new IntStackValue(1));
                     }
                 }));
-        //
-        // ops: load, store, input, output
-        // in: 1 2
-        // out: 2 1
-        //
-        // Being caring and thoughtful the authors have made the extra effort to
-        // give
-        // users four boxes for storing intermediate results in. LOAD/STORE need
-        // to know
-        // which box you are accessing and otherwise do exactly what you think
-        // they do.
-        // Using this, take the pair of numbers from input and output them
-        // backwards.
-        //
-        // input
-        // store 1
-        // input
-        // output
-        // load 1
-        // output
-
+        
+        cl.add(new TapeChallenge(
+                "Further Branching",
+                "JNEZ/JEZ (jump [not] equal zero) are instructions that pop a value off the stack, compare it with 0 and branch if they are not equal/equal respectively. " +
+                "<br/><br/>Output all the numbers from 1 to 10 with the following instructions:<br>(Hint: a == b is the same as ( a - b ) == 0",
+                new HashMap<String, Integer>() {
+                    {
+                        put("const 1", null);
+                        put("const 10", null);
+                        put("add", null);
+                        put("sub", null);
+                        put("jnez *", null);
+                        put("load *", null);
+                        put("store *", null);
+                        put("label *", null);
+                        put("output", null);
+                    }
+                }, new ArrayList<StackValue<?>>(), tape1to10));
+        
+        cl.add(new TapeChallenge(
+                "ROT13",
+                "One of the most secure encryption methods today is ROT13. To do ROT13 encryption, you ADD 13 to each character in your plaintext to get a ciphertext.<br/>Incredibly, you do exactly the same to decrypt ciphetext.<br/><br/>Implement ROT13 to decrypt the secret message on the input tape.",
+                new HashMap<String, Integer>() {
+                    {
+                        put("jii *", null);
+                        put("const *", null);
+                        put("add", null);
+                        put("label *", null);
+                        put("input", null);
+                        put("output", null);
+                    }
+                }, new ArrayList<StackValue<?>>() {
+                    {
+                        try {
+                            add(new CharStackValue(new Character('T')));
+                            add(new CharStackValue(new Character('E')));
+                            add(new CharStackValue(new Character('R')));
+                            add(new CharStackValue(new Character('T')));
+                            add(new CharStackValue(new Character('E')));
+                            add(new CharStackValue(new Character('H')));
+                            add(new CharStackValue(new Character('Y')));
+                            add(new CharStackValue(new Character('R')));
+                            add(new CharStackValue(new Character('F')));
+                        }
+                        catch (InvalidCharException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new ArrayList<StackValue<?>>() {
+                    {
+                        try {
+                            add(new CharStackValue(new Character('G')));
+                            add(new CharStackValue(new Character('R')));
+                            add(new CharStackValue(new Character('E')));
+                            add(new CharStackValue(new Character('G')));
+                            add(new CharStackValue(new Character('R')));
+                            add(new CharStackValue(new Character('U')));
+                            add(new CharStackValue(new Character('L')));
+                            add(new CharStackValue(new Character('E')));
+                            add(new CharStackValue(new Character('S')));
+                        }
+                        catch (InvalidCharException e) {
+                            e.printStackTrace();
+                        }                    }
+                }));
+    }
     }
 
-}
