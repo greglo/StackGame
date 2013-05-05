@@ -49,7 +49,7 @@ public class ApplicationFrame {
         // initialise modes
         StateManager modeManager = new StateManager(machine);
         RunMode runMode = new RunMode(machine,eui);
-        Mode freeDesignMode = new FreeDesignMode();
+        FreeDesignMode freeDesignMode = new FreeDesignMode();
         ChallengeMode challengeMode = new ChallengeMode();
         challengeMode.setChallenge(ChallengeMode.challengeList.get(0));
 
@@ -69,7 +69,7 @@ public class ApplicationFrame {
         
         // ChallengeUI
         {
-            ChallengeUI u = new ChallengeUI(modeManager, challengeMode, eui);
+            ChallengeUI u = new ChallengeUI(modeManager, freeDesignMode, challengeMode, eui);
             u.setLocation(0, 0);
             contentPane.add(u, new Integer(0));
         }

@@ -7,9 +7,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -44,6 +47,7 @@ public class ChallengeUI extends JPanel {
     //protected JLabel descLabel;
     private StackMachine machine;
     private final StateManager stateManager;
+    private final FreeDesignMode freeDesignMode;
     private final ChallengeMode challengeMode;
     private ErrorUI eui;
     
@@ -53,11 +57,12 @@ public class ChallengeUI extends JPanel {
     private final DetailPanel detailPanel;
     
 
-    public ChallengeUI(final StateManager m, final ChallengeMode cm, ErrorUI eui) {
+    public ChallengeUI(final StateManager m, final FreeDesignMode freeDesignMode, final ChallengeMode cm, ErrorUI eui) {
         m.stackMachine.addListener(l);
         this.machine = m.stackMachine;
         this.stateManager = m;
         this.challengeMode = cm;
+        this.freeDesignMode = freeDesignMode;
         this.eui = eui;
 
         m.registerModeActivationVisitor(modeActivationVisitor);
@@ -172,6 +177,14 @@ public class ChallengeUI extends JPanel {
                 setBorder(new EmptyBorder(15, 15, 15, 15));
             }});
             this.add(allowedInstructions);
+            
+            this.add(new JButton("Back"){{
+                addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent e) {
+                        stateManager.setActiveMode(freeDesignMode);
+                    }
+                });
+            }});
         }
         
         void updateFromChallenge(AbstractChallenge c){
