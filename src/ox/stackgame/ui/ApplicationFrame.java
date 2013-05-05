@@ -119,7 +119,7 @@ public class ApplicationFrame {
             contentPane.add(eui, new Integer(1));
         }
 
-        modeManager.setActiveMode(challengeMode);
+        modeManager.setActiveMode(freeDesignMode);
 
         frame.setVisible(true);
     }
