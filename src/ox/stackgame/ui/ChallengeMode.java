@@ -59,7 +59,7 @@ public class ChallengeMode extends DesignMode {
                 + "<br/>Use a CONST instruction to push 1 onto the stack",
                 new HashMap<String, Integer>() {
                     {
-                        put("const", 1);
+                        put("const *", 1);
                     }
                 }, new IntStackValue(1)));
         
@@ -76,7 +76,7 @@ public class ChallengeMode extends DesignMode {
                 }, new IntStackValue(3)));
 
         cl.add(new StackResultChallenge("Reverse Polish",
-                "There is no way to bracket your programs, so find a way to compute (1 + 2) * 3 = 6 on the stack",
+                "There is no way to bracket your programs, so find a way to compute 1 + (2 * 3) = 7 on the stack",
                 new HashMap<String, Integer>() {
                     {
                         put("const 1", 1);
@@ -88,7 +88,11 @@ public class ChallengeMode extends DesignMode {
                 }, new IntStackValue(6)));
 
         cl.add(new TapeChallenge("The tape",
-                "Our computer is bleeding edge and has TWO data streams for you to play with input and output. INPUT and OUTPUT read/write one value from/to their respective streams.",
+                "The machine has two tapes you can use, an input tape and an output tape.<br/>"
+                + "The input tape is used to pass information to your program. The INPUT instruction will take the first value from the input tape, and push it on the stack."
+                + "<br/>The output tape starts empty. The OUTPUT instruction will pop a value off the stack, and append it to the output tape."
+                + "<br/>"
+                + "<br/>Use an INPUT and an OUTPUT instruction to move 1 from the input tape to the output tape",
                 new HashMap<String, Integer>() {
                     {
                         put("input", 1);
