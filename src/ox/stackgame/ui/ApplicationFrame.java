@@ -12,7 +12,6 @@ import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 public class ApplicationFrame {
-    final static int MAGIC = 13;
     final static int h = 590;
     final static int p = 15;
     final static int RIGHT_PANEL_WIDTH = 200;
@@ -109,7 +108,7 @@ public class ApplicationFrame {
         // TapeUI
         
         TapeUI tape = new TapeUI(modeManager, eui);
-        tape.setLocation(LEFT_PANEL_WIDTH , h - p - TAPE_HEIGHT - MAGIC);
+        tape.setLocation(LEFT_PANEL_WIDTH , h - TAPE_HEIGHT );
         contentPane.add(tape, new Integer(1));// layer 1 is on top of 0
     
         
@@ -120,7 +119,7 @@ public class ApplicationFrame {
         }
 
         modeManager.setActiveMode(freeDesignMode);
-
+        frame.pack();
         frame.setVisible(true);
     }
 
