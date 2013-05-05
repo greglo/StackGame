@@ -138,44 +138,17 @@ public class ChallengeUI extends JPanel {
     }
     
     private class DetailPanel extends JPanel{
-        JLabel titleLabel = new JLabel("Title"){{
-            setFont(new Font("Helvetica Neue", Font.BOLD, 20));
-            setForeground(new Color(66, 66, 66));  
-            setBorder(new EmptyBorder(15, 15, 15, 15));
-        }};
-        JLabel descLabel = new JLabel(){{ 
-            setText("<html>An arithmetic instruction <b>pops</b> two values from the stack, performs some operation and pushes the result back. An example of such an instruction is ADD, which does exactly what you think it does. CONST simply pushes the value after it onto the stack.</html>");
+        JLabel challengeLabel = new JLabel("Title"){{
             setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             setForeground(new Color(66, 66, 66));  
             setBorder(new EmptyBorder(15, 15, 15, 15));
-            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,250));
-            setBackground(new Color(245,245,245));
-            setOpaque(true);
+            setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH, 540));
             setVerticalAlignment(JLabel.TOP);
-            setVerticalTextPosition(JLabel.TOP);
-        }};
-        JLabel allowedInstructions = new JLabel(){{ // detailPanel allowed must remain up to date.
-            setText("<html>lakshdkahskdjklsajd</html>");
-            setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
-            setForeground(new Color(66, 66, 66));  
-            setBorder(new EmptyBorder(15, 15, 15, 15));
-            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,150));
-            setBackground(Color.white);
-            setOpaque(true);
-            setVerticalAlignment(JLabel.TOP);
-            setVerticalTextPosition(JLabel.TOP);
         }};
         
         DetailPanel(){
             this.setBackground(Color.white);
-            this.add(titleLabel);
-            this.add(descLabel);
-            this.add(new JLabel("Allowed Instructions:"){{
-                setFont(new Font("Helvetica Neue", Font.BOLD, 14));
-                setForeground(new Color(66, 66, 66));  
-                setBorder(new EmptyBorder(15, 15, 0, 15));
-            }});
-            this.add(allowedInstructions);
+            this.add(challengeLabel);
             this.add(new JButton("Choose Challenge"){{
                 addActionListener(new ActionListener(){
                     public void actionPerformed(ActionEvent e) {
@@ -192,18 +165,38 @@ public class ChallengeUI extends JPanel {
                     }
                 });
             }});
-            
         }
         
         void updateFromChallenge(AbstractChallenge c){
-            titleLabel.setText(c.title);
-            descLabel.setText("<html>"+c.description+"</html>");
+            String text = String.format(
+                "<html>" +
+                    "<div style='font-size: 20pt; font-weight: bold; padding-bottom: 8px'>%s</div>" +
+                    "%s" +
+
+                    "<div style='font-size: 16pt; font-weight: bold; padding: 8px 0'>Allowed Instructions</div>" +
+                    "<table style='background: #eeeeee; width: 170px' cellspacing='0' cellpadding='0'>"
+            , c.title, c.description );
+
             StringBuilder sb = new StringBuilder();
+            sb.append( text );
+
             for (String line : c.instructionSet.keySet()){
-                Integer limits = c.instructionSet.get(line);
-                sb.append("<code style='background:#eeeeee;'>"+line+"</code> "+(limits==null ? "" : "x "+c.instructionSet.get(line))+"<br />");
+                Integer count = c.instructionSet.get(line);
+                
+                sb.append( String.format(
+                    "<tr>" +
+                        "<td><code>%s</code></td>" +
+                        "<td style='font-weight: bold; text-align: right'><code>%s</code></td>" +
+                    "</tr>"
+                , line, count == null ? "" : ( "x" + count ) ) );
             }
-            allowedInstructions.setText("<html>"+sb.toString()+"</html>");
+
+            sb.append(
+                    "</table>" +
+                "</html>"
+            );
+
+            challengeLabel.setText( sb.toString() );
         }
     }
 
