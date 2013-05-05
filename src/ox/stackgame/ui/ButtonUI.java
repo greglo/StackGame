@@ -50,7 +50,7 @@ public class ButtonUI extends JPanel {
             stepAllButton.setEnabled(false);
         }
 
-        runAllButton.setEnabled((rm && !runMode.timerRunning() && runMode.machine.isRunning()) || (!td && !rm));
+        runAllButton.setEnabled((rm || !td) && runMode.machine.isRunning() && !runMode.timerRunning());
         resetButton.setEnabled(rm && !runMode.timerRunning());
 
         // eui.clearErrors();
