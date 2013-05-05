@@ -188,7 +188,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener, MouseLi
     // code to be executed when a mode is activated.
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
         public void visit(ChallengeMode m) {
-            //Translate to match the format used here 
+/*            //Translate to match the format used here 
             //note the use of a TreeMap to keep the list sorted
             availableInstructions = new TreeMap<String,Entry>();
             Map<Instruction, Integer> set = m.getChallenge().instructionSet;
@@ -196,6 +196,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener, MouseLi
                 availableInstructions.put(i.toString(),new Entry(i,set.get(i)));
             repaint();
             selected = -1;
+*/
         }
 
         public void visit(RunMode m) {
