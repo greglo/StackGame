@@ -142,11 +142,33 @@ public class Operations {
             }
         });
         
-        ht.put("dump", new SeqOperation() {
-            public void apply(StackMachine m, StackValue<?> arg) {
-                m.dump();
+        ht.put("jin", new BranchOperation() {
+            @Override
+            protected boolean p(StackMachine machine) throws EmptyStackException {
+                Object v = machine.getStack().pop().getValue();
+                if (v instanceof Integer)
+                    return (Integer)v < 0;
+                else
+                    return false;
             }
         });
+        
+        ht.put("jinn", new BranchOperation() {
+            @Override
+            protected boolean p(StackMachine machine) throws EmptyStackException {
+                Object v = machine.getStack().pop().getValue();
+                if (v instanceof Integer)
+                    return (Integer)v >= 0;
+                else
+                    return false;
+            }
+        });
+        
+//        ht.put("dump", new SeqOperation() {
+//            public void apply(StackMachine m, StackValue<?> arg) {
+//                m.dump();
+//            }
+//        });
     }
 
     public static Iterator< String > names() {
