@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ox.stackgame.blockUI.BlockManager.BlockManagerListener;
+import ox.stackgame.blockUI.BlockManager.NameOrInstruction;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
 import ox.stackgame.stackmachine.StackMachineListener;
@@ -77,6 +78,7 @@ public class BlockUI extends JPanel {
         addKeyListener(forwarder);
 
         // visual stuff
+//TODO: adjust to ones needs
         this.setBackground(Color.PINK);
         this.setSize(new Dimension(CELLWIDTH, CELLHEIGHT * 10));
         setFocusable(true);
@@ -145,14 +147,10 @@ public class BlockUI extends JPanel {
     protected class GeneralListener implements StackMachineListener, SelectionManagerListener, BlockManagerListener {
 
         // BlockManagerListener
-        // note that "instruction" here means
-        // "the selected type of instruction to be created"
-        public void instructionChanged(String e) {
-            repaint();
+        public void instructionChanged(NameOrInstruction e) {
         }
 
         public void instructionCleared() {
-            repaint();
         }
 
         public void modeChanged(String s) {
@@ -192,8 +190,6 @@ public class BlockUI extends JPanel {
 
         @Override
         public void outputChanged(Iterator<StackValue<?>> outputs) {
-            // TODO Auto-generated method stub
-
         }
 
         @Override

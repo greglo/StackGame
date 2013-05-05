@@ -4,14 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import ox.stackgame.stackmachine.instructions.Instruction;
-
 /** Paints a single instruction block. Belongs to the View. */
 
-public class InstructionPainter{
-	public static final InstructionPainter INSTANCE = new InstructionPainter();
+public class InstructionSelectionPainter{
+	public static final InstructionSelectionPainter INSTANCE = new InstructionSelectionPainter();
 
-	public void paint(Graphics2D g, Instruction e, int x, int y) {
+	public void paint(Graphics2D g, String name, CreatePanel.Entry entry, int x, int y) {
 		Point realLocation = BlockUI.getLocationOfCell(x,y);
 
 		Color c;
@@ -21,7 +19,7 @@ public class InstructionPainter{
 		g.fillRect(realLocation.x+1, realLocation.y+1, BlockUI.CELLWIDTH-2, BlockUI.CELLHEIGHT-2);
 
 		g.setColor(Color.BLACK);
-		g.drawString(e.toString(), realLocation.x+10, realLocation.y+20);
+		g.drawString(name, realLocation.x+10, realLocation.y+20);
 	}
 
 	

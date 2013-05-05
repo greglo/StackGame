@@ -8,6 +8,7 @@ import java.awt.Shape;
 import javax.swing.JPanel;
 
 import ox.stackgame.blockUI.BlockManager.BlockManagerListener;
+import ox.stackgame.blockUI.BlockManager.NameOrInstruction;
 
 /** Holds a single custom button that enables the Edit mode */
 @SuppressWarnings("serial")
@@ -23,7 +24,7 @@ public class EditPanel extends JPanel implements BlockManagerListener {
 			active = true;
 	}
 	
-	public void instructionChanged(String e) {}
+	public void instructionChanged(NameOrInstruction e) {}
 	public void instructionCleared() {}
 	public void modeChanged(String s) {
 		if (s == BlockManager.EDIT)activate();

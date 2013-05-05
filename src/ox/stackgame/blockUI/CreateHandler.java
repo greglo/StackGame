@@ -2,6 +2,7 @@ package ox.stackgame.blockUI;
 
 import java.awt.Point;
 
+import ox.stackgame.blockUI.BlockManager.NameOrInstruction;
 import ox.stackgame.stackmachine.instructions.Instruction;
 
 /** Handles events responsible for creation of WallElements.
@@ -13,7 +14,13 @@ public class CreateHandler extends AbstractStretchBoxHandler{
 	}
 
 	protected Instruction newInstruction() {
-		return new Instruction(blockUI.getBlockManager().getInstruction());
+//TODO: deal with arguments
+	    NameOrInstruction noi = blockUI.getBlockManager().getInstruction();
+		if(noi.instruction != null) return noi.instruction;
+		else{ 
+		  //TODO: deal with arguments
+		    return new Instruction(noi.name);
+		}
 	}
 	
 	
