@@ -5,12 +5,17 @@ import ox.stackgame.stackmachine.StackValue;
 public class Instruction {
     public final String name;
     public final StackValue<?> arg;
+    public final int line;
 
     public Instruction(String name) {
         this(name, null);
     }
 
     public Instruction(String name, StackValue<?> arg) {
+        this( name, arg, -1 );
+    }
+
+    public Instruction( String name, StackValue<?> arg, int line ) {
         if( name == null ) {
             throw new RuntimeException( "name == null" );
         }
@@ -25,6 +30,7 @@ public class Instruction {
 
         this.name = name;
         this.arg = arg;
+        this.line = line;
     }
 
     public String toString() {

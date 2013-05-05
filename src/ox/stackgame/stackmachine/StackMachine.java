@@ -250,7 +250,7 @@ public class StackMachine {
     private void setProgramCounter(int programCounter) {
         this.programCounter = programCounter;
         for (StackMachineListener l : listeners)
-            l.programCounterChanged(programCounter);
+            l.programCounterChanged(programCounter, getInstruction( programCounter - 1 ) );
     }
 
     /**
@@ -357,6 +357,10 @@ public class StackMachine {
      */
     public List<Instruction> getInstructions() {
         return this.instructions;
+    }
+
+    public Instruction getInstruction( int pc ) {
+        return instructions.get( pc );
     }
 
     /**

@@ -8,7 +8,7 @@ import ox.stackgame.stackmachine.instructions.Instruction;
 
 public interface StackMachineListener {
     public void programChanged(List<Instruction> instructions);
-    public void programCounterChanged(int line);
+    public void programCounterChanged(int line, Instruction instruction);
     public void stackChanged(EvaluationStack stack);
     public void storeChanged(int address);
     public void inputConsumed(int startIndex);

@@ -25,16 +25,18 @@ public class Lexer {
             throws LexerException {
         ArrayList<Instruction> program = new ArrayList<Instruction>();
 
-        Pattern linesPattern = Pattern.compile("[^\n]+");
+        Pattern linesPattern = Pattern.compile("\n[^\n]*");
         Pattern commentPattern = Pattern.compile("--.*$");
         Pattern trimlPattern = Pattern.compile("^\\s*");
         Pattern trimrPattern = Pattern.compile("\\s*$");
         Pattern wordsPattern = Pattern.compile("[^\\s]+");
 
+        source = "\n" + source;
+
         Matcher lines = linesPattern.matcher(source);
 
         for (int lineno = 0; lines.find(); lineno++) {
-            String line = source.substring(lines.start(), lines.end());
+            String line = source.substring(lines.start() + 1, lines.end());
 
             Matcher comment = commentPattern.matcher(line);
             String commentless = comment.replaceFirst("");
@@ -94,7 +96,7 @@ public class Lexer {
                 if (words.find())
                     throw new LexerException(lineno, words.start(), words.end(), "Too many arguments were provided");
 
-                program.add(new Instruction(opName, arg));
+                program.add(new Instruction(opName, arg, lineno));
             }
         }
 

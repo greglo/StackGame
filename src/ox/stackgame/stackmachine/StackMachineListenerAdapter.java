@@ -15,7 +15,7 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  *
  */
 public class StackMachineListenerAdapter implements StackMachineListener {
-    public void programCounterChanged(int line) { }
+    public void programCounterChanged(int line, Instruction instruction) { }
 
     public void storeChanged(int address) { }
 

@@ -28,7 +28,7 @@ public class StackMachineListenerTest {
             this.programChangedFired = true;
         }
 
-        public void programCounterChanged(int line) {
+        public void programCounterChanged(int line, Instruction instruction) {
             this.stackProgramCounterChanged = true;
         }
 

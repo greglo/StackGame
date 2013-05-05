@@ -74,8 +74,8 @@ public class ProgramTextUI extends JLayeredPane {
     };
     
     private StackMachineListener l = new StackMachineListenerAdapter() {
-        public void programCounterChanged(int line) {
-            highlight(line - 1);
+        public void programCounterChanged(int line, Instruction instruction) {
+            highlight(instruction.line == -1 ? line - 1 : instruction.line);
         }
     };
     
