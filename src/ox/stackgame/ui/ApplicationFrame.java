@@ -103,12 +103,12 @@ public class ApplicationFrame {
         BlockManager blockManager = new BlockManager();
         CreatePanel createPanel = new CreatePanel(blockManager, modeManager);
         createPanel.setLocation(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT);
-        contentPane.add(createPanel, new Integer(2));
+        //contentPane.add(createPanel, new Integer(2));
         
         // BlockUI
         BlockUI blockUI = new BlockUI(blockManager, modeManager);
         blockUI.setLocation(LEFT_PANEL_WIDTH + CENTER_PANEL_WIDTH/2, BUTTONUI_HEIGHT);
-        contentPane.add(blockUI, new Integer(2));
+        //contentPane.add(blockUI, new Integer(2));
         
         // ButtonUI
         {
