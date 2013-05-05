@@ -24,6 +24,7 @@ import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.instructions.Instruction;
+import ox.stackgame.ui.ApplicationFrame;
 import ox.stackgame.ui.StateManager;
 
 /**
@@ -76,12 +77,6 @@ public class BlockUI extends JPanel {
         addMouseMotionListener(forwarder);
         addKeyListener(forwarder);
 
-        // visual stuff
-//TODO: adjust to ones needs
-        this.setBackground(Color.PINK);
-        this.setSize(new Dimension(CELLWIDTH, CELLHEIGHT * 10));
-        setFocusable(true);
-
         // keeps the view in sync with many other components
         generalListener = new GeneralListener();
 
@@ -97,6 +92,14 @@ public class BlockUI extends JPanel {
 
         updateCurrentStackMachine();
         updateEventHandler();
+
+        // visual stuff
+//TODO: adjust to one's needs
+        this.setBackground(Color.PINK);
+        updateSize();
+//        this.setSize(new Dimension(CELLWIDTH, ApplicationFrame.h));
+  //      this.add(createScrollPane(), new Integer(0)); // fills container
+        setFocusable(true);
     }
 
     // Controller-oriented methods
@@ -283,8 +286,14 @@ public class BlockUI extends JPanel {
         updateEventHandler();
         repaint();
     }
+    
+    public void updateSize(){
+        this.setSize(new Dimension(CELLWIDTH, CELLHEIGHT*(currentStackMachine.getInstructions().size()+1)));
+    }
 
     public void paintComponent(Graphics g) {
+        updateSize();
+        
         System.out.println("painting BlockUI");
         Graphics2D g2d = (Graphics2D) g;
 

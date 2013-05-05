@@ -54,12 +54,6 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         this.stateManager = stateManager;
         manager.addListener(this);
         
-        // visual stuff
-//TODO: adjust to one's needs
-        this.setBackground(Color.PINK);
-        this.setSize(new Dimension(CELLWIDTH, CELLHEIGHT * 10));
-        setFocusable(true);
-        
         // pay attention to mode changes
         stateManager.registerModeActivationVisitor(modeActivationVisitor);
         stateManager.registerModeDeactivationVisitor(modeDeactivationVisitor);
@@ -78,6 +72,13 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
             else if(activeMode.getClass() == FreeDesignMode.class)
                 modeActivationVisitor.visit((FreeDesignMode)activeMode);
             else throw new IllegalArgumentException("Wrong mode");
+
+        // visual stuff
+//TODO: adjust to one's needs
+        this.setBackground(Color.PINK);
+        this.setSize(new Dimension(CELLWIDTH, CELLHEIGHT * 10));
+        setFocusable(true);
+        
     }
     
     
@@ -99,6 +100,8 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
     
     public void paintComponent(Graphics g) {
 //TODO: add current-instruction highlighting
+        updateSize();
+        
         System.out.println("painting CreatePanel");
         Graphics2D g2d = (Graphics2D) g;
 
@@ -154,6 +157,9 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         
     }
     
+    public void updateSize(){
+        this.setSize(new Dimension(CELLWIDTH, CELLHEIGHT*availableInstructions.size()));
+    }
     
     /** paints a single box on the grid of the selected region */
     protected void paintSelectionBox(Graphics2D g, Point p){

@@ -7,6 +7,9 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import ox.stackgame.blockUI.BlockManager;
+import ox.stackgame.blockUI.BlockUI;
+import ox.stackgame.blockUI.CreatePanel;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.instructions.Instruction;
@@ -95,7 +98,17 @@ public class ApplicationFrame {
         ProgramTextUI programUI = new ProgramTextUI(modeManager, runMode, eui);
         programUI.setLocation(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT);
         contentPane.add(programUI, new Integer(0));
-    
+
+        // CreatePanel
+        BlockManager blockManager = new BlockManager();
+        CreatePanel createPanel = new CreatePanel(blockManager, modeManager);
+        createPanel.setLocation(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT);
+        contentPane.add(createPanel, new Integer(2));
+        
+        // BlockUI
+        BlockUI blockUI = new BlockUI(blockManager, modeManager);
+        blockUI.setLocation(LEFT_PANEL_WIDTH + CENTER_PANEL_WIDTH/2, BUTTONUI_HEIGHT);
+        contentPane.add(blockUI, new Integer(2));
         
         // ButtonUI
         {
