@@ -44,7 +44,6 @@ public class RunMode extends Mode {
                     // machine has ground to a halt
                     stopTimerAndCallback();
                     eui.displayError(e1.getMessage());
-                    e1.printStackTrace();
                 }
             }
         };

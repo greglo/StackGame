@@ -5,8 +5,10 @@ package ox.stackgame.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,9 +35,7 @@ public class StackUI extends JPanel {
         public void stackChanged(EvaluationStack s) {
             stack = s;
 
-            setPreferredSize(new Dimension(ApplicationFrame.RIGHT_PANEL_WIDTH,
-                    Math.max(ApplicationFrame.STACK_HEIGHT, stack.size()
-                            * BLOCK_HEIGHT)));
+            setPreferredSize(new Dimension(ApplicationFrame.RIGHT_PANEL_WIDTH, Math.max(ApplicationFrame.STACK_HEIGHT, stack.size() * BLOCK_HEIGHT)));
 
             revalidate();
             repaint();
@@ -47,9 +47,8 @@ public class StackUI extends JPanel {
         m.stackMachine.addListener(l);
 
         this.setBackground(ApplicationFrame.caBlueL);
-        this.setSize(new Dimension(ApplicationFrame.RIGHT_PANEL_WIDTH,
-                ApplicationFrame.h));
-        
+        this.setSize(new Dimension(ApplicationFrame.RIGHT_PANEL_WIDTH, ApplicationFrame.h));
+
         JLabel label = new JLabel("Evaluation Stack:", SwingConstants.CENTER);
         label.setBounds(0, 0, ApplicationFrame.RIGHT_PANEL_WIDTH, TEXT_HEIGHT);
         label.setFont(this.getFont().deriveFont(20f));
@@ -65,20 +64,24 @@ public class StackUI extends JPanel {
         }
 
         Graphics2D g = (Graphics2D) graphics;
+        g.setFont(new Font(g.getFont().getName(), Font.PLAIN, 13));
         
-        
-
         int i = 0;
-        int size = stack.size();
         for (StackValue<?> v : stack) {
-            int y = (size - i) * (BLOCK_HEIGHT + PADDING) + TEXT_HEIGHT + 10;
+            int y = (i) * (BLOCK_HEIGHT + PADDING) + TEXT_HEIGHT + 10;
 
-            g.setColor(new Color(100, 100, 30));
+            g.setColor(new Color(120, 120, 35));
             g.fillRect((ApplicationFrame.RIGHT_PANEL_WIDTH - BLOCK_WIDTH) / 2, y, BLOCK_WIDTH, BLOCK_HEIGHT);
+            g.setColor(new Color(150, 150, 45));
+            g.fillRect((ApplicationFrame.RIGHT_PANEL_WIDTH - BLOCK_WIDTH) / 2 + 1, y + 1, BLOCK_WIDTH - 2, BLOCK_HEIGHT - 2);
 
-            g.setColor(Color.WHITE);
-            g.drawString(v.toString(), 5, y + 5
-                    + g.getFontMetrics().getAscent());
+            String valueString = v.toString();
+            Rectangle2D valueBox = g.getFontMetrics().getStringBounds(valueString, g);
+            int valueX = (ApplicationFrame.RIGHT_PANEL_WIDTH - (int) valueBox.getWidth()) / 2;
+            int valueY = ((BLOCK_HEIGHT - (int) valueBox.getHeight()) / 2);
+            g.setColor(new Color(51, 68, 46));
+            g.drawString(valueString, valueX, y + valueY + g.getFontMetrics().getAscent());
+
 
             i++;
         }
