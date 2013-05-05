@@ -58,7 +58,7 @@ public class ChallengeUI extends JPanel {
     
 
     public ChallengeUI(final StateManager m, final FreeDesignMode freeDesignMode, final ChallengeMode cm, ErrorUI eui) {
-        m.stackMachine.addListener(l);
+        m.stackMachine.addListener(listener);
         this.machine = m.stackMachine;
         this.stateManager = m;
         this.challengeMode = cm;
@@ -66,7 +66,6 @@ public class ChallengeUI extends JPanel {
         this.eui = eui;
 
         m.registerModeActivationVisitor(modeActivationVisitor);
-        m.registerModeDeactivationVisitor(modeDeactivationVisitor);
 
         // appearance
         this.setLayout(cardLayout);
@@ -143,7 +142,7 @@ public class ChallengeUI extends JPanel {
             setForeground(new Color(66, 66, 66));  
             setBorder(new EmptyBorder(15, 15, 15, 15));
         }};
-        JLabel descLabel = new JLabel(){{ // detailPanel text must remain up to date.
+        JLabel descLabel = new JLabel(){{ 
             setText("<html>An arithmetic instruction <b>pops</b> two values from the stack, performs some operation and pushes the result back. An example of such an instruction is ADD, which does exactly what you think it does. CONST simply pushes the value after it onto the stack.</html>");
             setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             setForeground(new Color(66, 66, 66));  
@@ -154,7 +153,7 @@ public class ChallengeUI extends JPanel {
             setVerticalAlignment(JLabel.TOP);
             setVerticalTextPosition(JLabel.TOP);
         }};
-        JLabel allowedInstructions = new JLabel(){{ // detailPanel text must remain up to date.
+        JLabel allowedInstructions = new JLabel(){{ // detailPanel allowed must remain up to date.
             setText("<html>lakshdkahskdjklsajd</html>");
             setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             setForeground(new Color(66, 66, 66));  
@@ -168,8 +167,14 @@ public class ChallengeUI extends JPanel {
         
         DetailPanel(){
             this.setBackground(Color.white);
-            // title TODO must remain uptodate
             this.add(titleLabel);
+            this.add(new JButton("Back"){{
+                addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent e) {
+                        stateManager.setActiveMode(freeDesignMode);
+                    }
+                });
+            }});
             this.add(descLabel);
             this.add(new JLabel("Allowed Instructions:"){{
                 setFont(new Font("Helvetica Neue", Font.BOLD, 14));
@@ -178,13 +183,6 @@ public class ChallengeUI extends JPanel {
             }});
             this.add(allowedInstructions);
             
-            this.add(new JButton("Back"){{
-                addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent e) {
-                        stateManager.setActiveMode(freeDesignMode);
-                    }
-                });
-            }});
         }
         
         void updateFromChallenge(AbstractChallenge c){
@@ -193,31 +191,19 @@ public class ChallengeUI extends JPanel {
         }
     }
 
-    private StackMachineListener l = new StackMachineListenerAdapter() {
+    // Test if the user has passed the challenge
+    private StackMachineListener listener = new StackMachineListenerAdapter() {
         public void programCounterChanged(int line) {
-//            if (stateManager.getActiveMode() instanceof ChallengeMode && challengeMode.getChallenge() != null){
-//                // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
-//                if (machine.isRunning()==false) {
-//                    Boolean hasSucceeded = challengeMode.getChallenge().hasSucceeded(machine);
-//                    String message = challengeMode.getChallenge().getMessage();
-//                    System.out.println(hasSucceeded ? "Passed" : "Failed");
-//                    System.out.println(message);
-//                    // TODO display message in GUI
-//                }
-//            }
-        }
-    };
-    
-    private void checkMachineInstructions(StackMachine m){
-        if (challengeMode.getChallenge() != null) {
-                        
-            // check the program is allowed by the challenge
-            if (challengeMode.getChallenge().checkProgram(m.getInstructions())==false){
-                System.out.println("Program doesn't conform to Challenge's instructionSet");
-                eui.displayError("Your program must use only the allowed instructions");
+            // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
+            if (machine.isRunning()==false) {
+                Boolean hasSucceeded = challengeMode.getChallenge().hasSucceeded(machine);
+                String message = challengeMode.getChallenge().getMessage();
+                System.out.println(hasSucceeded ? "Passed" : "Failed");
+                System.out.println(message);
+                // TODO display message in GUI
             }
         }
-    }
+    };
 
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
 
@@ -225,15 +211,22 @@ public class ChallengeUI extends JPanel {
          * When switching to RunMode, check the program against allowedInstructions.
          */
         public void visit(RunMode m) {
-//            if (stateManager.getActiveMode() instanceof ChallengeMode)
-//                ChallengeUI.this.checkMachineInstructions(machine);
+            // moving from ChallengeMode -> RunMode
+            if (stateManager.getActiveMode() instanceof ChallengeMode){
+                // challengeMode should never be enabled without an active challenge.
+                assert(challengeMode.getChallenge() != null); 
+                // check the program is allowed by the challenge
+                if (challengeMode.getChallenge().checkProgram(stateManager.stackMachine.getInstructions())==false){
+                    System.out.println("Program doesn't conform to Challenge's instructionSet");
+                    eui.displayError("Your program must use only the allowed instructions");
+                }
+                // start listening for completion
+                stateManager.stackMachine.addListener(listener);
+            }
         }
 
         // this mode is activated!
         public void visit(ChallengeMode m) {
-            //descLabel.setText("<html>"+challengeMode.getChallenge().description+"</html>");
-            //ChallengeUI.this.setVisible(true);
-            
             // display detail panel
             detailPanel.updateFromChallenge(challengeMode.getChallenge());
             cardLayout.show(ChallengeUI.this,"detailPanel");
@@ -248,11 +241,10 @@ public class ChallengeUI extends JPanel {
     // code to be executed when a mode is deactivated
     private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
         public void visit(RunMode m) {
+            stateManager.stackMachine.removeListener(listener); // stop evaluating the machine against challenge
         }
 
-        // this mode is deactivated
         public void visit(ChallengeMode m) {
-            //ChallengeUI.this.setVisible(false);
         }
 
         public void visit(FreeDesignMode m) {
