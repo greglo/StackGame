@@ -163,6 +163,35 @@ public class ChallengeMode extends DesignMode {
                 }, new ArrayList<StackValue<?>>(), tape1to10));
         
         cl.add(new TapeChallenge(
+                "Filtering Using JIN",
+                "JINN/JIN (jump if [not] negative) are instructions that pop a value off the stack, compare it with 0 and branch if they are not less than zero or not respectively." +
+                "<br/><br/>Use JIN to filter the input tape, outputting only the positive values:<br/>(Hint: You will need to use STORE to hold onto each value)",
+                new HashMap<String, Integer>() {
+                    {
+                        put("label *", null);
+                        put("jin *", null);
+                        put("load *", null);
+                        put("store *", null);
+                        put("input", null);
+                        put("output", null);
+                    }
+                }, new ArrayList<StackValue<?>>() {
+                    { 
+                        add(new IntStackValue(-1));
+                        add(new IntStackValue(5));
+                        add(new IntStackValue(1));
+                        add(new IntStackValue(-10));
+                        add(new IntStackValue(50));
+                    }
+                } , new ArrayList<StackValue<?>>() {
+                    { 
+                        add(new IntStackValue(5));
+                        add(new IntStackValue(1));
+                        add(new IntStackValue(50));
+                    }
+                }));
+        
+        cl.add(new TapeChallenge(
                 "ROT13",
                 "One of the most secure encryption methods today is ROT13. To do ROT13 encryption, you ADD 13 to each character in your plaintext to get a ciphertext.<br/>Incredibly, you do exactly the same to decrypt ciphetext.<br/><br/>Implement ROT13 to decrypt the secret message on the input tape.",
                 new HashMap<String, Integer>() {
