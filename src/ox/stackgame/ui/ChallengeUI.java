@@ -157,7 +157,7 @@ public class ChallengeUI extends JPanel {
             setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             setForeground(new Color(66, 66, 66));  
             setBorder(new EmptyBorder(15, 15, 15, 15));
-            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,200));
+            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,150));
             setBackground(Color.white);
             setOpaque(true);
             setVerticalAlignment(JLabel.TOP);
@@ -167,13 +167,6 @@ public class ChallengeUI extends JPanel {
         DetailPanel(){
             this.setBackground(Color.white);
             this.add(titleLabel);
-            this.add(new JButton("Back"){{
-                addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent e) {
-                        stateManager.setActiveMode(freeDesignMode);
-                    }
-                });
-            }});
             this.add(descLabel);
             this.add(new JLabel("Allowed Instructions:"){{
                 setFont(new Font("Helvetica Neue", Font.BOLD, 14));
@@ -181,6 +174,22 @@ public class ChallengeUI extends JPanel {
                 setBorder(new EmptyBorder(15, 15, 0, 15));
             }});
             this.add(allowedInstructions);
+            this.add(new JButton("Choose Challenge"){{
+                addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent e) {
+                        stateManager.setActiveMode(freeDesignMode);
+                    }
+                });
+            }});
+            // TODO make this button disabled when challenge not finished, and enabled when you do
+            this.add(new JButton("Next"){{
+                setEnabled(false);
+                addActionListener(new ActionListener(){
+                    public void actionPerformed(ActionEvent e) {
+                        
+                    }
+                });
+            }});
             
         }
         
