@@ -191,7 +191,7 @@ public class ChallengeUI extends JPanel {
             StringBuilder sb = new StringBuilder();
             for (String line : c.instructionSet.keySet()){
                 Integer limits = c.instructionSet.get(line);
-                sb.append("<code style='background:#cccccc;'>"+line+"</code> "+(limits==null ? "" : "x "+c.instructionSet.get(line))+"<br />");
+                sb.append("<code style='background:#eeeeee;'>"+line+"</code> "+(limits==null ? "" : "x "+c.instructionSet.get(line))+"<br />");
             }
             allowedInstructions.setText("<html>"+sb.toString()+"</html>");
         }
@@ -202,8 +202,9 @@ public class ChallengeUI extends JPanel {
         public void programCounterChanged(int line) {
             // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
             if (machine.isRunning()==false) {
-                Boolean hasSucceeded = challengeMode.getChallenge().hasSucceeded(machine);
-                String message = challengeMode.getChallenge().getMessage();
+                AbstractChallenge currChallenge = challengeMode.getChallenge();
+                Boolean hasSucceeded = currChallenge.hasSucceeded(machine);
+                String message = currChallenge.getMessage();
                 System.out.println(hasSucceeded ? "Challenge hasSucceeded=true" : "Challenge hasSucceeded=false");
                 System.out.println(message);
                 // TODO display message in GUI
