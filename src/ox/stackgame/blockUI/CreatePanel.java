@@ -38,10 +38,6 @@ import ox.stackgame.ui.StateManager;
 @SuppressWarnings("serial")
 public class CreatePanel extends JPanel implements BlockManagerListener {
 
-    //whether or not instructions are clickable
-//    private boolean clickable;
-    //whether or not any buttons are displayed
-//    private boolean active;
     private Map<String,Integer> availableInstructions = null;
     private BlockManager manager;
     private StateManager stateManager;
@@ -57,7 +53,6 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         this.manager = manager;
         this.stateManager = stateManager;
         manager.addListener(this);
-//        active = manager.getMode() == BlockManager.CREATE;
         
         // visual stuff
 //TODO: adjust to one's needs
@@ -90,23 +85,12 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
     public void instructionChanged(String e) {}
     public void instructionCleared() {}
     public void modeChanged(String s) {
-//        if (s == BlockManager.CREATE)activate();
-  //      else deactivate();
         repaint();
     }
     
-    protected void activate(){
-        
-//        active = true;
-        manager.setMode(BlockManager.CREATE);
-    }
-//    protected void deactivate(){
-//        active = false;
-//    }
-    
     //check if buttons are clickable
     protected boolean isActive(){
-//TODO: can this be null?
+        //note that the mode is never null
         Mode activeMode = stateManager.getActiveMode();
         return manager.getMode()==BlockManager.CREATE && (activeMode.getClass()==ChallengeMode.class || activeMode.getClass()==FreeDesignMode.class);
     }
@@ -114,7 +98,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
 //TODO: listen for stackMachine changes?
     
     public void paintComponent(Graphics g) {
-//TODO: add current-instruction highlighting, gray mask on inactivity
+//TODO: add current-instruction highlighting
         System.out.println("painting CreatePanel");
         Graphics2D g2d = (Graphics2D) g;
 
@@ -150,9 +134,17 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
             if(selected != -1)
                 paintSelectionBox(g2d, new Point(0,selected*CELLHEIGHT));
             
+            //gray mask on inactivity
+            if(stateManager.getActiveMode().getClass() == RunMode.class || manager.getMode() != BlockManager.CREATE){
+                Color color = new Color(0.75f, 0.75f, 0.75f, 0.25f); //Transparent gray 
+                g2d.setColor(color);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+
+            
         } else {
             g2d.setColor(Color.BLACK);
-            g.drawString("No-machine error.", 50, 50);
+            g2d.drawString("No-machine error.", 50, 50);
         }
 
         // restore the original state of the Graphics object
@@ -219,33 +211,15 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
 //TODO: is it necessary at all?
     private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
         public void visit(RunMode m) {
-//            deactivate();
         }
-
         public void visit(ChallengeMode m) {
-//            deactivate();
         }
-
         public void visit(FreeDesignMode m) {
-//            deactivate();
         }
     };
 
 
     
-    
-    //very simple, self-explanatory structure
-    //note that if instruction is null, the user will be prompted for arguments for the instruction
-/*    public static class Entry{
-        public int count;
-        public Instruction instruction;
-        public Entry(Instruction instruction, int count){
-           this.instruction = instruction;
-           this.count = count;
-        }
-    }
-*/
-
     class PanelMouseListener implements MouseListener{
         //Mouse actions
         public void mouseClicked(MouseEvent arg0) {

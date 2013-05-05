@@ -310,6 +310,7 @@ public class BlockUI extends JPanel {
             g2d.clipRect(1, 1, viewSize.width - 2, viewSize.height - 2);
 
             // paint instructions
+//TODO: run highlighting
             int j = 0;
             for (Instruction i : currentStackMachine.getInstructions()) {
                 InstructionPainter.INSTANCE.paint(g2d, i, 0, j);
