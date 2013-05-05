@@ -66,6 +66,10 @@ public class StackMachine {
      * the stack program
      */
     public void reset() {
+        reset(true);
+    }
+
+    private void reset(boolean notify) {
         this.programCounter = 0;
         this.stack.clear();
         this.numInstructions = 0;
@@ -77,19 +81,21 @@ public class StackMachine {
             for (StackMachineListener l : listeners)
                 l.storeChanged(i);
         }
-        for (StackMachineListener l : listeners)
-            l.machineReset();
+        if (notify)
+            for (StackMachineListener l : listeners)
+                l.machineReset();
     }
 
     /**
      * Load a new list on stack values as the program input
+     * 
      * @param input
      */
     public void loadInput(List<StackValue<?>> input) {
         if (input == null)
             input = new ArrayList<StackValue<?>>();
         this.input = input;
-        reset();
+        reset(false);
     }
 
     /**
@@ -113,7 +119,7 @@ public class StackMachine {
 
         for (StackMachineListener l : listeners)
             l.programChanged(instructions);
-        reset();
+        reset(false);
     }
 
     /**
