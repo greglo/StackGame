@@ -102,13 +102,19 @@ public class ApplicationFrame {
         // CreatePanel
         BlockManager blockManager = new BlockManager();
         CreatePanel createPanel = new CreatePanel(blockManager, modeManager);
-        createPanel.setLocation(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT);
-        //contentPane.add(createPanel, new Integer(2));
+//        createPanel.setLocation(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT);
+
+        // A scroll pane for CreatePanel
+        JScrollPane jsp1 = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jsp1.setBounds(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT, BlockUI.CELLWIDTH+20, 450);
+        jsp1.setBorder(new EmptyBorder(0, 0, 0, 0));
+        jsp1.setViewportView(createPanel);
+//        contentPane.add(jsp1, new Integer(2));
         
         // BlockUI
         BlockUI blockUI = new BlockUI(blockManager, modeManager);
         blockUI.setLocation(LEFT_PANEL_WIDTH + CENTER_PANEL_WIDTH/2, BUTTONUI_HEIGHT);
-        //contentPane.add(blockUI, new Integer(2));
+//        contentPane.add(blockUI, new Integer(2));
         
         // ButtonUI
         {

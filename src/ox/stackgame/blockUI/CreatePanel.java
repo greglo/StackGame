@@ -76,7 +76,8 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         // visual stuff
 //TODO: adjust to one's needs
         this.setBackground(Color.PINK);
-        this.setSize(new Dimension(CELLWIDTH, CELLHEIGHT * 10));
+        updateSize();
+//        this.setPreferredSize(new Dimension(CELLWIDTH, CELLHEIGHT * 10));
         setFocusable(true);
         
     }
@@ -158,7 +159,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
     }
     
     public void updateSize(){
-        this.setSize(new Dimension(CELLWIDTH, CELLHEIGHT*availableInstructions.size()));
+        this.setPreferredSize(new Dimension(CELLWIDTH, CELLHEIGHT*(availableInstructions == null ? 1 : availableInstructions.size())));
     }
     
     /** paints a single box on the grid of the selected region */
