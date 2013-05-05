@@ -22,7 +22,7 @@ public class ApplicationFrame {
     final static int LEFT_PANEL_WIDTH = 250;
     final static int BUTTONUI_HEIGHT = 30;
     final static int TAPE_HEIGHT = TapeUI.UIHeight;
-    final static int STORE_HEIGHT = 180;
+    final static int STORE_HEIGHT = 200;
     final static int STACK_HEIGHT = h - TAPE_HEIGHT - STORE_HEIGHT;
     final static Color caBlue = new Color(35, 44, 49);
     final static Color caBlueL = new Color(50, 57, 60);

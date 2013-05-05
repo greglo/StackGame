@@ -52,7 +52,7 @@ public class StackUI extends JPanel {
         JLabel label = new JLabel("Evaluation Stack:", SwingConstants.CENTER);
         label.setBounds(0, 0, ApplicationFrame.RIGHT_PANEL_WIDTH, TEXT_HEIGHT);
         label.setFont(this.getFont().deriveFont(20f));
-        label.setForeground(ApplicationFrame.caBlue2L);
+        label.setForeground(new Color(160, 160, 160));
         this.add(label);
     }
 

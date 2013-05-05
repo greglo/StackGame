@@ -31,7 +31,7 @@ import ox.stackgame.stackmachine.exceptions.InvalidAddressException;
 public class StoreUI extends JPanel {
     private JLabel label;
     private final StackMachine activeMachine;
-    private static int TEXT_HEIGHT = 20;
+    private static int TEXT_HEIGHT = 30;
     private static int RAM_WIDTH = 85;
     private static int RAM_HEIGHT = 42;
     private static int Y_PADDING = 15;
@@ -41,7 +41,9 @@ public class StoreUI extends JPanel {
         activeMachine.addListener(l);
 
         label = new JLabel("Store:", SwingConstants.CENTER);
-        label.setBounds(0, 0, ApplicationFrame.RIGHT_PANEL_WIDTH, 25);
+        label.setBounds(0, 0, ApplicationFrame.RIGHT_PANEL_WIDTH, TEXT_HEIGHT);
+        label.setFont(this.getFont().deriveFont(20f));
+        label.setForeground(new Color(160, 160, 160));
         this.setBackground(ApplicationFrame.caBlueL);
         this.setSize(new Dimension(ApplicationFrame.RIGHT_PANEL_WIDTH, 25 + (RAM_HEIGHT + TEXT_HEIGHT + Y_PADDING) * StackMachine.STORE_SIZE));
         this.add(label);
