@@ -158,10 +158,10 @@ public class ButtonUI extends JPanel {
                     sm.stackMachine.runAll();
                 } catch (StackRuntimeException e) {
                     eui.displayError(e.getMessage());
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 } catch (NotHaltingException e) {
                     eui.displayError(e.getMessage());
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
 
                 updateButtons();
