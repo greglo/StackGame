@@ -21,7 +21,7 @@ public class ApplicationFrame {
     final static int BUTTONUI_HEIGHT = 30;
     final static int TAPE_HEIGHT = TapeUI.UIHeight;
     final static int STORE_HEIGHT = 180;
-    final static int STACK_HEIGHT = h - 2 * p - TAPE_HEIGHT - STORE_HEIGHT;
+    final static int STACK_HEIGHT = h - TAPE_HEIGHT - STORE_HEIGHT;
     final static Color caBlue = new Color(35, 44, 49);
     final static Color caBlueL = new Color(50, 57, 60);
     final static Color caBlue2L = new Color(82, 88, 92);
@@ -109,7 +109,7 @@ public class ApplicationFrame {
         // TapeUI
         
         TapeUI tape = new TapeUI(modeManager);
-        tape.setLocation(LEFT_PANEL_WIDTH + p, h - p - TAPE_HEIGHT - MAGIC);
+        tape.setLocation(LEFT_PANEL_WIDTH , h - p - TAPE_HEIGHT - MAGIC);
         contentPane.add(tape, new Integer(1));// layer 1 is on top of 0
     
         
