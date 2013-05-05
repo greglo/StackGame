@@ -50,7 +50,6 @@ public class ApplicationFrame {
         RunMode runMode = new RunMode(machine,eui);
         FreeDesignMode freeDesignMode = new FreeDesignMode();
         ChallengeMode challengeMode = new ChallengeMode();
-        challengeMode.setChallenge(ChallengeMode.challengeList.get(0));
 
 
         // setup window to display
@@ -118,6 +117,7 @@ public class ApplicationFrame {
             contentPane.add(eui, new Integer(1));
         }
 
+        //challengeMode.setChallenge(ChallengeMode.challengeList.get(0));
         modeManager.setActiveMode(freeDesignMode);
         frame.pack();
         frame.setVisible(true);

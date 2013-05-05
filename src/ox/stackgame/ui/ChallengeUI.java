@@ -159,7 +159,7 @@ public class ChallengeUI extends JPanel {
             setForeground(new Color(66, 66, 66));  
             setBorder(new EmptyBorder(15, 15, 15, 15));
             this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,100));
-            setBackground(Color.red);
+            setBackground(Color.white);
             setOpaque(true);
             setVerticalAlignment(JLabel.TOP);
             setVerticalTextPosition(JLabel.TOP);
@@ -179,7 +179,7 @@ public class ChallengeUI extends JPanel {
             this.add(new JLabel("Allowed Instructions:"){{
                 setFont(new Font("Helvetica Neue", Font.BOLD, 14));
                 setForeground(new Color(66, 66, 66));  
-                setBorder(new EmptyBorder(15, 15, 15, 15));
+                setBorder(new EmptyBorder(15, 15, 0, 15));
             }});
             this.add(allowedInstructions);
             
@@ -188,6 +188,7 @@ public class ChallengeUI extends JPanel {
         void updateFromChallenge(AbstractChallenge c){
             titleLabel.setText(c.title);
             descLabel.setText("<html>"+c.description+"</html>");
+            allowedInstructions.setText("<html>"+c.instructionSet.toString()+"</html>");
         }
     }
 
@@ -198,7 +199,7 @@ public class ChallengeUI extends JPanel {
             if (machine.isRunning()==false) {
                 Boolean hasSucceeded = challengeMode.getChallenge().hasSucceeded(machine);
                 String message = challengeMode.getChallenge().getMessage();
-                System.out.println(hasSucceeded ? "Passed" : "Failed");
+                System.out.println(hasSucceeded ? "Challenge hasSucceeded=true" : "Challenge hasSucceeded=false");
                 System.out.println(message);
                 // TODO display message in GUI
             }
