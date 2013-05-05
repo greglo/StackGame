@@ -27,7 +27,7 @@ import ox.stackgame.stackmachine.exceptions.InvalidCharException;
  * Visualisation of the input and output tapes. Allows user input in design mode
  * only. Displays current read head during RunMode.
  * 
- * @author danfox
+ * @author rgossiaux
  * 
  */
 
@@ -154,7 +154,7 @@ public class TapeUI extends JPanel {
                     JOptionPane.PLAIN_MESSAGE, null, null, null);
         } else {
             s = (String) JOptionPane.showInputDialog(this,
-                    "Enter a new value: ", "Edit", JOptionPane.PLAIN_MESSAGE,
+                    "Enter a new value (enter nothing to delete): ", "Edit", JOptionPane.PLAIN_MESSAGE,
                     null, null, null);
         }
         if (s != null && s.length() > 0) {
@@ -172,6 +172,11 @@ public class TapeUI extends JPanel {
                     eui.displayError("\"" + s + "\" is not a valid stack value.");
                 }
             }
+        }
+        else if (s != null && i != -1) {
+            inputTape.remove(i);
+            eui.clearErrors();
+            repaint();
         }
     }
 
