@@ -63,112 +63,10 @@ public class ChallengeUI extends JPanel {
         // appearance
         this.setLayout(cardLayout);
         this.setSize(ApplicationFrame.LEFT_PANEL_WIDTH, ApplicationFrame.h);
-
         
+        this.add(new SelectorPanel(m, cm), "selectorPanel");      
+        this.add(new DetailPanel(), "detailPanel");
         
-        
-        // set up selectorpanel ====================================================
-        final JPanel selectorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0)){{
-            setBackground(Color.white);
-        }};
-        this.add(selectorPanel, "selectorPanel");
-        // title
-        selectorPanel.add(new JLabel("Choose a Challenge"){{
-            setFont(new Font("Helvetica Neue", Font.BOLD, 20));
-            setForeground(new Color(66, 66, 66));  
-            setBorder(new EmptyBorder(15, 15, 15, 15));
-        }});
-        selectorPanel.add(new JLabel("Or just try out the machine."){{
-            setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
-            setForeground(new Color(66, 66, 66));  
-            setBorder(new EmptyBorder(5, 15, 25, 15));
-        }});
-        
-        // challenge list
-        JPanel listContainer = new JPanel(new GridLayout(ChallengeMode.challengeList.size(), 1, 0, 1)){{
-            setBackground(Color.white);
-        }};
-        selectorPanel.add(listContainer);
-        final Color listItemBg =  new Color(250,250,250);
-        final Color listItemBgHover =  new Color(250,210,250);
-        for (int i=0; i<ChallengeMode.challengeList.size();i++){
-            final AbstractChallenge c = ChallengeMode.challengeList.get(i);           
-            listContainer.add(new JLabel((i+1)+". " + c.title, JLabel.LEFT){{
-                setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
-                setForeground(new Color(66, 66, 66));
-                setBorder(new EmptyBorder(5, 15, 5, 5));
-                setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH, 40));
-                setBackground(listItemBg);
-                setOpaque(true);    
-                final JLabel l = this;
-                addMouseListener(new MouseListener(){
-                    public void mouseEntered(MouseEvent arg0) {
-                        l.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                        l.setBackground(listItemBgHover);
-                    }
-
-                    public void mouseExited(MouseEvent arg0) {
-                        l.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                        l.setBackground(listItemBg);
-                    }
-
-                    public void mousePressed(MouseEvent arg0) {  }
-
-                    public void mouseReleased(MouseEvent arg0) {  }
-                    public void mouseClicked(MouseEvent arg0) {  
-                        cm.setChallenge(c); // set current challenge
-                        m.setActiveMode(cm); // switch to challengemode
-                    }                    
-                });
-            }});
-        }
-        
-
-        
-        
-        
-        
-        
-        // set up detailPanel ====================================================
-        final JPanel detailPanel = new JPanel(){{
-            setBackground(Color.white);
-        }};
-        this.add(detailPanel, "detailPanel");
-        // title TODO must remain uptodate
-        JLabel titleLabel = new JLabel("Title"){{
-            setFont(new Font("Helvetica Neue", Font.BOLD, 20));
-            setForeground(new Color(66, 66, 66));  
-            setBorder(new EmptyBorder(15, 15, 15, 15));
-        }};
-        detailPanel.add(titleLabel);
-        detailPanel.add(new JLabel(){{ // detailPanel text must remain up to date.
-            setText("<html>An arithmetic instruction <b>pops</b> two values from the stack, performs some operation and pushes the result back. An example of such an instruction is ADD, which does exactly what you think it does. CONST simply pushes the value after it onto the stack.</html>");
-            setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
-            setForeground(new Color(66, 66, 66));  
-            setBorder(new EmptyBorder(15, 15, 15, 15));
-            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,250));
-            setBackground(Color.red);
-            setOpaque(true);
-            setVerticalAlignment(JLabel.TOP);
-            setVerticalTextPosition(JLabel.TOP);
-        }});
-        detailPanel.add(new JLabel("Allowed Instructions:"){{
-            setFont(new Font("Helvetica Neue", Font.BOLD, 14));
-            setForeground(new Color(66, 66, 66));  
-            setBorder(new EmptyBorder(15, 15, 15, 15));
-        }});
-        JLabel allowedInstructions = new JLabel(){{ // detailPanel text must remain up to date.
-            setText("<html>lakshdkahskdjklsajd</html>");
-            setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
-            setForeground(new Color(66, 66, 66));  
-            setBorder(new EmptyBorder(15, 15, 15, 15));
-            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,100));
-            setBackground(Color.red);
-            setOpaque(true);
-            setVerticalAlignment(JLabel.TOP);
-            setVerticalTextPosition(JLabel.TOP);
-        }};
-        detailPanel.add(allowedInstructions);
         
         
         
@@ -183,6 +81,112 @@ public class ChallengeUI extends JPanel {
 //        this.add(descLabel);
         
         this.setVisible(true);
+    }
+    
+    private class SelectorPanel extends JPanel{
+        final Color listItemBg =  new Color(250,250,250);
+        final Color listItemBgHover =  new Color(250,210,250);
+
+        SelectorPanel(final StateManager stateManager, final ChallengeMode challengeMode){
+            this.setBackground(Color.white);
+            
+            // title
+            this.add(new JLabel("Choose a Challenge"){{
+                setFont(new Font("Helvetica Neue", Font.BOLD, 20));
+                setForeground(new Color(66, 66, 66));  
+                setBorder(new EmptyBorder(15, 15, 15, 15));
+            }});
+            this.add(new JLabel("Or just try out the machine."){{
+                setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
+                setForeground(new Color(66, 66, 66));  
+                setBorder(new EmptyBorder(5, 15, 25, 15));
+            }});
+            
+            // challenge list
+            JPanel listContainer = new JPanel(new GridLayout(ChallengeMode.challengeList.size(), 1, 0, 1)){{
+                setBackground(Color.white);
+            }};
+            this.add(listContainer);
+            for (int i=0; i<ChallengeMode.challengeList.size();i++){
+                final AbstractChallenge c = ChallengeMode.challengeList.get(i);           
+                listContainer.add(new JLabel((i+1)+". " + c.title, JLabel.LEFT){{
+                    setFont(new Font("Helvetica Neue", Font.PLAIN, 12));
+                    setForeground(new Color(66, 66, 66));
+                    setBorder(new EmptyBorder(5, 15, 5, 5));
+                    setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH, 40));
+                    setBackground(listItemBg);
+                    setOpaque(true);    
+                    final JLabel l = this;
+                    addMouseListener(new MouseListener(){
+                        public void mouseEntered(MouseEvent arg0) {
+                            l.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                            l.setBackground(listItemBgHover);
+                        }
+
+                        public void mouseExited(MouseEvent arg0) {
+                            l.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                            l.setBackground(listItemBg);
+                        }
+
+                        public void mousePressed(MouseEvent arg0) {  }
+
+                        public void mouseReleased(MouseEvent arg0) {  }
+                        public void mouseClicked(MouseEvent arg0) {  
+                            challengeMode.setChallenge(c); // set current challenge
+                            stateManager.setActiveMode(challengeMode); // switch to challengemode
+                        }                    
+                    });
+                }});
+            }
+        }
+    }
+    
+    private class DetailPanel extends JPanel{
+        JLabel titleLabel = new JLabel("Title"){{
+            setFont(new Font("Helvetica Neue", Font.BOLD, 20));
+            setForeground(new Color(66, 66, 66));  
+            setBorder(new EmptyBorder(15, 15, 15, 15));
+        }};
+        JLabel descLabel = new JLabel(){{ // detailPanel text must remain up to date.
+            setText("<html>An arithmetic instruction <b>pops</b> two values from the stack, performs some operation and pushes the result back. An example of such an instruction is ADD, which does exactly what you think it does. CONST simply pushes the value after it onto the stack.</html>");
+            setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
+            setForeground(new Color(66, 66, 66));  
+            setBorder(new EmptyBorder(15, 15, 15, 15));
+            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,250));
+            setBackground(new Color(245,245,245));
+            setOpaque(true);
+            setVerticalAlignment(JLabel.TOP);
+            setVerticalTextPosition(JLabel.TOP);
+        }};
+        JLabel allowedInstructions = new JLabel(){{ // detailPanel text must remain up to date.
+            setText("<html>lakshdkahskdjklsajd</html>");
+            setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
+            setForeground(new Color(66, 66, 66));  
+            setBorder(new EmptyBorder(15, 15, 15, 15));
+            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,100));
+            setBackground(Color.red);
+            setOpaque(true);
+            setVerticalAlignment(JLabel.TOP);
+            setVerticalTextPosition(JLabel.TOP);
+        }};
+        
+        DetailPanel(){
+            this.setBackground(Color.white);
+            // title TODO must remain uptodate
+            this.add(titleLabel);
+            this.add(descLabel);
+            this.add(new JLabel("Allowed Instructions:"){{
+                setFont(new Font("Helvetica Neue", Font.BOLD, 14));
+                setForeground(new Color(66, 66, 66));  
+                setBorder(new EmptyBorder(15, 15, 15, 15));
+            }});
+            this.add(allowedInstructions);
+        }
+        
+        void updateFromChallenge(AbstractChallenge c){
+            titleLabel.setText(c.title);
+            descLabel.setText("<html>"+c.description+"</html>");
+        }
     }
 
     private StackMachineListener l = new StackMachineListenerAdapter() {
