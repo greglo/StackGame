@@ -106,11 +106,9 @@ class EditHandler extends AbstractStretchBoxHandler {
         for(Integer j : movedList)
             stackMachine.removeInstruction(j);
         
-//TODO: calculate the shift so that we don't place something out o bounds
-        //moveY = Math.min(movedList., list.get())
+//TODO: if you move a block of instructions below the 1st block, the order might reverse...
         Collections.sort(movedList);
-        //moveY = Math.max ...
-        
+    
         
         //add them at the correct location
         for(Integer j : movedList)
