@@ -364,9 +364,15 @@ public class StackMachine {
     }
 
     public int getLine() {
-        Instruction instruction = instructions.get( programCounter );
+        if( isRunning() ) {
+            Instruction instruction = instructions.get( programCounter );
 
-        return 1 + ( instruction.line == -1 ? programCounter : instruction.line );
+            if( instruction.line != -1 ) {
+                return instruction.line + 1;
+            }
+        }
+
+        return programCounter + 1;
     }
 
     /**
