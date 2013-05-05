@@ -58,7 +58,6 @@ public class ChallengeUI extends JPanel {
     
 
     public ChallengeUI(final StateManager m, final FreeDesignMode freeDesignMode, final ChallengeMode cm, ErrorUI eui) {
-        m.stackMachine.addListener(listener);
         this.machine = m.stackMachine;
         this.stateManager = m;
         this.challengeMode = cm;
