@@ -86,18 +86,10 @@ class EditHandler extends AbstractStretchBoxHandler {
     
 //TODO: make this method more elegant, more efficient
     protected void dragFinished(Point dragOrigin2, Point dragTarget2) {
-        //check if such movement is possible, i.e. if target isn't out of bounds
         Iterator<Instruction> i = blockUI.getSelectionManager().getSelection();
 
-//      int moveX = dragTarget2.x - dragOrigin2.x;
         int moveY = dragTarget2.y - dragOrigin2.y;
 
-        
-        
-//      if (possible){
-            //Moving the elements one by one might break Cave invariant 3 if the region being moved overlaps with itself
-            //Therefore, we first remove them, then re-add them on the correct location
-    
         //find their location
         StackMachine stackMachine = blockUI.getCurrentStackMachine();
         List<Instruction> instructions = stackMachine.getInstructions();
@@ -124,10 +116,7 @@ class EditHandler extends AbstractStretchBoxHandler {
         for(Integer j : movedList)
             stackMachine.addInstruction(j+moveY, moved.get(j));
         
-        
-        
-//      }
-        
+       
     }
     
     

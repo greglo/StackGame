@@ -115,9 +115,13 @@ public class BlockUI extends JPanel {
 
     /** Retrieves the Instruction at a given coordinate of the grid */
     protected Instruction getInstructionAt(int x, int y) {
-        if (currentStackMachine != null)
-            return currentStackMachine.getInstructions().get(y);
-        else
+        if (currentStackMachine != null){
+            List<Instruction> instructions = currentStackMachine.getInstructions();
+            if(y >=0 && y<instructions.size())
+                return instructions.get(y);
+            else 
+                return null;
+        }else
             return null;
     }
 
