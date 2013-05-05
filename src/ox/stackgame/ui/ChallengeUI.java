@@ -227,7 +227,7 @@ public class ChallengeUI extends JPanel {
          */
         public void visit(RunMode m) {
             // moving from ChallengeMode -> RunMode
-            if (stateManager.getActiveMode() instanceof ChallengeMode){
+            if (stateManager.getActiveMode() == challengeMode){ // TODO never being called
                 // challengeMode should never be enabled without an active challenge.
                 assert(challengeMode.getChallenge() != null); 
                 // check the program is allowed by the challenge
@@ -237,7 +237,7 @@ public class ChallengeUI extends JPanel {
                 }
                 // start listening for completion
                 stateManager.stackMachine.addListener(listener);
-            }
+            } 
         }
 
         // this mode is activated!
