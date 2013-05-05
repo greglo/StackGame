@@ -108,7 +108,7 @@ public class ApplicationFrame {
 
         // TapeUI
         
-        TapeUI tape = new TapeUI(modeManager);
+        TapeUI tape = new TapeUI(modeManager, eui);
         tape.setLocation(LEFT_PANEL_WIDTH , h - p - TAPE_HEIGHT - MAGIC);
         contentPane.add(tape, new Integer(1));// layer 1 is on top of 0
     

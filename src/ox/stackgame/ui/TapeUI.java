@@ -41,45 +41,36 @@ public class TapeUI extends JPanel {
     private static final Font font = new Font("Monospaced", Font.PLAIN, 12);
     private int addInputBoxX = padding; // Controls where we're looking for
                                         // input from
-    private boolean running = false;
+    private boolean editable = true;
+    private ErrorUI eui;
 
-    private ModeVisitor modeActivationVisitor = new ModeVisitor() {
+     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
         // TODO make input tape editable on DesignMode visitors
 
         public void visit(RunMode m) {
+            editable = false;
+            m.machine.loadInput(inputTape);
             resetTapes();
         }
 
-        @Override
         public void visit(ChallengeMode m) {
-            // TODO Auto-generated method stub
-
+            editable = false;
         }
 
-        @Override
         public void visit(FreeDesignMode m) {
-            // TODO Auto-generated method stub
-
+            editable = true;
         }
     };
 
     private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
-        // TODO make input tape uneditable on design modes
 
         public void visit(RunMode m) {
-            // TODO hide cursor
         }
 
-        @Override
         public void visit(ChallengeMode m) {
-            // TODO Auto-generated method stub
-
         }
 
-        @Override
         public void visit(FreeDesignMode m) {
-            // TODO Auto-generated method stub
-
         }
     };
 
@@ -103,7 +94,8 @@ public class TapeUI extends JPanel {
         }
     };
 
-    public TapeUI(StateManager m) {
+    public TapeUI(StateManager m, ErrorUI eui) {
+        this.eui = eui;
 
         // pay attention to mode changes
         m.registerModeActivationVisitor(modeActivationVisitor);
@@ -122,7 +114,7 @@ public class TapeUI extends JPanel {
         
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (!running && addInputBoxX <= e.getX() && e.getX() <= addInputBoxX + boxSize && padding <= e.getY() && e.getY() < padding + boxSize) {
+                if (editable && addInputBoxX <= e.getX() && e.getX() <= addInputBoxX + boxSize && padding <= e.getY() && e.getY() < padding + boxSize) {
                     getInput();
                 }
             }
@@ -195,7 +187,7 @@ public class TapeUI extends JPanel {
         addInputBoxX = x;
         
         // Draw input box
-        if (!running) {
+        if (editable) {
             g.setColor(Color.gray);
             g.drawLine(addInputBoxX, padding, addInputBoxX + boxSize, padding);
             g.drawLine(addInputBoxX, padding, addInputBoxX, padding + boxSize);

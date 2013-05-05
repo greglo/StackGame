@@ -109,7 +109,7 @@ public class ApplicationFrameWithBlockUI {
 
         // TapeUI
         
-        TapeUI tape = new TapeUI(modeManager);
+        TapeUI tape = new TapeUI(modeManager, eui);
         tape.setLocation(LEFT_PANEL_WIDTH + p, h - p - TAPE_HEIGHT - MAGIC);
         contentPane.add(tape, new Integer(1));// layer 1 is on top of 0
     
