@@ -50,7 +50,7 @@ public class ChallengeUI extends JPanel {
     // appearance stuff
     private final CardLayout cardLayout =new CardLayout(); 
 
-    public ChallengeUI(StateManager m, final ChallengeMode cm, ErrorUI eui) {
+    public ChallengeUI(final StateManager m, final ChallengeMode cm, ErrorUI eui) {
         m.stackMachine.addListener(l);
         this.machine = m.stackMachine;
         this.stateManager = m;
@@ -67,7 +67,7 @@ public class ChallengeUI extends JPanel {
         
         
         
-        // set up selectorpanel
+        // set up selectorpanel ====================================================
         final JPanel selectorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0)){{
             setBackground(Color.white);
         }};
@@ -112,13 +112,13 @@ public class ChallengeUI extends JPanel {
                         l.setBackground(listItemBg);
                     }
 
-                    public void mousePressed(MouseEvent arg0) {
-                        System.out.println("clicked "+c.title);
-                        cm.setChallenge(c);
-                    }
+                    public void mousePressed(MouseEvent arg0) {  }
 
                     public void mouseReleased(MouseEvent arg0) {  }
-                    public void mouseClicked(MouseEvent arg0) {  }                    
+                    public void mouseClicked(MouseEvent arg0) {  
+                        cm.setChallenge(c); // set current challenge
+                        m.setActiveMode(cm); // switch to challengemode
+                    }                    
                 });
             }});
         }
@@ -129,16 +129,49 @@ public class ChallengeUI extends JPanel {
         
         
         
-        // set up detailPanel
-        final JPanel detailPanel = new JPanel();
-        detailPanel.setBackground(Color.green);
+        // set up detailPanel ====================================================
+        final JPanel detailPanel = new JPanel(){{
+            setBackground(Color.white);
+        }};
         this.add(detailPanel, "detailPanel");
+        // title TODO must remain uptodate
+        JLabel titleLabel = new JLabel("Title"){{
+            setFont(new Font("Helvetica Neue", Font.BOLD, 20));
+            setForeground(new Color(66, 66, 66));  
+            setBorder(new EmptyBorder(15, 15, 15, 15));
+        }};
+        detailPanel.add(titleLabel);
+        detailPanel.add(new JLabel(){{ // detailPanel text must remain up to date.
+            setText("<html>An arithmetic instruction <b>pops</b> two values from the stack, performs some operation and pushes the result back. An example of such an instruction is ADD, which does exactly what you think it does. CONST simply pushes the value after it onto the stack.</html>");
+            setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
+            setForeground(new Color(66, 66, 66));  
+            setBorder(new EmptyBorder(15, 15, 15, 15));
+            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,250));
+            setBackground(Color.red);
+            setOpaque(true);
+            setVerticalAlignment(JLabel.TOP);
+            setVerticalTextPosition(JLabel.TOP);
+        }});
+        detailPanel.add(new JLabel("Allowed Instructions:"){{
+            setFont(new Font("Helvetica Neue", Font.BOLD, 14));
+            setForeground(new Color(66, 66, 66));  
+            setBorder(new EmptyBorder(15, 15, 15, 15));
+        }});
+        JLabel allowedInstructions = new JLabel(){{ // detailPanel text must remain up to date.
+            setText("<html>lakshdkahskdjklsajd</html>");
+            setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
+            setForeground(new Color(66, 66, 66));  
+            setBorder(new EmptyBorder(15, 15, 15, 15));
+            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,100));
+            setBackground(Color.red);
+            setOpaque(true);
+            setVerticalAlignment(JLabel.TOP);
+            setVerticalTextPosition(JLabel.TOP);
+        }};
+        detailPanel.add(allowedInstructions);
         
         
         
-        
-        // Switching
-        cardLayout.show(this,"selectorPanel");
         
 //        this.setLayout(new FlowLayout());
 //        this.setBackground(Color.white);
@@ -192,9 +225,15 @@ public class ChallengeUI extends JPanel {
         public void visit(ChallengeMode m) {
             //descLabel.setText("<html>"+challengeMode.getChallenge().description+"</html>");
             //ChallengeUI.this.setVisible(true);
+            
+            // display detail panel
+            cardLayout.show(ChallengeUI.this,"detailPanel");
+            
         }
 
         public void visit(FreeDesignMode m) {
+            // display selector panel
+            cardLayout.show(ChallengeUI.this,"selectorPanel");
         }
     };
 
