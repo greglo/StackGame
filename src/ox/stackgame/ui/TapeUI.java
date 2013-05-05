@@ -55,10 +55,12 @@ public class TapeUI extends JPanel {
 
         public void visit(ChallengeMode m) {
             editable = false;
+            repaint();
         }
 
         public void visit(FreeDesignMode m) {
             editable = true;
+            repaint();
         }
     };
 
@@ -124,6 +126,7 @@ public class TapeUI extends JPanel {
         // colours for input/output
 
     }
+    
 
     protected void getInput() {
         String s = (String) JOptionPane.showInputDialog(this,
