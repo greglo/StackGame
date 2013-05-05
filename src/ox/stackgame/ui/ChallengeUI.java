@@ -158,7 +158,7 @@ public class ChallengeUI extends JPanel {
             setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             setForeground(new Color(66, 66, 66));  
             setBorder(new EmptyBorder(15, 15, 15, 15));
-            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,100));
+            this.setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH,200));
             setBackground(Color.white);
             setOpaque(true);
             setVerticalAlignment(JLabel.TOP);
@@ -188,7 +188,12 @@ public class ChallengeUI extends JPanel {
         void updateFromChallenge(AbstractChallenge c){
             titleLabel.setText(c.title);
             descLabel.setText("<html>"+c.description+"</html>");
-            allowedInstructions.setText("<html>"+c.instructionSet.toString()+"</html>");
+            StringBuilder sb = new StringBuilder();
+            for (String line : c.instructionSet.keySet()){
+                Integer limits = c.instructionSet.get(line);
+                sb.append("<code style='background:#cccccc;'>"+line+"</code> "+(limits==null ? "" : "x "+c.instructionSet.get(line))+"<br />");
+            }
+            allowedInstructions.setText("<html>"+sb.toString()+"</html>");
         }
     }
 
