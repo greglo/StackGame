@@ -9,7 +9,7 @@ import java.awt.Point;
 public class InstructionSelectionPainter{
 	public static final InstructionSelectionPainter INSTANCE = new InstructionSelectionPainter();
 
-	public void paint(Graphics2D g, String name, CreatePanel.Entry entry, int x, int y) {
+	public void paint(Graphics2D g, String name, int x, int y) {
 		Point realLocation = BlockUI.getLocationOfCell(x,y);
 
 		Color c;

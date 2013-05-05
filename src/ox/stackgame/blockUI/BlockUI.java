@@ -19,7 +19,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ox.stackgame.blockUI.BlockManager.BlockManagerListener;
-import ox.stackgame.blockUI.BlockManager.NameOrInstruction;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
 import ox.stackgame.stackmachine.StackMachineListener;
@@ -147,7 +146,7 @@ public class BlockUI extends JPanel {
     protected class GeneralListener implements StackMachineListener, SelectionManagerListener, BlockManagerListener {
 
         // BlockManagerListener
-        public void instructionChanged(NameOrInstruction e) {
+        public void instructionChanged(String e) {
         }
 
         public void instructionCleared() {

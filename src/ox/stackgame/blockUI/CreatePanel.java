@@ -19,8 +19,6 @@ import java.util.TreeMap;
 import javax.swing.JPanel;
 
 import ox.stackgame.blockUI.BlockManager.BlockManagerListener;
-import ox.stackgame.blockUI.BlockManager.NameOrInstruction;
-import ox.stackgame.stackmachine.instructions.Instruction;
 import ox.stackgame.stackmachine.instructions.Operations;
 import ox.stackgame.ui.ChallengeMode;
 import ox.stackgame.ui.FreeDesignMode;
@@ -38,13 +36,13 @@ import ox.stackgame.ui.StateManager;
  * */
 
 @SuppressWarnings("serial")
-public class CreatePanel extends JPanel implements BlockManagerListener, MouseListener {
+public class CreatePanel extends JPanel implements BlockManagerListener {
 
     //whether or not instructions are clickable
 //    private boolean clickable;
     //whether or not any buttons are displayed
 //    private boolean active;
-    private Map<String,Entry> availableInstructions = null;
+    private Map<String,Integer> availableInstructions = null;
     private BlockManager manager;
     private StateManager stateManager;
     //order of the selected item
@@ -71,6 +69,9 @@ public class CreatePanel extends JPanel implements BlockManagerListener, MouseLi
         stateManager.registerModeActivationVisitor(modeActivationVisitor);
         stateManager.registerModeDeactivationVisitor(modeDeactivationVisitor);
         
+        //mouse listener
+        addMouseListener(new PanelMouseListener());
+        
         //current mode
         //Warning: dirty
         Mode activeMode = stateManager.getActiveMode();
@@ -86,7 +87,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener, MouseLi
     
     
     //listen to BlockManager
-    public void instructionChanged(NameOrInstruction e) {}
+    public void instructionChanged(String e) {}
     public void instructionCleared() {}
     public void modeChanged(String s) {
 //        if (s == BlockManager.CREATE)activate();
@@ -114,7 +115,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener, MouseLi
     
     public void paintComponent(Graphics g) {
 //TODO: add current-instruction highlighting, gray mask on inactivity
-        System.out.println("painting BlockUI");
+        System.out.println("painting CreatePanel");
         Graphics2D g2d = (Graphics2D) g;
 
         Color oldColor = g2d.getColor();
@@ -141,7 +142,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener, MouseLi
             // paint instructions
             int j = 0;
             for (String s : availableInstructions.keySet()) {
-                InstructionSelectionPainter.INSTANCE.paint(g2d, s, availableInstructions.get(s), 0, j);
+                InstructionSelectionPainter.INSTANCE.paint(g2d, s, 0, j);
                 j += 1;
             }
             
@@ -188,15 +189,9 @@ public class CreatePanel extends JPanel implements BlockManagerListener, MouseLi
     // code to be executed when a mode is activated.
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
         public void visit(ChallengeMode m) {
-/*            //Translate to match the format used here 
-            //note the use of a TreeMap to keep the list sorted
-            availableInstructions = new TreeMap<String,Entry>();
-            Map<Instruction, Integer> set = m.getChallenge().instructionSet;
-            for(Instruction i : set.keySet())
-                availableInstructions.put(i.toString(),new Entry(i,set.get(i)));
-            repaint();
+            availableInstructions = m.getChallenge().instructionSet;
             selected = -1;
-*/
+            repaint();
         }
 
         public void visit(RunMode m) {
@@ -206,15 +201,17 @@ public class CreatePanel extends JPanel implements BlockManagerListener, MouseLi
 
         public void visit(FreeDesignMode m) {
             //create a map of all possible instructions
+            //notice the use of a TreeMap to keep the stuff sorted
             Iterator<String> it = Operations.names();
-            availableInstructions = new TreeMap<String,Entry>();
+            availableInstructions = new TreeMap<String,Integer>();
             while(it.hasNext()){
                 String name = it.next();
-                Instruction inst = (Operations.get(name).argTypes() == null ? new Instruction(name) : null);
-                availableInstructions.put(name, new Entry(inst,-1));
+                if (Operations.get(name).argTypes() != null)
+                    name += " *";
+                availableInstructions.put(name, -1);
             }
-            repaint();
             selected = -1;
+            repaint();
         }
     };
 
@@ -239,7 +236,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener, MouseLi
     
     //very simple, self-explanatory structure
     //note that if instruction is null, the user will be prompted for arguments for the instruction
-    public static class Entry{
+/*    public static class Entry{
         public int count;
         public Instruction instruction;
         public Entry(Instruction instruction, int count){
@@ -247,46 +244,43 @@ public class CreatePanel extends JPanel implements BlockManagerListener, MouseLi
            this.count = count;
         }
     }
+*/
 
-
-
-    //Mouse actions
-    public void mouseClicked(MouseEvent arg0) {
-    }
-    public void mouseEntered(MouseEvent arg0) {
-    }
-    public void mouseExited(MouseEvent arg0) {
-    }
-    public void mousePressed(MouseEvent e) {
-        if(isActive()){
-            //if in bounds, select the instruction
-            Point p = e.getPoint();
-            int x = p.x / CELLWIDTH;
-            int y = p.y / CELLHEIGHT;
-            if(x==0 && y < availableInstructions.size()){
-                //Get the y'th key... ugly
-                List<String> keyList = new ArrayList<String>(availableInstructions.keySet());
-                java.util.Collections.sort(keyList);
-                String key = keyList.get(y);
-                Entry value = availableInstructions.get(key);
-                if(value.instruction == null){
-                    manager.setInstruction(key);
-                }else{
-                    manager.setInstruction(value.instruction);
-                }
-                //highlight the selected item
-                selected = y;           
-
-            }else selected = -1;
-                
-            
-        }else{
-            //enable CREATE mode
-            manager.setMode(BlockManager.CREATE);
+    class PanelMouseListener implements MouseListener{
+        //Mouse actions
+        public void mouseClicked(MouseEvent arg0) {
         }
-    }
-    public void mouseReleased(MouseEvent arg0) {
-    }
+        public void mouseEntered(MouseEvent arg0) {
+        }
+        public void mouseExited(MouseEvent arg0) {
+        }
+        public void mousePressed(MouseEvent e) {
+            System.out.println("clicked");
+            if(isActive()){
+                //if in bounds, select the instruction
+                Point p = e.getPoint();
+                int x = p.x / CELLWIDTH;
+                int y = p.y / CELLHEIGHT;
+                if(x==0 && y < availableInstructions.size()){
+                    //Get the y'th key... ugly
+                    List<String> keyList = new ArrayList<String>(availableInstructions.keySet());
+                    java.util.Collections.sort(keyList);
+
+                    //highlight the selected item
+                    selected = y;           
     
+                }else selected = -1;
+
+            }else{
+                //enable CREATE mode
+                manager.setMode(BlockManager.CREATE);
+            }
+            
+            repaint();
+        }
+        public void mouseReleased(MouseEvent arg0) {
+        }
+      
+    }
 
 }

@@ -3,8 +3,6 @@ package ox.stackgame.blockUI;
 import java.util.ArrayList;
 import java.util.List;
 
-import ox.stackgame.stackmachine.instructions.Instruction;
-
 /** manages communication between block-based visual components (components in the BlockUI header) **/
 public class BlockManager {
 	
@@ -26,23 +24,15 @@ public class BlockManager {
 	
 	//active instruction
 //	private String instruction = null;
-	private NameOrInstruction instruction = null;
+	private String instruction = null;
 
-	public NameOrInstruction getInstruction(){return instruction;}
+	public String getInstruction(){return instruction;}
 	public void setInstruction(String instruction){
-		assert instruction!=null;
-		this.instruction.instruction=null;
-		this.instruction.name=instruction;
+		this.instruction=instruction;
 		for (BlockManagerListener l : listeners)
 			l.instructionChanged(this.instruction);
 	}
-    public void setInstruction(Instruction instruction){
-        assert instruction!=null;
-        this.instruction.instruction=instruction;
-        this.instruction.name=null;
-        for (BlockManagerListener l : listeners)
-            l.instructionChanged(this.instruction);
-    }
+
 	public void clearInstruction(){
 		this.instruction=null;
 		for (BlockManagerListener l : listeners)
@@ -66,7 +56,7 @@ public class BlockManager {
 	
 	public interface BlockManagerListener{
 		/** On change of instruction. We may assume that e is non-null **/
-		public void instructionChanged(NameOrInstruction s);
+		public void instructionChanged(String s);
 		/** Instruction set to null **/
 		public void instructionCleared();
 
@@ -77,14 +67,14 @@ public class BlockManager {
 	
     //very simple, self-explanatory structure
     //note that if instruction is null, the user will be prompted for arguments for the instruction
-    public static class NameOrInstruction{
+/*    public static class NameOrInstruction{
         public String name;
         public Instruction instruction;
         public NameOrInstruction(Instruction instruction, String name){
            this.instruction = instruction;
            this.name = name;
         }
-    }
+    }*/
 
 
 }
