@@ -225,6 +225,8 @@ public class ButtonUI extends JPanel {
                 //
                 // lexButton.setEnabled(true);
                 updateButtons();
+                
+                eui.clearErrors();
             }
         });
 
