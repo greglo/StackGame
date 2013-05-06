@@ -43,7 +43,7 @@ public class StackResultChallenge extends AbstractChallenge {
                 return false;
             }
         } catch (EmptyStackException e) {
-            message = "Empty stack"; // TODO make this more descriptive?
+            message = "Empty stack";
             return false;
         }
     }

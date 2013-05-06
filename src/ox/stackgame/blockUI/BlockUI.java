@@ -24,7 +24,6 @@ import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.instructions.Instruction;
-import ox.stackgame.ui.ApplicationFrame;
 import ox.stackgame.ui.StateManager;
 
 /**

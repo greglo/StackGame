@@ -13,6 +13,7 @@ import javax.swing.event.DocumentListener;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
 import ox.stackgame.stackmachine.exceptions.NotHaltingException;
 import ox.stackgame.stackmachine.exceptions.StackRuntimeException;
+import ox.stackgame.stackmachine.instructions.Instruction;
 
 @SuppressWarnings("serial")
 public class ButtonUI extends JPanel {
@@ -232,7 +233,8 @@ public class ButtonUI extends JPanel {
 
         // do button enabling/disabling
         sm.stackMachine.addListener(new StackMachineListenerAdapter() {
-            public void programCounterChanged(int line) {
+            @Override
+            public void programCounterChanged(int line, Instruction instruction) {
                 updateButtons();
             }
         });

@@ -14,7 +14,7 @@ public class IntStackValueTest {
         IntStackValue y = new IntStackValue(2);
         IntStackValue z = new IntStackValue(3);
         assertEquals(x, y);
-        assertEquals(false, x==y);
+        assertEquals(false, x.equals(z)); 
     }
     
     @Test
