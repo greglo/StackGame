@@ -69,6 +69,14 @@ public class IntStackValue extends StackValue<Integer> {
         } else
             throw new TypeException(0, y.getClass());
     }
+    
+    @Override
+    public StackValue<?> mod(StackValue<?> y) throws TypeException {
+        if (y instanceof IntStackValue)
+            return new IntStackValue(this.getValue() % (Integer) y.getValue());
+        else
+            throw new TypeException(0, y.getClass());
+    }
 
     @Override
     public boolean equals(Object other) {

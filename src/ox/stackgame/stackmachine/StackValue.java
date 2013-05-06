@@ -23,6 +23,7 @@ public abstract class StackValue<T> {
     public abstract StackValue<?> sub(StackValue<?> y) throws TypeException;
     public abstract StackValue<?> mul(StackValue<?> y) throws TypeException;
     public abstract StackValue<?> div(StackValue<?> y) throws TypeException, DivisionByZeroException;
+    public abstract StackValue<?> mod(StackValue<?> y) throws TypeException;
     
     public abstract boolean equals(Object other);
     

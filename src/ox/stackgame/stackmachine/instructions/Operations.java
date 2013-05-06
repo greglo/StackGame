@@ -54,6 +54,13 @@ public class Operations {
                 return x.div(y);
             }
         });
+        
+        ht.put("mod", new BinOperation() {
+            public StackValue<?> binop(StackValue<?> x, StackValue<?> y)
+                    throws TypeException, DivisionByZeroException {
+                return x.mod(y);
+            }
+        });
 
         ht.put("const", new SeqOperation() {
             public void apply(StackMachine m, StackValue<?> arg)

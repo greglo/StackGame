@@ -95,6 +95,11 @@ public class CharStackValue extends StackValue<Character> {
     public StackValue<?> div(StackValue<?> y) throws TypeException {
         throw new TypeException(0, this.getClass());
     }
+    
+    @Override
+    public StackValue<?> mod(StackValue<?> y) throws TypeException {
+        throw new TypeException(0, this.getClass());
+    }
 
     @Override
     public boolean equals(Object other) {
