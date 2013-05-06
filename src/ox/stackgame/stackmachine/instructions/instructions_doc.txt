@@ -1,23 +1,21 @@
 === BASIC ===
 
-	const 	<value>		Pushes <value> on the evaluation stack
-	input				Consumes first element on the input tape, and pushes it on the stack
-	output				Pops a value off the stack, and puts it on the end of the output tape
+    const   <value>     Pushes <value> on the evaluation stack
+    input                 Consumes first element on the input tape, and pushes it on the stack
+    output                Pops a value off the stack, and puts it on the end of the output tape
 
 === ARITHMETIC ===
 
-	add 				Pops two values off the stack, and pushes the result of adding them together					
-	sub 				Pops two values off the stack, and pushes the result of subtracting one from the other					
-	mul 				Pops two values off the stack, and pushes the result of multiplying them together					
-	div 				Pops two values off the stack, and pushes the result of dividing one by the other					
+    add                   Pops two values off the stack, and pushes the result of adding them together
+    sub                   Pops two values off the stack, and pushes the result of subtracting one from the other
+    mul                   Pops two values off the stack, and pushes the result of multiplying them together
+    div                   Pops two values off the stack, and pushes the result of dividing one by the other
 
 === BRANCHING ===
 
-	label 	<name>		Creates a label which can be jumped to
-	jump 	<name>		Jumps to label <name> when executed
-	jez 	<name>		Jumps to label <name> if the value on the top of the stack is zero
-	jii 	<name>		Jumps to label <name> if there is unconsumed input on the tape	
-	
-=== OTHER ===
-	
-	dump				Prints a dump of the current stack machine state to the console
+    label   <name>        Creates a label which can be jumped to
+    jump    <name>        Jumps to label <name> when executed
+    jez     <name>        Jumps to label <name> if the value on the top of the stack is zero
+    jgz     <name>        Jumps to label <name> if the value on top of the stack is > 0
+    jlz     <name>        Jumps to label <name> if the value on top of the stack is < 0
+    jii     <name>        Jumps to label <name> if there is unconsumed input on the tape
