@@ -145,29 +145,34 @@ public class ChallengeUI extends JPanel {
             setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH, 540));
             setVerticalAlignment(JLabel.TOP);
         }};
+        JButton nextButton = new JButton("Next Challenge"){{
+            setEnabled(false);
+            addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e) {
+                    int i = ChallengeMode.challengeList.indexOf(challengeMode.getChallenge());
+                    challengeMode.setChallenge(ChallengeMode.challengeList.get(i+1));
+                    DetailPanel.this.updateFromChallenge(challengeMode.getChallenge());
+                }
+            });
+        }};
         
         DetailPanel(){
             this.setBackground(Color.white);
             this.add(challengeLabel);
-            this.add(new JButton("Choose Challenge"){{
+            this.add(new JButton("Back"){{
                 addActionListener(new ActionListener(){
                     public void actionPerformed(ActionEvent e) {
                         stateManager.setActiveMode(freeDesignMode);
                     }
                 });
             }});
-            // TODO make this button disabled when challenge not finished, and enabled when you do
-            this.add(new JButton("Next"){{
-                setEnabled(false);
-                addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent e) {
-                        
-                    }
-                });
-            }});
+            this.add(nextButton);
         }
         
         void updateFromChallenge(AbstractChallenge c){
+            int i = ChallengeMode.challengeList.indexOf(challengeMode.getChallenge());
+            this.nextButton.setEnabled(i+1 < ChallengeMode.challengeList.size());
+            
             String text = String.format(
                 "<html>" +
                     "<div style='font-size: 20pt; font-weight: bold; padding-bottom: 8px'>%s</div>" +
