@@ -35,6 +35,7 @@ public class StackResultChallenge extends AbstractChallenge {
     public Boolean hasSucceeded(StackMachine m) {
         try {
             if (m.getStack().peek().equals(correctAnswer)) {
+                message = "Congratulations!";
                 return true;
             } else {
                 message= "Your answer: " + m.getStack().peek().toString()
