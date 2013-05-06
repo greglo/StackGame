@@ -207,7 +207,9 @@ public class ChallengeUI extends JPanel {
 
     // Test if the user has passed the challenge
     private StackMachineListener listener = new StackMachineListenerAdapter() {
-        public void programCounterChanged(int line) {
+        @Override
+        public void programCounterChanged(int line, Instruction instruction) {
+            System.out.println("ChallengeListener pc step");
             // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
             if (machine.isRunning()==false) {
                 AbstractChallenge currChallenge = challengeMode.getChallenge();
@@ -228,7 +230,8 @@ public class ChallengeUI extends JPanel {
         public void visit(RunMode m) {
             System.out.println("ChallengeUI noticed RunMode has been enabled");
             // moving from ChallengeMode -> RunMode
-            if (oldMode == challengeMode){ // TODO never being called
+            
+            if (oldMode == challengeMode){ 
                 // challengeMode should never be enabled without an active challenge.
                 assert(challengeMode.getChallenge() != null); 
                 // check the program is allowed by the challenge
