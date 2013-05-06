@@ -10,6 +10,7 @@
     sub                   Pops two values off the stack, and pushes the result of subtracting one from the other
     mul                   Pops two values off the stack, and pushes the result of multiplying them together
     div                   Pops two values off the stack, and pushes the result of dividing one by the other
+    mod                   Pops two values off the stack, and pushes the result of remainder of dividing one by the other
 
 === BRANCHING ===
 
