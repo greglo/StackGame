@@ -4,7 +4,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -18,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ox.stackgame.challenge.AbstractChallenge;
-import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackMachineListenerAdapter;
@@ -43,8 +41,6 @@ public class ChallengeUI extends JPanel {
      * currentChallenge stores the active challenge. This can be null; denoting
      * the user has not yet selected a challenge.
      */
-    //protected AbstractChallenge currChallenge = null;
-    //protected JLabel descLabel;
     private StackMachine machine;
     private final StateManager stateManager;
     private final FreeDesignMode freeDesignMode;
@@ -142,32 +138,54 @@ public class ChallengeUI extends JPanel {
             setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             setForeground(new Color(66, 66, 66));  
             setBorder(new EmptyBorder(15, 15, 15, 15));
-            setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH, 540));
+            setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH, 510));
             setVerticalAlignment(JLabel.TOP);
+        }};
+        private JLabel congratsLabel = new JLabel(""){{
+            setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
+            setBackground(Color.green);  
+            setBorder(new EmptyBorder(15, 15, 15, 15));
+            setPreferredSize(new Dimension(ApplicationFrame.LEFT_PANEL_WIDTH, 30));
+        }};
+        JButton nextButton = new JButton("Next Challenge"){{
+            setEnabled(false);
+            addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e) {
+                    int i = ChallengeMode.challengeList.indexOf(challengeMode.getChallenge());
+                    challengeMode.setChallenge(ChallengeMode.challengeList.get(i+1));
+                    DetailPanel.this.updateFromChallenge(challengeMode.getChallenge());
+                }
+            });
         }};
         
         DetailPanel(){
             this.setBackground(Color.white);
-            this.add(challengeLabel);
-            this.add(new JButton("Choose Challenge"){{
+            this.add(challengeLabel); // height 540
+            this.add(congratsLabel);
+            this.add(new JButton("Back"){{
                 addActionListener(new ActionListener(){
                     public void actionPerformed(ActionEvent e) {
                         stateManager.setActiveMode(freeDesignMode);
                     }
                 });
             }});
-            // TODO make this button disabled when challenge not finished, and enabled when you do
-            this.add(new JButton("Next"){{
-                setEnabled(false);
-                addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent e) {
-                        
-                    }
-                });
-            }});
+            this.add(nextButton);
+        }
+        
+        void displaySuccessMessage(String message){
+            congratsLabel.setText("<html>"+message+"</html>");
+            congratsLabel.setOpaque(true);
         }
         
         void updateFromChallenge(AbstractChallenge c){
+            // set nextButton
+            int i = ChallengeMode.challengeList.indexOf(challengeMode.getChallenge());
+            this.nextButton.setEnabled(i+1 < ChallengeMode.challengeList.size());
+            
+            // hide congratsLabel
+            congratsLabel.setText("");
+            congratsLabel.setOpaque(false);
+            
             String text = String.format(
                 "<html>" +
                     "<div style='font-size: 20pt; font-weight: bold; padding-bottom: 8px'>%s</div>" +
@@ -202,15 +220,20 @@ public class ChallengeUI extends JPanel {
 
     // Test if the user has passed the challenge
     private StackMachineListener listener = new StackMachineListenerAdapter() {
-        public void programCounterChanged(int line) {
+        @Override
+        public void programCounterChanged(int line, Instruction instruction) {
             // when the machine terminates, evaluate machine against challenge's hasSucceeded() function
             if (machine.isRunning()==false) {
                 AbstractChallenge currChallenge = challengeMode.getChallenge();
                 Boolean hasSucceeded = currChallenge.hasSucceeded(machine);
                 String message = currChallenge.getMessage();
                 System.out.println(hasSucceeded ? "Challenge hasSucceeded=true" : "Challenge hasSucceeded=false");
-                System.out.println(message);
-                // TODO display message in GUI
+                System.out.println("Message: "+message);
+                if (hasSucceeded){
+                    detailPanel.displaySuccessMessage(message);
+                } else {
+                    eui.displayError(message);
+                }
             }
         }
     };
@@ -223,7 +246,8 @@ public class ChallengeUI extends JPanel {
         public void visit(RunMode m) {
             System.out.println("ChallengeUI noticed RunMode has been enabled");
             // moving from ChallengeMode -> RunMode
-            if (oldMode == challengeMode){ // TODO never being called
+            
+            if (oldMode == challengeMode){ 
                 // challengeMode should never be enabled without an active challenge.
                 assert(challengeMode.getChallenge() != null); 
                 // check the program is allowed by the challenge
