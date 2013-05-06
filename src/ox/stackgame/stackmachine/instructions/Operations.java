@@ -142,7 +142,7 @@ public class Operations {
             }
         });
         
-        ht.put("jin", new BranchOperation() {
+        ht.put("jlz", new BranchOperation() {
             @Override
             protected boolean p(StackMachine machine) throws EmptyStackException {
                 Object v = machine.getStack().pop().getValue();
@@ -153,12 +153,12 @@ public class Operations {
             }
         });
         
-        ht.put("jinn", new BranchOperation() {
+        ht.put("jgz", new BranchOperation() {
             @Override
             protected boolean p(StackMachine machine) throws EmptyStackException {
                 Object v = machine.getStack().pop().getValue();
                 if (v instanceof Integer)
-                    return (Integer)v >= 0;
+                    return (Integer)v > 0;
                 else
                     return false;
             }

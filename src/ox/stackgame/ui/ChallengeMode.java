@@ -38,7 +38,6 @@ public class ChallengeMode extends DesignMode {
     }
 
     public void setChallenge(AbstractChallenge challenge) {
-        System.out.println("Set current challenge: " + challenge.title);
         this.currChallenge = challenge;
     }
 
@@ -163,13 +162,13 @@ public class ChallengeMode extends DesignMode {
                 }, new ArrayList<StackValue<?>>(), tape1to10));
         
         cl.add(new TapeChallenge(
-                "Filtering Using JIN",
-                "JINN/JIN (jump if [not] negative) are instructions that pop a value off the stack, compare it with 0 and branch if they are not less than zero or not respectively." +
-                "<br/><br/>Use JIN to filter the input tape, outputting only the positive values:<br/>(Hint: You will need to use STORE to hold onto each value)",
+                "Filtering Using JLZ",
+                "JLZ/JGZ (jump if less/greater than zero) are instructions that pop a value off the stack, compare it with 0 and branch if they are < 0 or > 0 respectively." +
+                "<br/><br/>Use JLZ to filter the input tape, outputting only the positive values:<br/>(Hint: You will need to use STORE to hold onto each value)",
                 new HashMap<String, Integer>() {
                     {
                         put("label *", null);
-                        put("jin *", null);
+                        put("jlz *", null);
                         put("load *", null);
                         put("store *", null);
                         put("input", null);
