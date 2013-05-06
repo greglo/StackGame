@@ -24,6 +24,9 @@ public class ApplicationFrame {
     final static int TAPE_HEIGHT = TapeUI.UIHeight;
     final static int STORE_HEIGHT = 200;
     final static int STACK_HEIGHT = h - TAPE_HEIGHT - STORE_HEIGHT;
+    final static int PROGRAMTEXTUI_PADDING = 5;
+    final static int PROGRAMTEXTUI_HEIGHT = h - ( BUTTONUI_HEIGHT + TAPE_HEIGHT );
+
     final static Color caBlue = new Color(35, 44, 49);
     final static Color caBlueL = new Color(50, 57, 60);
     final static Color caBlue2L = new Color(82, 88, 92);
@@ -96,7 +99,8 @@ public class ApplicationFrame {
 
         // ProgramUI
         ProgramTextUI programUI = new ProgramTextUI(modeManager, runMode, eui);
-        programUI.setLocation(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT);
+        programUI.setBounds( LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT,
+                CENTER_PANEL_WIDTH, PROGRAMTEXTUI_HEIGHT );
         contentPane.add(programUI, new Integer(0));
 
         // CreatePanel

@@ -95,7 +95,6 @@ public class ProgramTextUI extends JLayeredPane {
         stateManager.registerModeDeactivationVisitor(modeDeactivationVisitor);
         stateManager.stackMachine.addListener(l);
 
-        this.setSize(new Dimension(ApplicationFrame.CENTER_PANEL_WIDTH, ApplicationFrame.h));
         this.add(createScrollPane(), new Integer(0)); // fills container
         jta.setText(antiLex(stateManager.stackMachine.getInstructions()));
     }
@@ -128,14 +127,15 @@ public class ProgramTextUI extends JLayeredPane {
     private JScrollPane createScrollPane() {
         // create a scroll pane
         JScrollPane jsp = new JScrollPane();
-        jsp.setBounds(0, 0, ApplicationFrame.CENTER_PANEL_WIDTH, ApplicationFrame.h);
-        jsp.setBorder(new EmptyBorder(0, 0, 0, 0));
+        jsp.setBounds(0, 0, ApplicationFrame.CENTER_PANEL_WIDTH, ApplicationFrame.PROGRAMTEXTUI_HEIGHT);
+        jsp.setBorder(new EmptyBorder(5, 0, 5, 0));
+        jsp.setBackground(ApplicationFrame.caBlue);
         // jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
         // create an editable textarea
         jta.setBackground(ApplicationFrame.caBlue);
         jta.setForeground(editableTextColor);
-        jta.setMargin(new Insets(20, 20, 100, 20)); // compensates for the
+        jta.setMargin(new Insets(0, 20, 0, 20)); // compensates for the
                                                     // height of the stackUI
         jta.setFont(font);
         jta.setCaretColor(new Color(150, 150, 150));
@@ -143,7 +143,7 @@ public class ProgramTextUI extends JLayeredPane {
 
         // create textarea to display linenumbers
         final JTextArea lines = new JTextArea("1");
-        lines.setMargin(new Insets(20, 20, 100, 0));
+        lines.setMargin(new Insets(0, 20, 0, 0));
         lines.setForeground(new Color(150, 150, 150));
         lines.setBackground(ApplicationFrame.caBlue);
         lines.setFont(font);
