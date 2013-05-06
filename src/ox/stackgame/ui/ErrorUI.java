@@ -15,19 +15,20 @@ public class ErrorUI extends JPanel {
     final JLabel l;
 
     public void displayError(String message){
-       l.setText("<html><div>"+message+"</div></html>");
-       this.setVisible(true);
+        l.setText("<html><div>"+message+"</div></html>");
+        this.setVisible(true);
     }
-    
+
     public void clearErrors() {
-       this.setVisible(false);
+        this.setVisible(false);
     }
-    
+
     public ErrorUI(){
         this.setBackground(ApplicationFrame.caBlue);
         this.setSize(ApplicationFrame.CENTER_PANEL_WIDTH-2*ApplicationFrame.p, 30);
         l = new JLabel();
         l.setForeground(Color.RED);
         this.add(l);
+        this.setVisible(false);
     }
 }
