@@ -39,11 +39,13 @@ public class TapeUI extends JPanel {
     private Map<StackValue<?>, Integer> sizeMap; // Maps values to the width of
                                                  // the blocks they create
     private final StackMachine machine;
-    private static final int boxSize = 20;
-    private static final int padding = 10;
-    public static final int UIHeight = 2 * boxSize + 4 * padding;
+    private static final int TEXT_WIDTH = 50;
+    private static final int BOX_SIZE = 30;
+    private static final int BOX_PADDING = 1;
+    private static final int PADDING = 10;
+    public static final int UIHeight = 2 * BOX_SIZE + 3 * PADDING;
     private static final Font font = new Font("Monospaced", Font.PLAIN, 12);
-    private int addInputBoxX = padding; // Controls where we're looking for
+    private int addInputBoxX = PADDING; // Controls where we're looking for
                                         // input from
     private boolean editable = true;
     private ErrorUI eui;
@@ -115,27 +117,27 @@ public class TapeUI extends JPanel {
 
         // sort out appearance
         this.setBackground(ApplicationFrame.caBlue2L);
-        this.setSize(new Dimension(750 - 2 * ApplicationFrame.p, boxSize * 2
-                + 4 * padding));
+        this.setSize(new Dimension(750 - 2 * ApplicationFrame.p, BOX_SIZE * 2
+                + 3 * PADDING));
         
         sizeMap = new HashMap<StackValue<?>, Integer>();
 
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (editable && padding <= e.getY()
-                        && e.getY() < padding + boxSize) {
-                    int x = padding;
+                if (editable && PADDING <= e.getY()
+                        && e.getY() < PADDING + BOX_SIZE) {
+                    int x = 2 * PADDING + TEXT_WIDTH;
                     int i = 0;
                     for (StackValue<?> v : inputTape) {
                         if (x <= e.getX() && e.getX() <= x + sizeMap.get(v)) {
                             getInput(i);
                             break;
                         }
-                        x += padding + sizeMap.get(v);
+                        x += BOX_PADDING + sizeMap.get(v);
                         ++i;
                     }
                     if (addInputBoxX <= e.getX()
-                            && e.getX() <= addInputBoxX + boxSize)
+                            && e.getX() <= addInputBoxX + BOX_SIZE)
                         getInput(-1);
                 }
             }
@@ -208,26 +210,32 @@ public class TapeUI extends JPanel {
 
         Graphics2D g = (Graphics2D) graphics;
         g.setFont(font);
+        
+        int yOffset = BOX_SIZE - (int) g.getFontMetrics().getStringBounds("Input:", g).getWidth() / 2 + g.getFontMetrics().getAscent();
+        g.drawString("Input:", PADDING, PADDING + yOffset);
+        g.drawString("Output:", PADDING, 2 * PADDING + BOX_SIZE + yOffset);
 
         // Draw input tape
 
-        int x = padding;
+        int x = 2 * PADDING + TEXT_WIDTH;
         for (StackValue<?> v : inputTape) {
             if (!sizeMap.containsKey(v)) {
-                sizeMap.put(v, g.getFontMetrics().stringWidth(v.toString()) + 2
-                        * boxSize / 3);
+                sizeMap.put(v, Math.max(BOX_SIZE, g.getFontMetrics().stringWidth(v.toString()) + 2
+                        * BOX_SIZE / 3));
             }
             int thisWidth = sizeMap.get(v);
 
-            g.setColor(Color.gray);
-            g.fillRect(x, padding, thisWidth, boxSize);
+            g.setColor(new Color(100, 100, 100));
+            g.fillRect(x, PADDING, thisWidth, BOX_SIZE);
+            g.setColor(new Color(130, 130, 130));
+            g.fillRect(x + 1, PADDING + 1, thisWidth - 2, BOX_SIZE - 2);
 
             g.setColor(Color.WHITE);
-            g.drawString(v.toString(), x + boxSize / 3, padding
-                    + (boxSize - g.getFontMetrics().getAscent()) / 2
+            g.drawString(v.toString(), x + BOX_SIZE / 3, PADDING
+                    + (BOX_SIZE - g.getFontMetrics().getAscent()) / 2
                     + g.getFontMetrics().getAscent());
 
-            x += thisWidth + padding;
+            x += thisWidth + BOX_PADDING;
         }
         // dumb place for this but w/e
         addInputBoxX = x;
@@ -235,33 +243,35 @@ public class TapeUI extends JPanel {
         // Draw input box
         if (editable) {
             g.setColor(Color.gray);
-            g.drawLine(addInputBoxX, padding, addInputBoxX + boxSize, padding);
-            g.drawLine(addInputBoxX, padding, addInputBoxX, padding + boxSize);
-            g.drawLine(addInputBoxX + boxSize, padding, addInputBoxX + boxSize,
-                    boxSize + padding);
-            g.drawLine(addInputBoxX, boxSize + padding, addInputBoxX + boxSize,
-                    boxSize + padding);
+            g.drawLine(addInputBoxX, PADDING + 1, addInputBoxX + BOX_SIZE - 1, PADDING + 1);
+            g.drawLine(addInputBoxX, PADDING + 1, addInputBoxX, PADDING + BOX_SIZE - 1);
+            g.drawLine(addInputBoxX + BOX_SIZE - 1, PADDING + 1, addInputBoxX + BOX_SIZE - 1,
+                    BOX_SIZE + PADDING - 1);
+            g.drawLine(addInputBoxX, BOX_SIZE + PADDING - 1, addInputBoxX + BOX_SIZE - 1,
+                    BOX_SIZE + PADDING - 1);
         }
 
         // Draw output tape
 
-        int j = padding;
+        int j = 2 * PADDING + TEXT_WIDTH;
         for (StackValue<?> v : outputTape) {
             if (!sizeMap.containsKey(v)) {
-                sizeMap.put(v, g.getFontMetrics().stringWidth(v.toString()) + 2
-                        * boxSize / 3);
+                sizeMap.put(v, Math.max(BOX_SIZE, g.getFontMetrics().stringWidth(v.toString()) + 2
+                        * BOX_SIZE / 3));
             }
             int thisWidth = sizeMap.get(v);
 
-            g.setColor(Color.gray);
-            g.fillRect(j, padding * 3 + boxSize, thisWidth, boxSize);
+            g.setColor(new Color(100, 100, 100));
+            g.fillRect(j, PADDING * 2 + BOX_SIZE, thisWidth, BOX_SIZE);
+            g.setColor(new Color(130, 130, 130));
+            g.fillRect(j + 1, PADDING * 2 + BOX_SIZE + 1, thisWidth - 2, BOX_SIZE - 2);
 
             g.setColor(Color.WHITE);
-            g.drawString(v.toString(), j + boxSize / 3, padding * 3 + boxSize
-                    + (boxSize - g.getFontMetrics().getAscent()) / 2
+            g.drawString(v.toString(), j + BOX_SIZE / 3, PADDING * 2 + BOX_SIZE
+                    + (BOX_SIZE - g.getFontMetrics().getAscent()) / 2
                     + g.getFontMetrics().getAscent());
 
-            j += thisWidth + padding;
+            j += thisWidth + BOX_PADDING;
         }
     }
 
