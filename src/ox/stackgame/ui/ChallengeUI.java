@@ -192,7 +192,7 @@ public class ChallengeUI extends JPanel {
                     "%s" +
 
                     "<div style='font-size: 16pt; font-weight: bold; padding: 8px 0'>Allowed Instructions</div>" +
-                    "<table style='background: #eeeeee; width: 170px' cellspacing='0' cellpadding='0'>"
+                    "<table style='background: #eeeeee; padding: 4px; width: 162px' cellspacing='0' cellpadding='0'>"
             , c.title, c.description );
 
             StringBuilder sb = new StringBuilder();
