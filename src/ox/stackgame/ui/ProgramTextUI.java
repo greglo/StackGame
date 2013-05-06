@@ -156,10 +156,10 @@ public class ProgramTextUI extends JLayeredPane {
                 Element root = jta.getDocument().getDefaultRootElement();
 
                 StringBuilder sb = new StringBuilder();
-                sb.append( "1" + System.getProperty("line.separator") );
+                sb.append( "1" );
 
                 for (int i = 2; i < root.getElementIndex(caretPosition) + 2; i++) {
-                    sb.append( i + System.getProperty("line.separator") );
+                    sb.append( System.getProperty("line.separator") + i );
                 }
                 return sb.toString();
             }
