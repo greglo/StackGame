@@ -154,11 +154,14 @@ public class ProgramTextUI extends JLayeredPane {
             public String getLinesText() {
                 int caretPosition = jta.getDocument().getLength();
                 Element root = jta.getDocument().getDefaultRootElement();
-                String text = "1" + System.getProperty("line.separator");
+
+                StringBuilder sb = new StringBuilder();
+                sb.append( "1" + System.getProperty("line.separator") );
+
                 for (int i = 2; i < root.getElementIndex(caretPosition) + 2; i++) {
-                    text += i + System.getProperty("line.separator");
+                    sb.append( i + System.getProperty("line.separator") );
                 }
-                return text;
+                return sb.toString();
             }
 
             private void textChanged() {
