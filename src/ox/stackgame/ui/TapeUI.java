@@ -144,9 +144,6 @@ public class TapeUI extends JPanel {
             }
         });
 
-        // TODO create scrolling (two scrollbars?) monotype font etc, different
-        // colours for input/output
-
     }
 
     protected void getInput(int i) {

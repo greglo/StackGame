@@ -133,11 +133,8 @@ public class ChallengeUI extends JPanel {
                             }
 
                             public void mouseClicked(MouseEvent arg0) {
-                                challengeMode.setChallenge(c); // set current
-                                                               // challenge
-                                stateManager.setActiveMode(challengeMode); // switch
-                                                                           // to
-                                                                           // challengemode
+                                ChallengeUI.this.setChallenge(c);
+                                stateManager.setActiveMode(challengeMode);
                             }
                         });
                     }
@@ -170,8 +167,7 @@ public class ChallengeUI extends JPanel {
                 addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         int i = ChallengeMode.challengeList.indexOf(challengeMode.getChallenge());
-                        challengeMode.setChallenge(ChallengeMode.challengeList.get(i + 1));
-                        DetailPanel.this.updateFromChallenge(challengeMode.getChallenge());
+                        ChallengeUI.this.setChallenge(ChallengeMode.challengeList.get(i + 1));
                     }
                 });
             }
@@ -232,6 +228,15 @@ public class ChallengeUI extends JPanel {
             challengeLabel.setText(sb.toString());
         }
     }
+    
+    public void setChallenge(AbstractChallenge challenge){
+        machine.reset(); // clears output
+        challengeMode.setChallenge(challenge);
+        // clear out old machine instructions
+        machine.loadInstructions(new ArrayList<Instruction>());
+        
+        detailPanel.updateFromChallenge(challengeMode.getChallenge());
+    }
 
     // Test if the user has passed the challenge
     private StackMachineListener listener = new StackMachineListenerAdapter() {
@@ -280,12 +285,6 @@ public class ChallengeUI extends JPanel {
 
         // this mode is activated!
         public void visit(ChallengeMode m) {
-            // if we have just chosen a challenge, clear the machine
-            if (stateManager.getLastMode() instanceof FreeDesignMode){
-                machine.loadInstructions(new ArrayList<Instruction>());
-                System.out.println("Cleared program having selected a challenge");
-            }
-            
             // display detail panel
             detailPanel.updateFromChallenge(challengeMode.getChallenge());
             cardLayout.show(ChallengeUI.this, "detailPanel");
