@@ -239,7 +239,7 @@ public class ChallengeUI extends JPanel {
         public void programCounterChanged(int line, Instruction instruction) {
             // when the machine terminates, evaluate machine against challenge's
             // hasSucceeded() function
-            if (machine.isRunning() == false) {
+            if (!machine.isRunning()) {
                 AbstractChallenge currChallenge = challengeMode.getChallenge();
                 Boolean hasSucceeded = currChallenge.hasSucceeded(machine);
                 String message = currChallenge.getMessage();
