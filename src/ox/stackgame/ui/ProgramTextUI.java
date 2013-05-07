@@ -77,7 +77,6 @@ public class ProgramTextUI extends JLayeredPane {
         @Override
         public void programChanged(List<Instruction> instructions){
             if (instructions.size()==0 && !eui.hasError()){ // program was cleared
-                System.out.println("clearing text");
                 jta.setText("");
                 dirtyText=false;
                 jta.requestFocus();
@@ -224,11 +223,9 @@ public class ProgramTextUI extends JLayeredPane {
             p = Lexer.lex(text);
             eui.clearError();
             dirtyText = false;
-            System.out.println("Dirty text false: lexed successfully.");
         } catch (LexerException e) {
             redHighlight(e.lineNumber, e.wordStart, e.wordEnd);
             eui.displayError("Lexer Error on line " + (e.lineNumber + 1) + ": " + e.getMessage());
-            System.err.println("Lexer error on line " + (e.lineNumber + 1) + ": " + e.getMessage());
             dirtyText = true;
         }
         return p;

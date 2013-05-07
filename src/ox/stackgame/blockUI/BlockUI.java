@@ -128,7 +128,6 @@ public class BlockUI extends JPanel {
     }
 
     protected void updateEventHandler() {
-        System.out.println("Handler is being updated: " + blockManager.getMode());
         if (currentStackMachine == null)
             currentEventHandler = NullHandler.INSTANCE;
         else {
@@ -261,7 +260,6 @@ public class BlockUI extends JPanel {
     // View-oriented methods
 
     protected void updateCurrentStackMachine() {
-        System.out.println("updating blockUI");
         StackMachine newMachine = stateManager.stackMachine;
         if (newMachine != currentStackMachine) {
             if (currentStackMachine != null)
@@ -293,7 +291,6 @@ public class BlockUI extends JPanel {
     public void paintComponent(Graphics g) {
         updateSize();
         
-        System.out.println("painting BlockUI");
         Graphics2D g2d = (Graphics2D) g;
 
         Color oldColor = g2d.getColor();

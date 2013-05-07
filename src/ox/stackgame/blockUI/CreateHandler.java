@@ -27,7 +27,6 @@ public class CreateHandler extends AbstractStretchBoxHandler{
 	        return new Instruction(strs[0]);
 	    }else{
 	        String toLex = strs[0];
-	        System.out.println("strs[1] == '" + strs[1] + "'");
 	        if(strs[1].equals("*")){
 	            System.out.println("It is *");
 //TODO: prompt for argument
@@ -53,9 +52,6 @@ public class CreateHandler extends AbstractStretchBoxHandler{
 	
 	protected void boxStretchingFinished(Point boxOrigin, Point boxTarget) {
 		int height = Math.abs(boxOrigin.y - boxTarget.y);
-		
-		System.out.println("adding new instructions");
-		
 		for(int curY = 0; curY <= height; curY++)
     		blockUI.getCurrentStackMachine().addInstruction(boxOrigin.y + curY, newInstruction());
  	}

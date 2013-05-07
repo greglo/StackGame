@@ -17,7 +17,6 @@ public class BlockManager {
 	
 	public void setMode(String mode){
 		assert mode==DELETE || mode==EDIT || mode==CREATE;
-		System.out.println("BlockManager mode: " + mode);
 		this.mode=mode;
 		for (BlockManagerListener l : listeners)
 			l.modeChanged(mode);

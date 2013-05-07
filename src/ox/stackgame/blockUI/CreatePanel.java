@@ -103,7 +103,6 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
 //TODO: add current-instruction highlighting
         updateSize();
         
-        System.out.println("painting CreatePanel");
         Graphics2D g2d = (Graphics2D) g;
 
         Color oldColor = g2d.getColor();
@@ -236,7 +235,6 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         public void mouseExited(MouseEvent arg0) {
         }
         public void mousePressed(MouseEvent e) {
-            System.out.println("clicked");
             if(isActive()){
                 //if in bounds, select the instruction
                 Point p = e.getPoint();

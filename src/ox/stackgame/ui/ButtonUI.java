@@ -119,7 +119,6 @@ public class ButtonUI extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 // feed text through lexer
                 // update modeManager.stackMachine
-                System.out.println("Lexed Text input");
                 sm.stackMachine.loadInstructions(tui.getProgram());
                 updateButtons();
             }

@@ -256,7 +256,6 @@ public class ChallengeUI extends JPanel {
                     && challengeMode.getChallenge().checkProgram(stateManager.stackMachine.getInstructions()) == false) {
                 Integer l = challengeMode.getChallenge().getOffendingLine();
                 if (l!=null) tui.redHighlight(l);
-                System.out.println("Program doesn't conform to Challenge's instructionSet");
                 eui.displayError("Your program must use only the allowed instructions");
             }
         }
@@ -271,9 +270,6 @@ public class ChallengeUI extends JPanel {
                 AbstractChallenge currChallenge = challengeMode.getChallenge();
                 Boolean hasSucceeded = currChallenge.hasSucceeded(machine);
                 String message = currChallenge.getMessage();
-                System.out.println(hasSucceeded ? "Challenge hasSucceeded=true"
-                        : "Challenge hasSucceeded=false");
-                System.out.println("Message: " + message);
                 if (hasSucceeded) {
                     detailPanel.displaySuccessMessage(message);
                 } else {
