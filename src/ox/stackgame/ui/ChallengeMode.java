@@ -285,18 +285,45 @@ jii a
         cl.add(new TapeChallenge(
                 "Euclid's Algorithm",
                 "The MOD instruction finds the remainder when dividing one number by another: 5 MOD 3 = 2." +
-                "<br/><br/>Use MOD, among other instructions, to implement Euclid's Algorithm",
+                "<br/><br/>Use MOD, among other instructions, to implement Euclid's Algorithm and output the answer" +
+                "on the tape.",
                 null
                 , new ArrayList<StackValue<?>>() {
                     { 
-                        add(new IntStackValue(100));
-                        add(new IntStackValue(80));
+                        add(new IntStackValue(738));
+                        add(new IntStackValue(84));
                     }
                 } , new ArrayList<StackValue<?>>() {
                     { 
-                        add(new IntStackValue(20));
+                        add(new IntStackValue(6));
                     }
-                }, 100, 100)); // TODO write an example solution for this.
+                }, 202, 23)); 
+        
+/*
+input
+store 0
+input 
+store 1
+label loop
+load 0
+load 1
+sub
+store 0
+load 0
+load 1
+sub
+jgz gz
+load 0
+load 1
+store 0
+store 1
+label gz
+load 0
+load 1
+jnez loop
+load 0
+output
+ */
         
         cl.add(new StackResultChallenge(
                 "Maximum of an Array",

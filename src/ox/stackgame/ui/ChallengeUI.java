@@ -254,7 +254,8 @@ public class ChallengeUI extends JPanel {
            
             if (stateManager.getActiveMode() == challengeMode
                     && challengeMode.getChallenge().checkProgram(stateManager.stackMachine.getInstructions()) == false) {
-                tui.redHighlight(challengeMode.getChallenge().getOffendingLine());
+                Integer l = challengeMode.getChallenge().getOffendingLine();
+                if (l!=null) tui.redHighlight(l);
                 System.out.println("Program doesn't conform to Challenge's instructionSet");
                 eui.displayError("Your program must use only the allowed instructions");
             }
