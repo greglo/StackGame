@@ -232,6 +232,9 @@ public class ChallengeUI extends JPanel {
     public void setChallenge(AbstractChallenge challenge){
         machine.reset(); // clears output
         challengeMode.setChallenge(challenge);
+        
+        stateManager.setActiveMode(freeDesignMode); // hacky as...
+        stateManager.setActiveMode(challengeMode);
         // clear out old machine instructions
         machine.loadInstructions(new ArrayList<Instruction>());
         

@@ -51,8 +51,6 @@ public class TapeUI extends JPanel {
     private ErrorUI eui;
 
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
-        // TODO make input tape editable on DesignMode visitors
-
         public void visit(RunMode m) {
             editable = false;
             m.machine.loadInput(inputTape);
