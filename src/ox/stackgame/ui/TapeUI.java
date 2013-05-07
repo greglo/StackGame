@@ -96,7 +96,11 @@ public class TapeUI extends JPanel {
         int inputWidth = addInputBoxX + BOX_SIZE + BOX_PADDING;
         int outputWidth = 2 * PADDING + TEXT_WIDTH + BOX_PADDING;
         for (StackValue<?> v : outputTape) {
-            outputWidth += sizeMap.get(v) + BOX_PADDING;
+            try {
+                outputWidth += sizeMap.get(v) + BOX_PADDING;
+            } catch (RuntimeException e) {
+                outputWidth += BOX_SIZE + BOX_PADDING;
+            }
         }
         this.setPreferredSize(new Dimension(Math.max(ApplicationFrame.CENTER_PANEL_WIDTH + ApplicationFrame.RIGHT_PANEL_WIDTH, 
                 Math.max(inputWidth, outputWidth)), UIHeight));
