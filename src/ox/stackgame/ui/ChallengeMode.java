@@ -111,7 +111,7 @@ public class ChallengeMode extends DesignMode {
                 "The LABEL <name> instruction does nothing but name a point in a program. You may JUMP to this point in the program from anywhere using one of the branch instructions."
                 + "<br/>JII <name> jumps to the appropriate label if there is something on the input tape."
                 + "<br/>"
-                + "<br/>Copy the numbers 1-10 from the input tape to the output tape, using only 4 instructions.",
+                + "<br/>Copy the numbers 1-10 from the input tape to the output tape, using only four instructions.",
                 new TreeMap<String, Integer>() {
                     {
                         put("input", 1);
