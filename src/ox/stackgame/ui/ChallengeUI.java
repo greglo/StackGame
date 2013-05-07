@@ -45,7 +45,6 @@ public class ChallengeUI extends JPanel {
     private final StateManager stateManager;
     private final FreeDesignMode freeDesignMode;
     private final ChallengeMode challengeMode;
-    private Mode oldMode;
     private ErrorUI eui;
 
     // appearance stuff
@@ -264,7 +263,7 @@ public class ChallengeUI extends JPanel {
             System.out.println("ChallengeUI noticed RunMode has been enabled");
             // moving from ChallengeMode -> RunMode
 
-            if (oldMode == challengeMode) {
+            if (stateManager.getLastMode() == challengeMode) {
                 // challengeMode should never be enabled without an active
                 // challenge.
                 assert (challengeMode.getChallenge() != null);
@@ -294,20 +293,14 @@ public class ChallengeUI extends JPanel {
     // code to be executed when a mode is deactivated
     private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
         public void visit(RunMode m) {
-            oldMode = stateManager.getActiveMode();
-            stateManager.stackMachine.removeListener(listener); // stop
-                                                                // evaluating
-                                                                // the machine
-                                                                // against
-                                                                // challenge
+            // stop evaluating the machine against the challenge
+            stateManager.stackMachine.removeListener(listener);
         }
 
         public void visit(ChallengeMode m) {
-            oldMode = stateManager.getActiveMode();
         }
 
         public void visit(FreeDesignMode m) {
-            oldMode = stateManager.getActiveMode();
         }
     };
 

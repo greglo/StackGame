@@ -14,6 +14,7 @@ import ox.stackgame.stackmachine.StackMachine;
  */
 public class StateManager {
     private Mode activeMode = null;
+    private Mode lastMode = null;
     public final StackMachine stackMachine;
 
     private Collection<ModeVisitor> modeDeactivationVisitors = new HashSet<ModeVisitor>();
@@ -34,6 +35,7 @@ public class StateManager {
                         activeMode.accept(v);
                 }
                 // activate new mode
+                lastMode = activeMode;
                 activeMode = newMode;
                 // allow each ControllerComponent to react to the activation of
                 // the newMode
@@ -43,6 +45,10 @@ public class StateManager {
         } else {
             throw new RuntimeException("setActiveMode(null) not allowed");
         }
+    }
+    
+    public Mode getLastMode(){
+        return lastMode;
     }
 
     public Mode getActiveMode() {
