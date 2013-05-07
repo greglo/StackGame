@@ -21,6 +21,7 @@ public abstract class AbstractChallenge {
     public final String description;
     public final String title;
     public final Map<String, Integer> instructionSet;
+    public final List<StackValue<?>> inputs;
 
     /**
      * Create a new challenge.
@@ -34,10 +35,11 @@ public abstract class AbstractChallenge {
      *            A map from instructions to the number of that instruction
      *            permitted in the challenge; -1 for infinite
      */
-    public AbstractChallenge(String title, String description, Map<String, Integer> instructionSet) {
+    public AbstractChallenge(String title, String description, Map<String, Integer> instructionSet, List<StackValue<?>> inputs) {
         this.title = title;
         this.description = description;
         this.instructionSet = instructionSet;
+        this.inputs = inputs;
     }
 
     public Boolean checkProgram(List<Instruction> instructions) {

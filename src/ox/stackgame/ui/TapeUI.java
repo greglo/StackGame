@@ -61,6 +61,7 @@ public class TapeUI extends JPanel {
 
         public void visit(ChallengeMode m) {
             editable = false;
+            setInput(m.getChallenge().inputs);
             repaint();
         }
 
@@ -199,8 +200,13 @@ public class TapeUI extends JPanel {
 
     protected void resetTapes() {
         outputTape = new LinkedList<StackValue<?>>();
+        setInput(machine.getInput());
+        repaint();
+    }
+    
+    protected void setInput(List<StackValue<?>> input) {
         inputTape = new LinkedList<StackValue<?>>();
-        for (StackValue<?> v : machine.getInput())
+        for (StackValue<?> v : input)
             inputTape.add(v);
         repaint();
     }

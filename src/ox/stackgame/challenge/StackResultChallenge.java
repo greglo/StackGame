@@ -1,5 +1,6 @@
 package ox.stackgame.challenge;
 
+import java.util.List;
 import java.util.Map;
 
 import ox.stackgame.stackmachine.StackMachine;
@@ -23,8 +24,8 @@ public class StackResultChallenge extends AbstractChallenge {
 
     public StackResultChallenge(String title, String description,
             Map<String, Integer> instructionSet,
-            StackValue<?> correctAnswer) {
-        super(title, description, instructionSet);
+            StackValue<?> correctAnswer, List<StackValue<?>> inputs) {
+        super(title, description, instructionSet, inputs);
         this.correctAnswer = correctAnswer;
     }
 

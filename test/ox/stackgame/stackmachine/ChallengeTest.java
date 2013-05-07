@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class ChallengeTest {
     private class ISetTestChallenge extends AbstractChallenge{
 
         ISetTestChallenge(Map<String, Integer> instructionSet) {
-            super("", "", instructionSet);
+            super("", "", instructionSet, new LinkedList<StackValue<?>>());
         }
 
         public Boolean hasSucceeded(StackMachine m) {  return null;   }

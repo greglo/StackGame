@@ -10,7 +10,6 @@ import ox.stackgame.stackmachine.StackValue;
 public class TapeChallenge extends AbstractChallenge {
     
     protected String message = "";
-    public final List<StackValue<?>> inputTape;
     public final List<StackValue<?>> outputTape;
 
     public TapeChallenge(String title, String description,
@@ -18,8 +17,7 @@ public class TapeChallenge extends AbstractChallenge {
             ArrayList<StackValue<?>> startTape,
             ArrayList<StackValue<?>> finalTape) {
 
-        super(title, description, instructionSet);
-        this.inputTape = startTape;
+        super(title, description, instructionSet, startTape);
         this.outputTape = finalTape;
     }
 

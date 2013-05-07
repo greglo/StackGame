@@ -17,7 +17,6 @@ import ox.stackgame.stackmachine.exceptions.EmptyStackException;
  */
 public class StackAndTapeChallenge extends StackResultChallenge {
 
-    public final List<StackValue<?>> inputTape;
     public final List<StackValue<?>> outputTape;
 
     public StackAndTapeChallenge(String title, String description,
@@ -25,8 +24,7 @@ public class StackAndTapeChallenge extends StackResultChallenge {
             StackValue<?> correctAnswer, ArrayList<StackValue<?>> inputTape,
             ArrayList<StackValue<?>> outputTape) {
         
-        super(title, description, instructionSet, correctAnswer);
-        this.inputTape = inputTape;
+        super(title, description, instructionSet, correctAnswer, inputTape);
         this.outputTape = outputTape;
     }
 

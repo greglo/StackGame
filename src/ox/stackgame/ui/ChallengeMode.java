@@ -60,7 +60,7 @@ public class ChallengeMode extends DesignMode {
                     {
                         put("const *", 1);
                     }
-                }, new IntStackValue(1)));
+                }, new IntStackValue(1), new LinkedList<StackValue<?>>()));
         
         cl.add(new StackResultChallenge("Arithmetic Operations", 
                 "Binary arithmetic operations <strong>pop</strong> two values off the stack, and <strong>push</strong> the result of the operation back"
@@ -72,7 +72,7 @@ public class ChallengeMode extends DesignMode {
                         put("const 2", 1);
                         put("add", 1);
                     }
-                }, new IntStackValue(3)));
+                }, new IntStackValue(3), new LinkedList<StackValue<?>>()));
 
         cl.add(new StackResultChallenge("Reverse Polish",
                 "There is no way to bracket your programs, so find a way to compute 1 + (2 * 3) = 7 on the stack",
@@ -84,7 +84,7 @@ public class ChallengeMode extends DesignMode {
                         put("add", 1);
                         put("mul", 1);
                     }
-                }, new IntStackValue(6)));
+                }, new IntStackValue(6), new LinkedList<StackValue<?>>()));
 
         cl.add(new TapeChallenge("The Tape",
                 "The machine has two tapes you can use, an input tape and an output tape.<br/>"
