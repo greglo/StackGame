@@ -295,10 +295,11 @@ jii a
                 }, 46, 6));
         
         cl.add(new TapeChallenge(
-                "Euclid's Algorithm",
+                "Greatest Common Divisor",
                 "The MOD instruction finds the remainder when dividing one number by another: 5 MOD 3 = 2." +
-                "<br/><br/>Use MOD, among other instructions, to implement Euclid's Algorithm and output the answer" +
-                "on the tape.",
+                "<br/><br/>Implement an algorithm to find the Greatest Common Divisor of the two numbers " +
+                "on the input tape, and put it on the output tape." +
+                "<br/><br/>(Hint: Look up Euclid's Algorithm)",
                 null
                 , new ArrayList<StackValue<?>>() {
                     { 
