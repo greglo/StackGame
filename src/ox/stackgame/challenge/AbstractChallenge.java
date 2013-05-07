@@ -68,6 +68,7 @@ public abstract class AbstractChallenge {
                         return false;
                 } else {
                     // instruction is not allowed
+                    System.out.println("Instruction not allowed: "+line);
                     return false;
                 }
             }

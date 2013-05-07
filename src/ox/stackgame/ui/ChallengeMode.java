@@ -141,7 +141,7 @@ public class ChallengeMode extends DesignMode {
                         add(new IntStackValue(2));
                         add(new IntStackValue(1));
                     }
-                }, 100, 6));
+                }, 6, 6));
         
         cl.add(new TapeChallenge(
                 "Further Branching",
@@ -159,7 +159,41 @@ public class ChallengeMode extends DesignMode {
                         put("label *", null);
                         put("output", null);
                     }
-                }, new ArrayList<StackValue<?>>(), tape1to10, 100, 100));
+                }, new ArrayList<StackValue<?>>(), tape1to10, 101, 11));
+        
+/*
+ * Inefficient solution: (so that people can beat something!!)
+const 10
+store 0
+const 1
+store 1
+label loop
+load 1
+load 1
+output
+const 1
+add
+store 1
+load 0
+const 1
+sub
+store 0
+load 0
+jnez loop
+
+(101,11) solution: 
+label loop
+load 0
+const 1
+add
+store 0
+load 0
+output
+const 10
+load 0
+sub
+jnez loop
+ */
         
         cl.add(new TapeChallenge(
                 "Filtering Using JLZ",
@@ -189,16 +223,16 @@ public class ChallengeMode extends DesignMode {
                         add(new IntStackValue(1));
                         add(new IntStackValue(50));
                     }
-                }, 100, 8));
+                }, 30, 8));
         /* Solved with:
-            label a
-            input
-            store 1
-            load 1
-            jlz a
-            load 1
-            output
-            jii a
+label a
+input
+store 1
+load 1
+jlz a
+load 1
+output
+jii a
          */
         
         cl.add(new TapeChallenge(
@@ -246,7 +280,7 @@ public class ChallengeMode extends DesignMode {
                         catch (InvalidCharException e) {
                             e.printStackTrace();
                         }                    }
-                }, 100, 100));
+                }, 46, 6));
         
         cl.add(new TapeChallenge(
                 "Euclid's Algorithm",
