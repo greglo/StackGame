@@ -40,7 +40,7 @@ public class TapeChallenge extends AbstractChallenge {
                 message = "Solved! How about with " + (numSteps - bestNumSteps) + " fewer steps?";
             }
             if (m.getInstructions().size() > bestProgramLength){
-                message = "Solved! How about with " + (progLength - bestProgramLength) + " fewer instruction?"; 
+                message = "Solved! How about with " + (progLength - bestProgramLength) + " fewer instructions?"; 
             }
             if (numSteps <= bestNumSteps && progLength <= bestProgramLength){
                 message = "Solved! (You beat the designer too!)";

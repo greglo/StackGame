@@ -47,7 +47,7 @@ public class StackUI extends JPanel {
         m.stackMachine.addListener(l);
 
         this.setBackground(ApplicationFrame.caBlueL);
-        this.setSize(new Dimension(ApplicationFrame.RIGHT_PANEL_WIDTH, ApplicationFrame.h));
+        this.setSize(new Dimension(ApplicationFrame.RIGHT_PANEL_WIDTH, ApplicationFrame.STACK_HEIGHT));
 
         JLabel label = new JLabel("Evaluation Stack:", SwingConstants.CENTER);
         label.setBounds(0, 0, ApplicationFrame.RIGHT_PANEL_WIDTH, TEXT_HEIGHT);
