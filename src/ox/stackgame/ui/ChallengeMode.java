@@ -193,7 +193,7 @@ store 0
 load 0
 jnez loop
 
-(101,11) LINEAR SOLUTION, DOESN'T USE MOD: 
+(101,11) solution: 
 label loop
 load 0
 const 1
@@ -310,9 +310,27 @@ jii a
                     { 
                         add(new IntStackValue(6));
                     }
-                }, 202, 23)); 
+                }, 47, 15)); 
         
 /*
+ * MOD SOLUTION
+input
+store 0
+input
+store 1
+label euclid
+load 0
+load 1
+mod
+load 1
+store 0
+store 1
+load 1
+jnez euclid
+load 0
+output
+ * 
+ * LINEAR SOLUTION
 input
 store 0
 input 
