@@ -121,27 +121,39 @@ public class ChallengeMode extends DesignMode {
                     }
                 }, tape1to10, tape1to10, 31, 4));
 
-        cl.add(new TapeChallenge(
-                "Store / Memory",
-                "Being caring and thoughtful, the authors have given users four boxes for storing intermediate results. <br/><br/>LOAD/STORE need to know which box you are accessing, but otherwise do exactly what you'd expect. <br/><br/>Take the pair of numbers from input and output them backwards.",
-                new TreeMap<String, Integer>() {
-                    {
-                        put("load *", null);
-                        put("store *", null);
-                        put("input", null);
-                        put("output", null);
-                    }
-                }, new ArrayList<StackValue<?>>() {
-                    {
-                        add(new IntStackValue(1));
-                        add(new IntStackValue(2));
-                    }
-                }, new ArrayList<StackValue<?>>() {
-                    {
-                        add(new IntStackValue(2));
-                        add(new IntStackValue(1));
-                    }
-                }, 6, 6));
+        try {
+            cl.add(new TapeChallenge(
+                    "Store / Memory",
+                    "Being caring and thoughtful, the authors have given users four boxes for storing intermediate " +
+                    "results. <br/><br/>LOAD/STORE need to know which box you are accessing, but otherwise do exactly " +
+                    "what you'd expect. <br/><br/>Take the four letters from the input tape and rearrange them to " +
+                    "output in alphabetical order.",
+                    new TreeMap<String, Integer>() {
+                        {
+                            put("load *", null);
+                            put("store *", null);
+                            put("input", null);
+                            put("output", null);
+                        }
+                    }, new ArrayList<StackValue<?>>() {
+                        {
+                            add(new CharStackValue('d'));
+                            add(new CharStackValue('b'));
+                            add(new CharStackValue('c'));
+                            add(new CharStackValue('a'));
+                        }
+                    }, new ArrayList<StackValue<?>>() {
+                        {
+                            add(new CharStackValue('a'));
+                            add(new CharStackValue('b'));
+                            add(new CharStackValue('c'));
+                            add(new CharStackValue('d'));
+                        }
+                    }, 10, 10));
+        } catch (InvalidCharException e1) {
+            // this should never happen
+            e1.printStackTrace();
+        }
         
         cl.add(new TapeChallenge(
                 "Further Branching",
