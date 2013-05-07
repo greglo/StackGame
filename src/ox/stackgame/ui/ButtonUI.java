@@ -29,6 +29,7 @@ public class ButtonUI extends JPanel {
     private final JButton runAllButton = new JButton("Run All");
     private final JButton pauseButton = new JButton("Pause");
     private final JButton resetButton = new JButton("Reset");
+    private final ErrorUI eui;
 
     public void updateButtons() {
         updateButtons(tui.isTextDirty());
@@ -37,8 +38,9 @@ public class ButtonUI extends JPanel {
     public void updateButtons(boolean textDirty) {
         boolean td = textDirty;
         boolean rm = sm.getActiveMode() == runMode;
-        lexButton.setEnabled(td);
-        step1Button.setEnabled((rm || !td) && runMode.machine.isRunning());
+        boolean es = eui.hasError();
+        lexButton.setEnabled(td || es);
+        step1Button.setEnabled((rm || !td) && runMode.machine.isRunning() && !es);
         if (rm && runMode.timerRunning()) {
             stepAllButton.setText("Pause");
             stepAllButton.setEnabled(true);
@@ -61,6 +63,7 @@ public class ButtonUI extends JPanel {
         this.runMode = runMode;
         this.sm = sm;
         this.tui = tui;
+        this.eui = eui;
 
         this.setSize(new Dimension(80, 300));
         this.setBackground(ApplicationFrame.caBlue);
@@ -226,7 +229,7 @@ public class ButtonUI extends JPanel {
                 // lexButton.setEnabled(true);
                 updateButtons();
                 
-                eui.clearErrors();
+                eui.clearError();
             }
         });
 

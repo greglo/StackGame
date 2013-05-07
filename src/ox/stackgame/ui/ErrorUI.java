@@ -12,22 +12,26 @@ import javax.swing.JPanel;
  */
 @SuppressWarnings("serial")
 public class ErrorUI extends JPanel {
-    final JLabel l;
+    final JLabel l = new JLabel(){{
+        setForeground(Color.RED);
+    }};
 
     public void displayError(String message){
         l.setText("<html><div>"+message+"</div></html>");
         this.setVisible(true);
     }
 
-    public void clearErrors() {
+    public void clearError() {
         this.setVisible(false);
+    }
+    
+    public boolean hasError(){
+        return this.isVisible();
     }
 
     public ErrorUI(){
         this.setBackground(ApplicationFrame.caBlue);
         this.setSize(ApplicationFrame.CENTER_PANEL_WIDTH-2*ApplicationFrame.p, 30);
-        l = new JLabel();
-        l.setForeground(Color.RED);
         this.add(l);
         this.setVisible(false);
     }

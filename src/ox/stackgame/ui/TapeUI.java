@@ -173,7 +173,7 @@ public class TapeUI extends JPanel {
         }
         else if (s != null && i != -1) {
             inputTape.remove(i);
-            eui.clearErrors();
+            eui.clearError();
             repaint();
         }
     }
@@ -189,7 +189,7 @@ public class TapeUI extends JPanel {
             inputTape.remove(loc);
             inputTape.add(loc, i);
         }
-        eui.clearErrors();
+        eui.clearError();
         repaint();
     }
 

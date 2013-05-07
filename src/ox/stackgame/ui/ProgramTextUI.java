@@ -76,7 +76,8 @@ public class ProgramTextUI extends JLayeredPane {
     private StackMachineListener l = new StackMachineListenerAdapter() {
         @Override
         public void programChanged(List<Instruction> instructions){
-            if (instructions.size()==0){ // program was cleared
+            if (instructions.size()==0 && !eui.hasError()){ // program was cleared
+                System.out.println("clearing text");
                 jta.setText("");
                 dirtyText=false;
                 jta.requestFocus();
@@ -211,7 +212,7 @@ public class ProgramTextUI extends JLayeredPane {
         ArrayList<Instruction> p = new ArrayList<Instruction>();
         try {
             p = Lexer.lex(text);
-            eui.clearErrors();
+            eui.clearError();
             dirtyText = false;
             System.out.println("Dirty text false: lexed successfully.");
         } catch (LexerException e) {
