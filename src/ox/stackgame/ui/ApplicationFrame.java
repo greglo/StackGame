@@ -132,8 +132,16 @@ public class ApplicationFrame {
         
         TapeUI tape = new TapeUI(modeManager, eui);
         tape.setLocation(LEFT_PANEL_WIDTH , h - TAPE_HEIGHT );
-        contentPane.add(tape, new Integer(1));// layer 1 is on top of 0
+
     
+        JScrollPane tapePane = new JScrollPane();
+        tapePane.setBounds(LEFT_PANEL_WIDTH, h - TAPE_HEIGHT, CENTER_PANEL_WIDTH + RIGHT_PANEL_WIDTH, TAPE_HEIGHT );
+        tapePane.setBorder( new EmptyBorder( 0, 0, 0, 0 ) );
+        tapePane.setVerticalScrollBarPolicy( ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER );
+
+        tapePane.getViewport().add( tape);
+        contentPane.add(tapePane, new Integer(1));// layer 1 is on top of 0
+        
         
         // ErrorUI
         {

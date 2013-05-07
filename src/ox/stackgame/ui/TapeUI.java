@@ -73,6 +73,7 @@ public class TapeUI extends JPanel {
         public void inputConsumed(int startIndex) {
             inputTape.remove(0);
             repaint();
+            resize();
         }
 
         public void outputChanged(Iterator<StackValue<?>> outputs) {
@@ -82,12 +83,26 @@ public class TapeUI extends JPanel {
                 mostRecent = outputs.next();
             outputTape.add(mostRecent);
             repaint();
+            resize();
         }
 
         public void machineReset() {
             resetTapes();
         }
     };
+    
+    private void resize() {
+        this.repaint();
+        int inputWidth = addInputBoxX + BOX_SIZE + BOX_PADDING;
+        int outputWidth = 2 * PADDING + TEXT_WIDTH + BOX_PADDING;
+        for (StackValue<?> v : outputTape) {
+            outputWidth += sizeMap.get(v) + BOX_PADDING;
+        }
+        this.setPreferredSize(new Dimension(Math.max(ApplicationFrame.CENTER_PANEL_WIDTH + ApplicationFrame.RIGHT_PANEL_WIDTH, 
+                Math.max(inputWidth, outputWidth)), UIHeight));
+        this.revalidate();
+        this.repaint();
+    }
 
     public TapeUI(StateManager m, ErrorUI eui) {
         this.eui = eui;
@@ -163,6 +178,7 @@ public class TapeUI extends JPanel {
             eui.clearError();
             repaint();
         }
+        resize();
     }
 
     protected void addInput(StackValue<?> i, int loc) {
@@ -178,19 +194,20 @@ public class TapeUI extends JPanel {
         }
         eui.clearError();
         repaint();
+        resize();
     }
 
     protected void resetTapes() {
         outputTape = new LinkedList<StackValue<?>>();
         setInput(machine.getInput());
-        repaint();
+        resize();
     }
     
     protected void setInput(List<StackValue<?>> input) {
         inputTape = new LinkedList<StackValue<?>>();
         for (StackValue<?> v : input)
             inputTape.add(v);
-        repaint();
+        resize();
     }
 
     protected void paintComponent(Graphics graphics) {
