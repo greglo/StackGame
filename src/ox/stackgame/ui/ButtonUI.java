@@ -41,10 +41,10 @@ public class ButtonUI extends JPanel {
         boolean es = eui.hasError();
         lexButton.setEnabled(td || es);
         step1Button.setEnabled((rm || !td) && runMode.machine.isRunning() && !es);
-        if (rm && runMode.timerRunning()) {
+        if (rm && runMode.timerRunning() && !es) {
             stepAllButton.setText("Pause");
             stepAllButton.setEnabled(true);
-        } else if ((rm || !td) && runMode.machine.isRunning()) {
+        } else if ((rm || !td) && runMode.machine.isRunning() && !es) {
             stepAllButton.setText("Step All");
             stepAllButton.setEnabled(true);
         } else {
@@ -52,7 +52,7 @@ public class ButtonUI extends JPanel {
             stepAllButton.setEnabled(false);
         }
 
-        runAllButton.setEnabled((rm || !td) && runMode.machine.isRunning() && !runMode.timerRunning());
+        runAllButton.setEnabled((rm || !td) && runMode.machine.isRunning() && !runMode.timerRunning() && !es);
         resetButton.setEnabled(rm && !runMode.timerRunning());
 
         // eui.clearErrors();
