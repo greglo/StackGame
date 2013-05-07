@@ -56,7 +56,7 @@ public class ChallengeMode extends DesignMode {
                 "The CONST instruction <strong>pushes</strong> the given value onto the stack"
                 + "<br/>"
                 + "<br/>Use a CONST instruction to push 1 onto the stack",
-                new HashMap<String, Integer>() {
+                new TreeMap<String, Integer>() {
                     {
                         put("const *", 1);
                     }
@@ -66,7 +66,7 @@ public class ChallengeMode extends DesignMode {
                 "Binary arithmetic operations <strong>pop</strong> two values off the stack, and <strong>push</strong> the result of the operation back"
                 + "<br/>"
                 + "<br/>Use the following instructions to get <strong>3</strong> on the stack",
-                new HashMap<String, Integer>() {
+                new TreeMap<String, Integer>() {
                     {
                         put("const 1", 1);
                         put("const 2", 1);
@@ -76,7 +76,7 @@ public class ChallengeMode extends DesignMode {
 
         cl.add(new StackResultChallenge("Reverse Polish",
                 "There is no way to bracket your programs, so find a way to compute 1 + (2 * 3) = 7 on the stack",
-                new HashMap<String, Integer>() {
+                new TreeMap<String, Integer>() {
                     {
                         put("const 1", 1);
                         put("const 2", 1);
@@ -92,7 +92,7 @@ public class ChallengeMode extends DesignMode {
                 + "<br/>The output tape starts empty. The OUTPUT instruction will pop a value off the stack, and append it to the output tape."
                 + "<br/>"
                 + "<br/>Use an INPUT and an OUTPUT instruction to move 1 from the input tape to the output tape",
-                new HashMap<String, Integer>() {
+                new TreeMap<String, Integer>() {
                     {
                         put("input", 1);
                         put("output", 1);
@@ -112,7 +112,7 @@ public class ChallengeMode extends DesignMode {
                 + "<br/>JII <name> jumps to the appropriate label if there is something on the input tape."
                 + "<br/>"
                 + "<br/>Copy the numbers 1-10 from the input tape to the output tape, using only 4 instructions.",
-                new HashMap<String, Integer>() {
+                new TreeMap<String, Integer>() {
                     {
                         put("input", 1);
                         put("output", 1);
@@ -124,7 +124,7 @@ public class ChallengeMode extends DesignMode {
         cl.add(new TapeChallenge(
                 "Store / Memory",
                 "Being caring and thoughtful, the authors have given users four boxes for storing intermediate results. <br/><br/>LOAD/STORE need to know which box you are accessing, but otherwise do exactly what you'd expect. <br/><br/>Take the pair of numbers from input and output them backwards.",
-                new HashMap<String, Integer>() {
+                new TreeMap<String, Integer>() {
                     {
                         put("load *", null);
                         put("store *", null);
@@ -147,7 +147,7 @@ public class ChallengeMode extends DesignMode {
                 "Further Branching",
                 "JNEZ/JEZ (jump [not] equal zero) are instructions that pop a value off the stack, compare it with 0 and branch if they are not equal/equal respectively. " +
                 "<br/><br/>Output all the numbers from 1 to 10 with the following instructions:<br>(Hint: a == b is the same as ( a - b ) == 0",
-                new HashMap<String, Integer>() {
+                new TreeMap<String, Integer>() {
                     {
                         put("const 1", null);
                         put("const 10", null);
@@ -199,7 +199,7 @@ jnez loop
                 "Filtering Using JLZ",
                 "JLZ/JGZ (jump if less/greater than zero) are instructions that pop a value off the stack, compare it with 0 and branch if they are < 0 or > 0 respectively." +
                 "<br/><br/>Use JLZ to filter the input tape, outputting only the positive values:<br/>(Hint: You will need to use STORE to hold onto each value)",
-                new HashMap<String, Integer>() {
+                new TreeMap<String, Integer>() {
                     {
                         put("label *", null);
                         put("jlz *", null);
@@ -238,7 +238,7 @@ jii a
         cl.add(new TapeChallenge(
                 "ROT13",
                 "One of the most secure encryption methods today is ROT13. To do ROT13 encryption, you ADD 13 to each character in your plaintext to get a ciphertext.<br/>Incredibly, you do exactly the same to decrypt ciphetext.<br/><br/>Implement ROT13 to decrypt the secret message on the input tape.",
-                new HashMap<String, Integer>() {
+                new TreeMap<String, Integer>() {
                     {
                         put("jii *", null);
                         put("const *", null);
@@ -301,7 +301,7 @@ jii a
         cl.add(new StackResultChallenge(
                 "Maximum of an Array",
                 "askljhdashdas",
-                new HashMap<String, Integer>() {
+                new TreeMap<String, Integer>() {
                     {
                         put("jii *", 1);
                         put("jgz *", null);
