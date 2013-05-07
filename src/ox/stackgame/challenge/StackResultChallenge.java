@@ -1,8 +1,11 @@
 package ox.stackgame.challenge;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.exceptions.EmptyStackException;
@@ -21,12 +24,23 @@ public class StackResultChallenge extends AbstractChallenge {
 
     protected final StackValue<?> correctAnswer;
     protected String message = "";
+    protected Integer bestNumSteps = null;
+    protected Integer bestProgramLength = null;
 
     public StackResultChallenge(String title, String description,
             Map<String, Integer> instructionSet,
             StackValue<?> correctAnswer, List<StackValue<?>> inputs) {
         super(title, description, instructionSet, inputs);
         this.correctAnswer = correctAnswer;
+    }
+
+    public StackResultChallenge(String title, String description,
+            HashMap<String, Integer> instructionSet, IntStackValue correctAnswer,
+            LinkedList<StackValue<?>> inputs, int bestNumSteps, int bestProgramLength) {
+        super(title, description, instructionSet, inputs);
+        this.correctAnswer = correctAnswer;
+        this.bestNumSteps = bestNumSteps;
+        this.bestProgramLength = bestProgramLength;
     }
 
     @Override
@@ -36,7 +50,24 @@ public class StackResultChallenge extends AbstractChallenge {
     public Boolean hasSucceeded(StackMachine m) {
         try {
             if (m.getStack().peek().equals(correctAnswer)) {
-                message = "Congratulations!";
+                message = "Solved!";
+                if (bestNumSteps!=null && bestProgramLength!=null){
+                    int numSteps = m.getNumExecutionSteps()+1;
+                    int progLength = m.getInstructions().size();
+                    
+                    if (numSteps > bestNumSteps){
+                        message = "Solved! How about with " + (numSteps - bestNumSteps) + " fewer steps?";
+                    }
+                    if (m.getInstructions().size() > bestProgramLength){
+                        message = "Solved! How about with " + (progLength - bestProgramLength) + " fewer instruction?"; 
+                    }
+                    if (numSteps <= bestNumSteps && progLength <= bestProgramLength){
+                        message = "Solved! (You beat the designer too!)";
+                    }
+                    if (numSteps == bestNumSteps && progLength == bestProgramLength){
+                        message = "Perfect Solution!";
+                    }
+                }
                 return true;
             } else {
                 message= "Your answer: " + m.getStack().peek().toString()

@@ -60,7 +60,7 @@ public class ChallengeMode extends DesignMode {
                     {
                         put("const *", 1);
                     }
-                }, new IntStackValue(1), new LinkedList<StackValue<?>>()));
+                }, new IntStackValue(1), new LinkedList<StackValue<?>>(), 1,1));
         
         cl.add(new StackResultChallenge("Arithmetic Operations", 
                 "Binary arithmetic operations <strong>pop</strong> two values off the stack, and <strong>push</strong> the result of the operation back"
@@ -72,7 +72,7 @@ public class ChallengeMode extends DesignMode {
                         put("const 2", 1);
                         put("add", 1);
                     }
-                }, new IntStackValue(3), new LinkedList<StackValue<?>>()));
+                }, new IntStackValue(3), new LinkedList<StackValue<?>>(), 3, 3));
 
         cl.add(new StackResultChallenge("Reverse Polish",
                 "There is no way to bracket your programs, so find a way to compute 1 + (2 * 3) = 7 on the stack",
@@ -84,7 +84,7 @@ public class ChallengeMode extends DesignMode {
                         put("add", 1);
                         put("mul", 1);
                     }
-                }, new IntStackValue(6), new LinkedList<StackValue<?>>()));
+                }, new IntStackValue(7), new LinkedList<StackValue<?>>(),5,5));
 
         cl.add(new TapeChallenge("The Tape",
                 "The machine has two tapes you can use, an input tape and an output tape.<br/>"
@@ -105,7 +105,7 @@ public class ChallengeMode extends DesignMode {
                     {
                         add(new IntStackValue(1));
                     }
-                }));
+                },2,2));
 
         cl.add(new TapeChallenge("Branching and Loops",
                 "The LABEL <name> instruction does nothing but name a point in a program. You may JUMP to this point in the program from anywhere using one of the branch instructions."
@@ -119,7 +119,7 @@ public class ChallengeMode extends DesignMode {
                         put("jii *", 1);
                         put("label *", 1);
                     }
-                }, tape1to10, tape1to10));
+                }, tape1to10, tape1to10, 31, 4));
 
         cl.add(new TapeChallenge(
                 "Store / Memory",
@@ -141,7 +141,7 @@ public class ChallengeMode extends DesignMode {
                         add(new IntStackValue(2));
                         add(new IntStackValue(1));
                     }
-                }));
+                }, 100, 6));
         
         cl.add(new TapeChallenge(
                 "Further Branching",
@@ -159,7 +159,7 @@ public class ChallengeMode extends DesignMode {
                         put("label *", null);
                         put("output", null);
                     }
-                }, new ArrayList<StackValue<?>>(), tape1to10));
+                }, new ArrayList<StackValue<?>>(), tape1to10, 100, 100));
         
         cl.add(new TapeChallenge(
                 "Filtering Using JLZ",
@@ -189,7 +189,7 @@ public class ChallengeMode extends DesignMode {
                         add(new IntStackValue(1));
                         add(new IntStackValue(50));
                     }
-                }));
+                }, 100, 8));
         /* Solved with:
             label a
             input
@@ -246,7 +246,7 @@ public class ChallengeMode extends DesignMode {
                         catch (InvalidCharException e) {
                             e.printStackTrace();
                         }                    }
-                }));
+                }, 100, 100));
         
         cl.add(new TapeChallenge(
                 "Euclid's Algorithm",
@@ -262,7 +262,7 @@ public class ChallengeMode extends DesignMode {
                     { 
                         add(new IntStackValue(20));
                     }
-                }));
+                }, 100, 100));
     }
 }
 

@@ -155,7 +155,7 @@ public class ChallengeTest {
                         add(new IntStackValue(2));
                         add(new IntStackValue(1));
                     }
-                });
+                },0,0);
         // set up machine
         try {
             StackMachine m = new StackMachine(Lexer.lex("const 1\n"

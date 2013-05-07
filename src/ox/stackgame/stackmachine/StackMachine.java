@@ -194,6 +194,10 @@ public class StackMachine {
     public boolean hasInput() {
         return inputIndex < input.size();
     }
+    
+    public int getNumExecutionSteps(){
+        return numInstructions;
+    }
 
     /**
      * Consume the first work on the input tape
