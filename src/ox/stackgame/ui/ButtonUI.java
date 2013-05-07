@@ -21,7 +21,6 @@ public class ButtonUI extends JPanel {
     private final StateManager sm;
     private Mode oldMode = null;
     private final RunMode runMode;
-    @SuppressWarnings("unused") // tui actually is used further down.
     private final ProgramTextUI tui;
 
     private final JButton lexButton = new JButton("Check");
@@ -32,7 +31,7 @@ public class ButtonUI extends JPanel {
     private final JButton resetButton = new JButton("Reset");
 
     public void updateButtons() {
-        updateButtons(false);
+        updateButtons(tui.isTextDirty());
     }
     
     public void updateButtons(boolean textDirty) {

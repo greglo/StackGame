@@ -208,6 +208,7 @@ public class ProgramTextUI extends JLayeredPane {
             redHighlight(e.lineNumber, e.wordStart, e.wordEnd);
             eui.displayError("Lexer Error on line " + (e.lineNumber + 1) + ": " + e.getMessage());
             System.err.println("Lexer error on line " + (e.lineNumber + 1) + ": " + e.getMessage());
+            dirtyText = true;
         }
         return p;
     }
