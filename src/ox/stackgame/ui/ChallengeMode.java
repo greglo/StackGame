@@ -236,6 +236,22 @@ public class ChallengeMode extends DesignMode {
                             e.printStackTrace();
                         }                    }
                 }));
+        
+        cl.add(new TapeChallenge(
+                "Euclid's Algorithm",
+                "The MOD instruction finds the remainder when dividing one number by another: 5 MOD 3 = 2." +
+                "<br/><br/>Use MOD, among other instructions, to implement Euclid's Algorithm",
+                null
+                , new ArrayList<StackValue<?>>() {
+                    { 
+                        add(new IntStackValue(100));
+                        add(new IntStackValue(80));
+                    }
+                } , new ArrayList<StackValue<?>>() {
+                    { 
+                        add(new IntStackValue(20));
+                    }
+                }));
     }
-    }
+}
 
