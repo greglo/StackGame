@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -61,7 +62,8 @@ public class ChallengeUI extends JPanel {
         this.eui = eui;
 
         m.registerModeActivationVisitor(modeActivationVisitor);
-        m.registerModeDeactivationVisitor(modeDeactivationVisitor);
+        stateManager.stackMachine.addListener(listener);
+
 
         // appearance
         this.setLayout(cardLayout);
@@ -244,14 +246,27 @@ public class ChallengeUI extends JPanel {
     // Test if the user has passed the challenge
     private StackMachineListener listener = new StackMachineListenerAdapter() {
         @Override
+        public void programChanged(List<Instruction> program){
+            // this gets called when ProgramTextUI lexes successfully
+            // check the program is allowed by the challenge
+            if (challengeMode.getChallenge().checkProgram(stateManager.stackMachine.getInstructions()) == false) {
+                System.out.println("Program doesn't conform to Challenge's instructionSet");
+                eui.displayError("Your program must use only the allowed instructions");
+            }
+        }
+        
+        @Override
         public void programCounterChanged(int line, Instruction instruction) {
             // when the machine terminates, evaluate machine against challenge's
             // hasSucceeded() function
-            if (!machine.isRunning()) {
+            if (stateManager.getLastMode() == challengeMode
+                    && stateManager.getActiveMode() instanceof RunMode
+                    && !machine.isRunning()) {
                 AbstractChallenge currChallenge = challengeMode.getChallenge();
                 Boolean hasSucceeded = currChallenge.hasSucceeded(machine);
                 String message = currChallenge.getMessage();
-                System.out.println(hasSucceeded ? "Challenge hasSucceeded=true" : "Challenge hasSucceeded=false");
+                System.out.println(hasSucceeded ? "Challenge hasSucceeded=true"
+                        : "Challenge hasSucceeded=false");
                 System.out.println("Message: " + message);
                 if (hasSucceeded) {
                     detailPanel.displaySuccessMessage(message);
@@ -269,21 +284,21 @@ public class ChallengeUI extends JPanel {
          * allowedInstructions.
          */
         public void visit(RunMode m) {
-            System.out.println("ChallengeUI noticed RunMode has been enabled");
-            // moving from ChallengeMode -> RunMode
-
-            if (stateManager.getLastMode() == challengeMode) {
-                // challengeMode should never be enabled without an active
-                // challenge.
-                assert (challengeMode.getChallenge() != null);
-                // check the program is allowed by the challenge
-                if (challengeMode.getChallenge().checkProgram(stateManager.stackMachine.getInstructions()) == false) {
-                    System.out.println("Program doesn't conform to Challenge's instructionSet");
-                    eui.displayError("Your program must use only the allowed instructions");
-                }
-                // start listening for completion
-                stateManager.stackMachine.addListener(listener);
-            }
+//            System.out.println("ChallengeUI noticed RunMode has been enabled");
+//            // moving from ChallengeMode -> RunMode
+//
+//            if (stateManager.getLastMode() == challengeMode) {
+//                // challengeMode should never be enabled without an active
+//                // challenge.
+//                assert (challengeMode.getChallenge() != null);
+//                // check the program is allowed by the challenge
+//                if (challengeMode.getChallenge().checkProgram(stateManager.stackMachine.getInstructions()) == false) {
+//                    System.out.println("Program doesn't conform to Challenge's instructionSet");
+//                    eui.displayError("Your program must use only the allowed instructions");
+//                }
+//                // start listening for completion
+//                stateManager.stackMachine.addListener(listener);
+//            }
         }
 
         // this mode is activated!
@@ -296,20 +311,6 @@ public class ChallengeUI extends JPanel {
         public void visit(FreeDesignMode m) {
             // display selector panel
             cardLayout.show(ChallengeUI.this, "selectorPanel");
-        }
-    };
-
-    // code to be executed when a mode is deactivated
-    private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
-        public void visit(RunMode m) {
-            // stop evaluating the machine against the challenge
-            stateManager.stackMachine.removeListener(listener);
-        }
-
-        public void visit(ChallengeMode m) {
-        }
-
-        public void visit(FreeDesignMode m) {
         }
     };
 
