@@ -173,6 +173,7 @@ public class ChallengeMode extends DesignMode {
                         put("store *", null);
                         put("input", null);
                         put("output", null);
+                        put("jii *", null);
                     }
                 }, new ArrayList<StackValue<?>>() {
                     { 
@@ -189,6 +190,16 @@ public class ChallengeMode extends DesignMode {
                         add(new IntStackValue(50));
                     }
                 }));
+        /* Solved with:
+            label a
+            input
+            store 1
+            load 1
+            jlz a
+            load 1
+            output
+            jii a
+         */
         
         cl.add(new TapeChallenge(
                 "ROT13",
