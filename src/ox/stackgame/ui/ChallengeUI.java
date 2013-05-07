@@ -247,9 +247,11 @@ public class ChallengeUI extends JPanel {
     private StackMachineListener listener = new StackMachineListenerAdapter() {
         @Override
         public void programChanged(List<Instruction> program){
-            // this gets called when ProgramTextUI lexes successfully
+            // this gets called when ProgramTextUI calls Lexer.lex
             // check the program is allowed by the challenge
-            if (challengeMode.getChallenge().checkProgram(stateManager.stackMachine.getInstructions()) == false) {
+           
+            if (stateManager.getLastMode() == challengeMode
+                    && challengeMode.getChallenge().checkProgram(stateManager.stackMachine.getInstructions()) == false) {
                 System.out.println("Program doesn't conform to Challenge's instructionSet");
                 eui.displayError("Your program must use only the allowed instructions");
             }
