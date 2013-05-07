@@ -74,6 +74,16 @@ public class ProgramTextUI extends JLayeredPane {
     };
     
     private StackMachineListener l = new StackMachineListenerAdapter() {
+        @Override
+        public void programChanged(List<Instruction> instructions){
+            if (instructions.size()==0){ // program was cleared
+                jta.setText("");
+                dirtyText=false;
+                jta.requestFocus();
+            }
+        }
+        
+        @Override
         public void programCounterChanged(int line, Instruction instruction) {
             highlight(instruction.line == -1 ? line - 1 : instruction.line);
         }
