@@ -296,7 +296,7 @@ jii a
                     { 
                         add(new IntStackValue(20));
                     }
-                }, 100, 100));
+                }, 100, 100)); // TODO write an example solution for this.
         
         cl.add(new StackResultChallenge(
                 "Maximum of an Array",
