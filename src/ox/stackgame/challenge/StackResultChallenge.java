@@ -35,8 +35,8 @@ public class StackResultChallenge extends AbstractChallenge {
     }
 
     public StackResultChallenge(String title, String description,
-            HashMap<String, Integer> instructionSet, IntStackValue correctAnswer,
-            LinkedList<StackValue<?>> inputs, int bestNumSteps, int bestProgramLength) {
+            Map<String, Integer> instructionSet, StackValue<?> correctAnswer,
+            List<StackValue<?>> inputs, int bestNumSteps, int bestProgramLength) {
         super(title, description, instructionSet, inputs);
         this.correctAnswer = correctAnswer;
         this.bestNumSteps = bestNumSteps;
@@ -54,6 +54,8 @@ public class StackResultChallenge extends AbstractChallenge {
                 if (bestNumSteps!=null && bestProgramLength!=null){
                     int numSteps = m.getNumExecutionSteps()+1;
                     int progLength = m.getInstructions().size();
+                    
+                    System.out.println("Their numSteps:"+numSteps+" their progLength:"+progLength);
                     
                     if (numSteps > bestNumSteps){
                         message = "Solved! How about with " + (numSteps - bestNumSteps) + " fewer steps?";

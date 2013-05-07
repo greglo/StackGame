@@ -297,6 +297,58 @@ jii a
                         add(new IntStackValue(20));
                     }
                 }, 100, 100));
+        
+        cl.add(new StackResultChallenge(
+                "Maximum of an Array",
+                "askljhdashdas",
+                new HashMap<String, Integer>() {
+                    {
+                        put("jii *", 1);
+                        put("jgz *", null);
+                        put("jlz *", null);
+                        put("jez *", null);
+                        put("jnez *", null);
+                        put("label *", null);
+                        put("add", null);
+                        put("sub", null);
+                        put("mul", null);
+                        put("div", null);
+                        put("load *", null);
+                        put("store *", null);
+                        put("input", null);
+                        put("output", null);
+                    }
+                }, // instructionSet 
+                new IntStackValue(99),
+                new ArrayList<StackValue<?>>() {
+                    { 
+                        add(new IntStackValue(1));
+                        add(new IntStackValue(5));
+                        add(new IntStackValue(6));
+                        add(new IntStackValue(8));
+                        add(new IntStackValue(80));
+                        add(new IntStackValue(-10));
+                        add(new IntStackValue(99));
+                        add(new IntStackValue(4));
+                    }
+                } ,  68, 14));
+        
+ /*
+input
+store 0
+label a
+load 0
+input
+store 1
+load 1
+sub
+jgz notbigger
+load 1
+store 0
+label notbigger
+jii a
+load 0
+  */
     }
 }
 
