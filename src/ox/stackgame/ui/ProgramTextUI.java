@@ -124,8 +124,18 @@ public class ProgramTextUI extends JLayeredPane {
     public boolean isTextDirty() {
         return dirtyText;
     }
+    
+    public void redHighlight(int line){
+        try {
+            highlighter.removeAllHighlights();
+            highlighter.addHighlight(jta.getLineStartOffset(line), jta.getLineEndOffset(line), new DefaultHighlighter.DefaultHighlightPainter(
+                    new Color(150, 30, 30)));
+        } catch (BadLocationException e) {
+            throw new RuntimeException("pc shouldn't be out of bounds");
+        }
+    }
 
-    private void redHighlight(int line, int start, int end) {
+    public void redHighlight(int line, int start, int end) {
         try {
             highlighter.removeAllHighlights();
             highlighter.addHighlight(jta.getLineStartOffset(line) + start, jta.getLineStartOffset(line) + end,

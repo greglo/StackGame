@@ -71,12 +71,6 @@ public class ApplicationFrame {
         frame.add(contentPane, BorderLayout.CENTER);
 
         
-        // ChallengeUI
-        {
-            ChallengeUI u = new ChallengeUI(modeManager, freeDesignMode, challengeMode, eui);
-            u.setLocation(0, 0);
-            contentPane.add(u, new Integer(0));
-        }
 
         // StackUI
         {
@@ -102,6 +96,13 @@ public class ApplicationFrame {
         programUI.setBounds( LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT,
                 CENTER_PANEL_WIDTH, PROGRAMTEXTUI_HEIGHT );
         contentPane.add(programUI, new Integer(0));
+        
+        // ChallengeUI
+        {
+            ChallengeUI u = new ChallengeUI(modeManager, freeDesignMode, challengeMode, eui, programUI);
+            u.setLocation(0, 0);
+            contentPane.add(u, new Integer(0));
+        }
 
         // CreatePanel
         BlockManager blockManager = new BlockManager();

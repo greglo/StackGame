@@ -48,7 +48,8 @@ public abstract class AbstractChallenge {
         System.out.println("Checking machine against challenge's instructionSet (checkProgram)");
 
         // check each instruction
-        if (instructionSet != null)
+        if (instructionSet != null){
+            int lineNo=0;
             for (Instruction i : instructions) {
                 String line = i.toString();
                 String starredLine = i.name + " *";
@@ -58,21 +59,35 @@ public abstract class AbstractChallenge {
                     used.put(line, used.containsKey(line) ? used.get(line) + 1 : 1);
                     // if this line exceeds a non-null specification, return
                     // false
-                    if (instructionSet.get(line) != null && used.get(line) > instructionSet.get(line))
+                    if (instructionSet.get(line) != null && used.get(line) > instructionSet.get(line)){
+                        offendingLine = lineNo;
                         return false;
+                    }
+                        
                 } else if (instructionSet.containsKey(starredLine)) {
                     used.put(starredLine, used.containsKey(starredLine) ? used.get(starredLine) + 1 : 1);
                     // if this line exceeds a non-null specification, return
                     // false
-                    if (instructionSet.get(starredLine) != null && used.get(starredLine) > instructionSet.get(starredLine))
+                    if (instructionSet.get(starredLine) != null && used.get(starredLine) > instructionSet.get(starredLine)){
+                        offendingLine = lineNo;
                         return false;
+                    }
                 } else {
                     // instruction is not allowed
-                    System.out.println("Instruction not allowed: "+line);
+                    offendingLine = lineNo;
                     return false;
                 }
+                lineNo++;
             }
+        }
+        offendingLine = null;
         return true;
+    }
+    
+    protected Integer offendingLine = null;
+    
+    public Integer getOffendingLine(){
+        return offendingLine;
     }
 
     /**

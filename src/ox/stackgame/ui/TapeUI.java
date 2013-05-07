@@ -69,18 +69,6 @@ public class TapeUI extends JPanel {
         }
     };
 
-    private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
-
-        public void visit(RunMode m) {
-        }
-
-        public void visit(ChallengeMode m) {
-        }
-
-        public void visit(FreeDesignMode m) {
-        }
-    };
-
     private StackMachineListener l = new StackMachineListenerAdapter() {
         public void inputConsumed(int startIndex) {
             inputTape.remove(0);
@@ -106,7 +94,6 @@ public class TapeUI extends JPanel {
 
         // pay attention to mode changes
         m.registerModeActivationVisitor(modeActivationVisitor);
-        m.registerModeDeactivationVisitor(modeDeactivationVisitor);
 
         machine = m.stackMachine;
         resetTapes();

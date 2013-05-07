@@ -53,13 +53,15 @@ public class ChallengeUI extends JPanel {
     private final CardLayout cardLayout = new CardLayout();
     private final SelectorPanel selectorPanel;
     private final DetailPanel detailPanel;
+    private final ProgramTextUI tui;
 
-    public ChallengeUI(final StateManager m, final FreeDesignMode freeDesignMode, final ChallengeMode cm, ErrorUI eui) {
+    public ChallengeUI(final StateManager m, final FreeDesignMode freeDesignMode, final ChallengeMode cm, ErrorUI eui, ProgramTextUI tui) {
         this.machine = m.stackMachine;
         this.stateManager = m;
         this.challengeMode = cm;
         this.freeDesignMode = freeDesignMode;
         this.eui = eui;
+        this.tui = tui;
 
         m.registerModeActivationVisitor(modeActivationVisitor);
         stateManager.stackMachine.addListener(listener);
@@ -252,6 +254,7 @@ public class ChallengeUI extends JPanel {
            
             if (stateManager.getActiveMode() == challengeMode
                     && challengeMode.getChallenge().checkProgram(stateManager.stackMachine.getInstructions()) == false) {
+                tui.redHighlight(challengeMode.getChallenge().getOffendingLine());
                 System.out.println("Program doesn't conform to Challenge's instructionSet");
                 eui.displayError("Your program must use only the allowed instructions");
             }
@@ -286,27 +289,13 @@ public class ChallengeUI extends JPanel {
          * allowedInstructions.
          */
         public void visit(RunMode m) {
-//            System.out.println("ChallengeUI noticed RunMode has been enabled");
-//            // moving from ChallengeMode -> RunMode
-//
-//            if (stateManager.getLastMode() == challengeMode) {
-//                // challengeMode should never be enabled without an active
-//                // challenge.
-//                assert (challengeMode.getChallenge() != null);
-//                // check the program is allowed by the challenge
-//                if (challengeMode.getChallenge().checkProgram(stateManager.stackMachine.getInstructions()) == false) {
-//                    System.out.println("Program doesn't conform to Challenge's instructionSet");
-//                    eui.displayError("Your program must use only the allowed instructions");
-//                }
-//                // start listening for completion
-//                stateManager.stackMachine.addListener(listener);
-//            }
+
         }
 
         // this mode is activated!
         public void visit(ChallengeMode m) {
             // display detail panel
-            detailPanel.updateFromChallenge(challengeMode.getChallenge());
+            detailPanel.updateFromChallenge(challengeMode.getChallenge()); // don't use setChallenge because it will loop infinitely
             cardLayout.show(ChallengeUI.this, "detailPanel");
         }
 
