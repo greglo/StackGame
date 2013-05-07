@@ -34,37 +34,41 @@ public abstract class AbstractChallenge {
      *            A map from instructions to the number of that instruction
      *            permitted in the challenge; -1 for infinite
      */
-    public AbstractChallenge(String title, String description,
-            Map<String, Integer> instructionSet) {
+    public AbstractChallenge(String title, String description, Map<String, Integer> instructionSet) {
         this.title = title;
         this.description = description;
         this.instructionSet = instructionSet;
     }
-    
-    public Boolean checkProgram(List<Instruction> instructions){
-        Map<String,Integer> used = new HashMap<String,Integer>();
-        
-        System.out.println("Checking machine against challenge's instructionSet (checkProgram)");
-        
-        // check each instruction
-        for (Instruction i : instructions){
-            String line = i.toString();
-            String starredLine = i.name + " *";
 
-            if (instructionSet.containsKey(line)) { // entry exists for this
-                                                    // specific instruction
-                used.put(line, used.containsKey(line) ? used.get(line) + 1 : 1);
-                // if this line exceeds a non-null specification, return false
-                if (instructionSet.get(line) != null && used.get(line) > instructionSet.get(line)) return false;
-            } else if (instructionSet.containsKey(starredLine)) {
-                used.put(starredLine, used.containsKey(starredLine) ? used.get(starredLine) + 1 : 1);
-                // if this line exceeds a non-null specification, return false
-                if (instructionSet.get(starredLine) != null && used.get(starredLine) > instructionSet.get(starredLine)) return false;
-            } else {
-                // instruction is not allowed
-                return false;
+    public Boolean checkProgram(List<Instruction> instructions) {
+        Map<String, Integer> used = new HashMap<String, Integer>();
+
+        System.out.println("Checking machine against challenge's instructionSet (checkProgram)");
+
+        // check each instruction
+        if (instructionSet != null)
+            for (Instruction i : instructions) {
+                String line = i.toString();
+                String starredLine = i.name + " *";
+
+                if (instructionSet.containsKey(line)) { // entry exists for this
+                                                        // specific instruction
+                    used.put(line, used.containsKey(line) ? used.get(line) + 1 : 1);
+                    // if this line exceeds a non-null specification, return
+                    // false
+                    if (instructionSet.get(line) != null && used.get(line) > instructionSet.get(line))
+                        return false;
+                } else if (instructionSet.containsKey(starredLine)) {
+                    used.put(starredLine, used.containsKey(starredLine) ? used.get(starredLine) + 1 : 1);
+                    // if this line exceeds a non-null specification, return
+                    // false
+                    if (instructionSet.get(starredLine) != null && used.get(starredLine) > instructionSet.get(starredLine))
+                        return false;
+                } else {
+                    // instruction is not allowed
+                    return false;
+                }
             }
-        }
         return true;
     }
 
