@@ -158,7 +158,7 @@ public class ChallengeMode extends DesignMode {
         cl.add(new TapeChallenge(
                 "Further Branching",
                 "JNEZ/JEZ (jump [not] equal zero) are instructions that pop a value off the stack, compare it with 0 and branch if they are not equal/equal respectively. " +
-                "<br/><br/>Output all the numbers from 1 to 10 with the following instructions:<br>(Hint: a == b is the same as ( a - b ) == 0",
+                "<br/><br/>Output all the numbers from 1 to 10 with the following instructions:<br>Hint: a == b is the same as ( a - b ) == 0",
                 new TreeMap<String, Integer>() {
                     {
                         put("const 1", null);
@@ -193,7 +193,7 @@ store 0
 load 0
 jnez loop
 
-(101,11) solution: 
+(101,11) LINEAR SOLUTION, DOESN'T USE MOD: 
 label loop
 load 0
 const 1
@@ -339,7 +339,8 @@ output
         
         cl.add(new StackResultChallenge(
                 "Maximum of an Array",
-                "askljhdashdas",
+                "Use any of the instructions below to loop through the numbers on the input tape and " +
+                "output the largest onto the stack.  You'll probably want to use some of the store boxes.",
                 new TreeMap<String, Integer>() {
                     {
                         put("jii *", 1);
@@ -350,6 +351,7 @@ output
                         put("label *", null);
                         put("add", null);
                         put("sub", null);
+                        put("const 1", null); // just to confuse them
                         put("mul", null);
                         put("div", null);
                         put("load *", null);
