@@ -43,6 +43,10 @@ public class DeleteHandler extends AbstractStretchBoxHandler{
                 machine.removeInstruction(min+curY);
 		    }
 		}
+		
+	    //Evoke synchronisation with TextUI
+        blockUI.getBlockManager().sync();
+
 	}
 	
 }

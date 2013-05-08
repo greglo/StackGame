@@ -21,6 +21,11 @@ public class BlockUIPane extends JLayeredPane{
     static final int CREATEPANELWIDTH = BlockUI.CELLWIDTH+scrollBarSize;
     static final int BLOCKUIWIDTH = BlockUI.CELLWIDTH+scrollBarSize;
     
+    private final BlockManager blockManager;
+    
+    public BlockManager getBlockManager(){
+        return blockManager;
+    }
     
     public BlockUIPane(StateManager modeManager, int width, int height, Color bgColor) {
 
@@ -32,7 +37,7 @@ public class BlockUIPane extends JLayeredPane{
         setOpaque(true);
         
         //BlockManager
-        BlockManager blockManager = new BlockManager();
+        blockManager = new BlockManager();
         
         // CreatePanel
         CreatePanel createPanel = new CreatePanel(blockManager, modeManager);

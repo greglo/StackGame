@@ -50,6 +50,11 @@ public class BlockManager {
         for (BlockManagerListener l : listeners)
             l.instructionUsed(instruction);
 	}
+	
+	public void sync(){
+        for (BlockSyncer l : syncers)
+            l.sync();
+	}
 
 	
 	//listener boilerplate
@@ -58,6 +63,7 @@ public class BlockManager {
 	
 	public BlockManager() {
 		listeners = new ArrayList<BlockManagerListener>();
+		syncers = new ArrayList<BlockSyncer>();
 	}
 	public void addListener(BlockManagerListener l) {
 		listeners.add(l);
@@ -66,16 +72,30 @@ public class BlockManager {
 		listeners.remove(l);
 	}
 	
-	public interface BlockManagerListener{
-		/** On change of instruction. We may assume that e is non-null **/
-		public void instructionChanged(String s);
-		/** Instruction set to null **/
-		public void instructionCleared();
+    public interface BlockManagerListener{
+        /** On change of instruction. We may assume that e is non-null **/
+        public void instructionChanged(String s);
+        /** Instruction set to null **/
+        public void instructionCleared();
         /** On use of instruction.**/
         public void instructionUsed(String s);
 
         /** On change of mode.**/
         public void modeChanged(String s);
-	}
-	
+    }
+    
+    protected final List<BlockSyncer> syncers;
+    
+    public void addSyncer(BlockSyncer l) {
+        syncers.add(l);
+    }
+    public void removeListener(BlockSyncer l) {
+        syncers.remove(l);
+    }
+    
+   public interface BlockSyncer{
+        /** When BlockUI and TextUI should get synchronised **/
+        public void sync();
+    }
+    
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import ox.stackgame.blockUI.BlockManager.BlockSyncer;
 import ox.stackgame.blockUI.BlockUIPane;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
@@ -150,7 +151,10 @@ public class ApplicationFrame {
                 BlockSwitch.updateText();
             }
         });
-
+        
+        //BlockSyncer Syncer = newBlockSyncer
+        ProgramSyncer Syncer = new ProgramSyncer(programUI, Buttons, modeManager);
+        BlockUI.getBlockManager().addSyncer(Syncer);
         
         // TapeUI
         
@@ -193,6 +197,26 @@ public class ApplicationFrame {
         
         public void updateText(){
             this.setText((manager.isBlockUIActive() ? "Text Mode" : "Block Mode"));
+        }
+    }
+    
+    //Syncs the BlockUI with TextUI each time BlockUI changes the stack machine
+    private static class ProgramSyncer implements BlockSyncer{
+        private ProgramTextUI programUI;
+        private ButtonUI Buttons;
+        private StateManager modeManager;
+        
+        public ProgramSyncer(ProgramTextUI programUI, ButtonUI Buttons, StateManager modeManager){
+            this.programUI = programUI;
+            this.Buttons = Buttons;
+            this.modeManager = modeManager;
+        }
+        
+        public void sync() {
+            programUI.reloadInstructions();
+            //For some reason this line has to be here, too, in order to be "Checked"
+            modeManager.stackMachine.loadInstructions(programUI.getProgram());
+            Buttons.updateButtons();
         }
     }
 

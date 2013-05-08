@@ -126,7 +126,8 @@ class EditHandler extends AbstractStretchBoxHandler {
         for(Integer j : movedList)
             stackMachine.addInstruction(j+moveY, moved.get(j));
         
-       
+        //Evoke synchronisation with TextUI
+        blockUI.getBlockManager().sync();
     }
     
     
