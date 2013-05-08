@@ -2,10 +2,10 @@ package ox.stackgame.blockUI;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -79,8 +79,10 @@ class EditHandler extends AbstractStretchBoxHandler {
         int y2 = Math.max(boxOrigin.y, boxTarget.y);
 
         for(int y = y1; y <= y2; y++)
-            for(int x = x1; x <= x2; x++)
-                blockUI.getSelectionManager().toggleObjectSelection(blockUI.getInstructionAt(x, y));
+            for(int x = x1; x <= x2; x++){
+                Instruction i = blockUI.getInstructionAt(x, y);
+                if(i!=null)blockUI.getSelectionManager().toggleObjectSelection(i);
+            }
 
     }
     
@@ -92,11 +94,22 @@ class EditHandler extends AbstractStretchBoxHandler {
         //find their location
         StackMachine stackMachine = blockUI.getCurrentStackMachine();
         List<Instruction> instructions = stackMachine.getInstructions();
-        Map<Integer,Instruction> moved = new HashMap<Integer,Instruction>();
+        //instead of the nice: HashMap
+        //due to overriding of Instruction.hashCode
+        //I have to do it using a TreeMap:
+        Map<Integer,Instruction> moved = new TreeMap<Integer,Instruction>();
         i = blockUI.getSelectionManager().getSelection();
         while (i.hasNext()) {
             Instruction e = i.next();
-            moved.put(instructions.indexOf(e),e);
+            //instead of the nice: moved.put(instructions.indexOf(e),e);
+            //due to overriding of Instruction.equals
+            //I have to do it the hard way:
+            int index = 0;
+            for(Instruction in : instructions)
+                if(in==e){
+                    moved.put(index,e);
+                    break;
+                }else index+=1;
         }
 
         //remove the elements one by one

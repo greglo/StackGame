@@ -29,7 +29,10 @@ public class SelectionManager {
 		return selection.iterator();
 	}
 	public boolean isSelected(Instruction object) {
-		return selection.contains(object);
+	    for(Instruction i : selection)
+	        if(i==object)return true;
+		return false;
+	    //return selection.contains(object);
 	}
 	public void addListener(SelectionManagerListener l) {
 		listeners.add(l);
