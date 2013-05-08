@@ -1,14 +1,11 @@
 package ox.stackgame.blockUI;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
@@ -63,23 +60,18 @@ public class BlockUIPane extends JLayeredPane{
 //TODO: disable buttons on RunMode
         
         //Buttons
-        JPanel buttonPane = new JPanel();
-        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.Y_AXIS));
-        
         //editButton
         final JButton editButton = new EditButton("Edit Mode", blockManager);
-        editButton.setLayout(null);
-        buttonPane.add(editButton);
+        add(editButton);
+        editButton.setBounds(BLOCKUIGAPWIDTH, 1, CREATEPANELWIDTH, BlockUI.CELLHEIGHT-2);
         
         //deleteButton
         final JButton deleteButton = new DeleteButton("Delete Mode", blockManager);
-        editButton.setLayout(null);
-        buttonPane.add(deleteButton);
+        add(deleteButton);
+        deleteButton.setBounds(BLOCKUIGAPWIDTH, BlockUI.CELLHEIGHT+1, CREATEPANELWIDTH, BlockUI.CELLHEIGHT-2);
         
-        add(buttonPane);
-        buttonPane.setBounds(BLOCKUIGAPWIDTH, 0, CREATEPANELWIDTH, 2*BlockUI.CELLHEIGHT);
 
-//TODO: add Labels
+//TODO: add Labels?
 
     }
     
@@ -95,14 +87,13 @@ public class BlockUIPane extends JLayeredPane{
             super(text);
             manager.addListener(this);
             this.setForeground(new Color(0, 133, 200));
-            this.setSize(new Dimension(CREATEPANELWIDTH,BlockUI.CELLHEIGHT));
             this.setEnabled(manager.getMode() != BlockManager.EDIT);
         
             addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
-                    // enable EditMode
                     assert (manager.getMode() != BlockManager.EDIT);
 
+                    // enable EditMode
                     manager.setMode(BlockManager.EDIT);
                 }
             });
@@ -121,14 +112,13 @@ public class BlockUIPane extends JLayeredPane{
             super(text);
             manager.addListener(this);
             this.setForeground(new Color(0, 133, 200));
-            this.setPreferredSize(new Dimension(CREATEPANELWIDTH,BlockUI.CELLHEIGHT));
             this.setEnabled(manager.getMode() != BlockManager.DELETE);
         
             addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
-                    // enable DeleteMode
                     assert (manager.getMode() != BlockManager.DELETE);
 
+                    // enable DeleteMode
                     manager.setMode(BlockManager.DELETE);
                 }
             });
