@@ -127,7 +127,7 @@ public class ApplicationFrame {
         // BlockUI switch
         int SwitchWidth = 100;
         int SwitchHeight = 40;
-        final BlockUIButton BlockSwitch = new BlockUIButton(BlockUI,modeManager);
+        final BlockUIButton BlockSwitch = new BlockUIButton(modeManager);
         contentPane.add(BlockSwitch,new Integer(100));
         BlockSwitch.setBounds(LEFT_PANEL_WIDTH+CENTER_PANEL_WIDTH+(RIGHT_PANEL_WIDTH - SwitchWidth)/2, PROGRAMTEXTUI_HEIGHT-SwitchHeight, SwitchWidth, SwitchHeight);
 
@@ -183,7 +183,7 @@ public class ApplicationFrame {
     private static class BlockUIButton extends JButton{
         private final StateManager manager;
         
-        public BlockUIButton(final BlockUIPane blockUI, final StateManager manager){
+        public BlockUIButton(final StateManager manager){
             super();
             this.manager=manager;
             this.setForeground(new Color(0, 133, 200));
