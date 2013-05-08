@@ -21,25 +21,27 @@ public class DeleteHandler extends AbstractStretchBoxHandler{
 		StackMachine machine = blockUI.getCurrentStackMachine();
 		
 		for(int curY = height; curY >= 0; curY--){
-		    Instruction i = machine.getInstruction(min+curY);
-		
-            //decrease the amount of this instruction available
-            Map<String, Integer> available = blockUI.getBlockManager().availableInstructions;
-            //Option 1: instructions will have this exact one available
-            String s = i.toString();
-            String toEdit = (available.containsKey(s) ? s : s.split(" ")[0] + " *");
-            
-            if(!available.containsKey(toEdit))throw new IllegalArgumentException("Invalid Instruction");
-
-            int count = available.get(toEdit);
-            if(count>-1)
-                available.put(toEdit, count+1);            
-            
-            //inform about the deletion
-            blockUI.getBlockManager().useInstruction();
-
-            
-            machine.removeInstruction(min+curY);
+		    if(min+curY < machine.getInstructions().size()){
+    		    Instruction i = machine.getInstruction(min+curY);
+    		
+                //decrease the amount of this instruction available
+                Map<String, Integer> available = blockUI.getBlockManager().availableInstructions;
+                //Option 1: instructions will have this exact one available
+                String s = i.toString();
+                String toEdit = (available.containsKey(s) ? s : s.split(" ")[0] + " *");
+                
+                if(!available.containsKey(toEdit))throw new IllegalArgumentException("Invalid Instruction");
+    
+                int count = available.get(toEdit);
+                if(count>-1)
+                    available.put(toEdit, count+1);            
+                
+                //inform about the deletion
+                blockUI.getBlockManager().useInstruction();
+    
+                
+                machine.removeInstruction(min+curY);
+		    }
 		}
 	}
 	
