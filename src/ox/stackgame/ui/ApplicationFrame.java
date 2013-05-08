@@ -1,6 +1,8 @@
 package ox.stackgame.ui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +112,18 @@ public class ApplicationFrame {
         BlockUIPane BlockUI= new BlockUIPane(modeManager,BlockUIWidth,BlockUIHeight,BlockUIBGColor);
         BlockUI.setBounds(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT, BlockUIWidth, BlockUIHeight);
         contentPane.add(BlockUI, new Integer(2));
+        //Whether or not BlockUI starts off as visible
+        Boolean blockUIVisible = false;
+        BlockUI.setVisible(blockUIVisible);
+        modeManager.setBlockUIActive(blockUIVisible);
+        
+        
+        // BlockUI switch
+        int SwitchWidth = 100;
+        int SwitchHeight = 40;
+        BlockUIButton BlockUIButton = new BlockUIButton(BlockUI,modeManager);
+        contentPane.add(BlockUIButton,new Integer(100));
+        BlockUIButton.setBounds(LEFT_PANEL_WIDTH+CENTER_PANEL_WIDTH+(RIGHT_PANEL_WIDTH - SwitchWidth)/2, PROGRAMTEXTUI_HEIGHT-SwitchHeight, SwitchWidth, SwitchHeight);
 
         
         // ButtonUI
@@ -144,6 +158,31 @@ public class ApplicationFrame {
         modeManager.setActiveMode(freeDesignMode);
         frame.pack();
         frame.setVisible(true);
+    }
+    
+    @SuppressWarnings("serial")
+    private static class BlockUIButton extends JButton{
+        private final StateManager manager;
+        
+        public BlockUIButton(final BlockUIPane blockUI, final StateManager manager){
+            super();
+            this.manager=manager;
+            this.setForeground(new Color(0, 133, 200));
+            updateText();
+        
+            addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent arg0) {
+//TODO: check if text successfully lexes before switching
+                    manager.toggleBlockUIActive();
+                    blockUI.setVisible(manager.isBlockUIActive());
+                    updateText();
+                }
+            });
+        }
+        
+        public void updateText(){
+            this.setText((manager.isBlockUIActive() ? "Text Mode" : "Block Mode"));
+        }
     }
 
 }

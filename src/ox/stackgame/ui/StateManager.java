@@ -19,6 +19,20 @@ public class StateManager {
 
     private Collection<ModeVisitor> modeDeactivationVisitors = new HashSet<ModeVisitor>();
     private Collection<ModeVisitor> modeActivationVisitors = new HashSet<ModeVisitor>();
+    
+    /* BlockUI switching begins here */
+    //Whether BlockUI is active/visible as opposed to TextUI
+    private Boolean active = false;
+    public Boolean isBlockUIActive(){
+        return active;
+    }
+    public void setBlockUIActive(Boolean active){
+        this.active = active;
+    }
+    public void toggleBlockUIActive(){
+        active = !active;
+    }
+    /* BlockUI switching ends here */
 
     public StateManager(StackMachine stackMachine) {
         this.stackMachine = stackMachine;
