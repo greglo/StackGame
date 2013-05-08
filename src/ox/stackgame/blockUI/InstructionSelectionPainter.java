@@ -9,7 +9,7 @@ import java.awt.Point;
 public class InstructionSelectionPainter{
 	public static final InstructionSelectionPainter INSTANCE = new InstructionSelectionPainter();
 
-	public void paint(Graphics2D g, String name, int x, int y) {
+	public void paint(Graphics2D g, String name, int count, int x, int y) {
 		Point realLocation = BlockUI.getLocationOfCell(x,y);
 
 		Color c;
@@ -19,7 +19,8 @@ public class InstructionSelectionPainter{
 		g.fillRect(realLocation.x+1, realLocation.y+1, BlockUI.CELLWIDTH-2, BlockUI.CELLHEIGHT-2);
 
 		g.setColor(Color.BLACK);
-		g.drawString(name, realLocation.x+10, realLocation.y+20);
+        g.drawString(name, realLocation.x+10, realLocation.y+25);
+        if(count != -1)g.drawString("x"+count, realLocation.x+80, realLocation.y+25);
 	}
 
 	

@@ -1,6 +1,7 @@
 package ox.stackgame.blockUI;
 
 import java.awt.Point;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -20,6 +21,11 @@ public class CreateHandler extends AbstractStretchBoxHandler{
 	    String str = blockUI.getBlockManager().getInstruction();
 	    if(str == null)throw new IllegalArgumentException("No Instruction");
 	    
+	    if(blockUI.getBlockManager().availableInstructions.get(str) == 0){
+	        JOptionPane.showMessageDialog(null, "No more '"+str+"' available.");
+	        return null;
+	    }
+	    
 	    String[] strs = str.split(" ");
         if(strs.length == 0)throw new IllegalArgumentException("No Instruction");
 	    
@@ -27,21 +33,28 @@ public class CreateHandler extends AbstractStretchBoxHandler{
 	        return new Instruction(strs[0]);
 	    }else{
 	        String toLex = strs[0];
-	        System.out.println("strs[1] == '" + strs[1] + "'");
 	        if(strs[1].equals("*")){
-	            System.out.println("It is *");
-//TODO: prompt for argument
 	            String input = JOptionPane.showInputDialog(null, "Enter argument: ", "", 1);
 	            toLex += " " + input;
 	            
 	        }else toLex = str;
+	        
 	        Instruction instruction = null;
             try {
                 instruction = Lexer.lex(toLex).get(0);
             } catch (LexerException e) {
-//TODO: maybe some better way of handling user-input errors
-                throw new IllegalArgumentException("Illegal argument");
+                JOptionPane.showMessageDialog(null, "'"+toLex+"' is not a valid instruction.");
+                return null;
             }
+            
+            //decrease the amount of this instruction available
+            Map<String, Integer> available = blockUI.getBlockManager().availableInstructions;
+            int count = available.get(str);
+            if(count>0)
+                available.put(str, count-1);
+            
+            //inform about its use
+            blockUI.getBlockManager().useInstruction();
 	        
 	        return instruction;    
 
@@ -54,10 +67,11 @@ public class CreateHandler extends AbstractStretchBoxHandler{
 	protected void boxStretchingFinished(Point boxOrigin, Point boxTarget) {
 		int height = Math.abs(boxOrigin.y - boxTarget.y);
 		
-		System.out.println("adding new instructions");
-		
-		for(int curY = 0; curY <= height; curY++)
-    		blockUI.getCurrentStackMachine().addInstruction(boxOrigin.y + curY, newInstruction());
+		for(int curY = 0; curY <= height; curY++){
+		    Instruction i = newInstruction();
+		    if(i == null) break;
+		    blockUI.getCurrentStackMachine().addInstruction(boxOrigin.y + curY, i);
+		}
  	}
 	
 }

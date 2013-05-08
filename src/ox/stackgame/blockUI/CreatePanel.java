@@ -6,17 +6,19 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 import javax.swing.JPanel;
+import javax.swing.Scrollable;
 
 import ox.stackgame.blockUI.BlockManager.BlockManagerListener;
 import ox.stackgame.stackmachine.instructions.Operations;
@@ -36,9 +38,8 @@ import ox.stackgame.ui.StateManager;
  * */
 
 @SuppressWarnings("serial")
-public class CreatePanel extends JPanel implements BlockManagerListener {
+public class CreatePanel extends JPanel implements BlockManagerListener, Scrollable {
 
-    private Map<String,Integer> availableInstructions = null;
     private BlockManager manager;
     private StateManager stateManager;
     //order of the selected item
@@ -62,24 +63,12 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         addMouseListener(new PanelMouseListener());
         
         //current mode
-        //Warning: dirty
-        Mode activeMode = stateManager.getActiveMode();
-        if(activeMode != null)
-            if(activeMode.getClass() == RunMode.class)
-                modeActivationVisitor.visit((RunMode)activeMode);
-            else if(activeMode.getClass() == ChallengeMode.class)
-                modeActivationVisitor.visit((ChallengeMode)activeMode);
-            else if(activeMode.getClass() == FreeDesignMode.class)
-                modeActivationVisitor.visit((FreeDesignMode)activeMode);
-            else throw new IllegalArgumentException("Wrong mode");
+        modeUpdate();
 
         // visual stuff
-//TODO: adjust to one's needs
-        this.setBackground(Color.PINK);
         updateSize();
-//        this.setPreferredSize(new Dimension(CELLWIDTH, CELLHEIGHT * 10));
         setFocusable(true);
-        
+        revalidate();
     }
     
     
@@ -87,6 +76,9 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
     public void instructionChanged(String e) {}
     public void instructionCleared() {}
     public void modeChanged(String s) {
+        repaint();
+    }
+    public void instructionUsed(String e) {
         repaint();
     }
     
@@ -97,10 +89,23 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         return manager.getMode()==BlockManager.CREATE && (activeMode.getClass()==ChallengeMode.class || activeMode.getClass()==FreeDesignMode.class);
     }
     
-//TODO: listen for stackMachine changes?
+    //update current mode
+    protected void modeUpdate(){
+        //Warning: dirty
+        Mode activeMode = stateManager.getActiveMode();
+        if(activeMode != null)
+            if(activeMode.getClass() == RunMode.class)
+                modeActivationVisitor.visit((RunMode)activeMode);
+            else if(activeMode.getClass() == ChallengeMode.class)
+                modeActivationVisitor.visit((ChallengeMode)activeMode);
+            else if(activeMode.getClass() == FreeDesignMode.class)
+                modeActivationVisitor.visit((FreeDesignMode)activeMode);
+            else throw new IllegalArgumentException("Wrong mode");
+    }
+    
+
     
     public void paintComponent(Graphics g) {
-//TODO: add current-instruction highlighting
         updateSize();
         
         System.out.println("painting CreatePanel");
@@ -114,8 +119,8 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
         // the stuff
-        if (availableInstructions != null){
-            int height = availableInstructions.size();
+        if (manager.availableInstructions != null){
+            int height = manager.availableInstructions.size();
 
             Dimension viewSize = new Dimension(CELLWIDTH, CELLHEIGHT * height);
 
@@ -129,8 +134,8 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
 
             // paint instructions
             int j = 0;
-            for (String s : availableInstructions.keySet()) {
-                InstructionSelectionPainter.INSTANCE.paint(g2d, s, 0, j);
+            for (String s : manager.availableInstructions.keySet()) {
+                InstructionSelectionPainter.INSTANCE.paint(g2d, s, manager.availableInstructions.get(s), 0, j);
                 j += 1;
             }
             
@@ -158,9 +163,12 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         
     }
     
-    public void updateSize(){
-        this.setPreferredSize(new Dimension(CELLWIDTH, CELLHEIGHT*(availableInstructions == null ? 1 : availableInstructions.size())));
+    public Dimension updateSize(){
+        Dimension size = new Dimension(CELLWIDTH, CELLHEIGHT*(manager.availableInstructions == null ? 0 : manager.availableInstructions.size()));
+        this.setPreferredSize(size);
+        return size;
     }
+
     
     /** paints a single box on the grid of the selected region */
     protected void paintSelectionBox(Graphics2D g, Point p){
@@ -184,13 +192,13 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         g.setColor(oldColor);
     }
 
-    
     // code to be executed when a mode is activated.
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
         public void visit(ChallengeMode m) {
-            availableInstructions = m.getChallenge().instructionSet;
+            manager.availableInstructions = new HashMap<String, Integer>(m.getChallenge().instructionSet);
             selected = -1;
-            repaint();
+            updateSize();
+            revalidate();repaint();
         }
 
         public void visit(RunMode m) {
@@ -202,15 +210,16 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
             //create a map of all possible instructions
             //notice the use of a TreeMap to keep the stuff sorted
             Iterator<String> it = Operations.names();
-            availableInstructions = new TreeMap<String,Integer>();
+            manager.availableInstructions = new TreeMap<String,Integer>();
             while(it.hasNext()){
                 String name = it.next();
                 if (Operations.get(name).argTypes() != null)
                     name += " *";
-                availableInstructions.put(name, -1);
+                manager.availableInstructions.put(name, -1);
             }
             selected = -1;
-            repaint();
+            updateSize();
+            revalidate();repaint();
         }
     };
 
@@ -236,15 +245,14 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         public void mouseExited(MouseEvent arg0) {
         }
         public void mousePressed(MouseEvent e) {
-            System.out.println("clicked");
             if(isActive()){
                 //if in bounds, select the instruction
                 Point p = e.getPoint();
                 int x = p.x / CELLWIDTH;
                 int y = p.y / CELLHEIGHT;
-                if(x==0 && y < availableInstructions.size()){
+                if(x==0 && y < manager.availableInstructions.size()){
                     //Get the y'th key... ugly
-                    List<String> keyList = new ArrayList<String>(availableInstructions.keySet());
+                    List<String> keyList = new ArrayList<String>(manager.availableInstructions.keySet());
                     java.util.Collections.sort(keyList);
                     manager.setInstruction(keyList.get(y));
 
@@ -254,8 +262,12 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
                 }else selected = -1;
 
             }else{
-                //enable CREATE mode
+                //enable CREATE mode and select 1st item
                 manager.setMode(BlockManager.CREATE);
+                List<String> keyList = new ArrayList<String>(manager.availableInstructions.keySet());
+                java.util.Collections.sort(keyList);
+                manager.setInstruction(keyList.get(0));
+                selected = 0;
             }
             
             repaint();
@@ -263,6 +275,34 @@ public class CreatePanel extends JPanel implements BlockManagerListener {
         public void mouseReleased(MouseEvent arg0) {
         }
       
+    }
+
+
+
+    //Scrollable
+    @Override
+    public Dimension getPreferredScrollableViewportSize() {
+        return updateSize();
+    }
+
+    @Override
+    public int getScrollableBlockIncrement(Rectangle arg0, int arg1, int arg2) {
+        return CELLHEIGHT;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportHeight() {
+        return false;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportWidth() {
+        return false;
+    }
+
+    @Override
+    public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {
+        return CELLHEIGHT;
     }
 
 }

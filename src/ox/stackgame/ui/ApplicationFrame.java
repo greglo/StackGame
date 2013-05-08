@@ -7,9 +7,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import ox.stackgame.blockUI.BlockManager;
-import ox.stackgame.blockUI.BlockUI;
-import ox.stackgame.blockUI.CreatePanel;
+import ox.stackgame.blockUI.BlockUIPane;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
 import ox.stackgame.stackmachine.instructions.Instruction;
@@ -104,22 +102,15 @@ public class ApplicationFrame {
             contentPane.add(u, new Integer(0));
         }
 
-        // CreatePanel
-        BlockManager blockManager = new BlockManager();
-        CreatePanel createPanel = new CreatePanel(blockManager, modeManager);
-//        createPanel.setLocation(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT);
-
-        // A scroll pane for CreatePanel
-        JScrollPane jsp1 = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        jsp1.setBounds(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT, BlockUI.CELLWIDTH+20, 450);
-        jsp1.setBorder(new EmptyBorder(0, 0, 0, 0));
-        jsp1.setViewportView(createPanel);
-//        contentPane.add(jsp1, new Integer(2));
         
         // BlockUI
-        BlockUI blockUI = new BlockUI(blockManager, modeManager);
-        blockUI.setLocation(LEFT_PANEL_WIDTH + CENTER_PANEL_WIDTH/2, BUTTONUI_HEIGHT);
-//        contentPane.add(blockUI, new Integer(2));
+        int BlockUIWidth = CENTER_PANEL_WIDTH;
+        int BlockUIHeight = PROGRAMTEXTUI_HEIGHT;
+        Color BlockUIBGColor = caBlue;
+        BlockUIPane BlockUI= new BlockUIPane(modeManager,BlockUIWidth,BlockUIHeight,BlockUIBGColor);
+        BlockUI.setBounds(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT, BlockUIWidth, BlockUIHeight);
+        contentPane.add(BlockUI, new Integer(2));
+
         
         // ButtonUI
         {
