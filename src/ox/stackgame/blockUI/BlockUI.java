@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,6 +18,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Scrollable;
 
 import ox.stackgame.blockUI.BlockManager.BlockManagerListener;
 import ox.stackgame.stackmachine.StackMachine;
@@ -37,7 +39,7 @@ import ox.stackgame.ui.StateManager;
  */
 
 @SuppressWarnings("serial")
-public class BlockUI extends JPanel {
+public class BlockUI extends JPanel implements Scrollable{
     protected final GeneralListener generalListener;
     protected final EventHandler nullHandler;
     protected final MouseHandler editHandler;
@@ -93,12 +95,8 @@ public class BlockUI extends JPanel {
         updateEventHandler();
 
         // visual stuff
-//TODO: adjust to one's needs
-        this.setBackground(Color.PINK);
-        updateSize();
-//        this.setSize(new Dimension(CELLWIDTH, ApplicationFrame.h));
-  //      this.add(createScrollPane(), new Integer(0)); // fills container
         setFocusable(true);
+        repaint();
     }
 
     // Controller-oriented methods
@@ -162,6 +160,8 @@ public class BlockUI extends JPanel {
             updateEventHandler();
             repaint();
         }
+        public void instructionUsed(String s){
+        }
 
         // SelectionManagerListener
         public void objectsSelected(Collection<? extends Instruction> objects) {
@@ -177,10 +177,6 @@ public class BlockUI extends JPanel {
         }
 
         // StackMachineListener
-        public void programCounterChanged(int line) {
-            repaint();
-        }
-
         public void storeChanged(int address) {
         }
 
@@ -188,6 +184,8 @@ public class BlockUI extends JPanel {
         }
 
         public void programChanged(List<Instruction> instructions) {
+            updateSize();
+            revalidate();
             repaint();
         }
 
@@ -198,8 +196,10 @@ public class BlockUI extends JPanel {
         }
 
         public void machineReset() {
-// TODO Auto-generated method stub
-            
+            updateCurrentStackMachine();
+            updateEventHandler();
+            revalidate();
+            repaint();
         }
 
         public void programCounterChanged(int line, Instruction instruction) {
@@ -268,8 +268,9 @@ public class BlockUI extends JPanel {
             currentStackMachine.addListener(generalListener);
         }
 
-        if (currentStackMachine != null) {
-            int stackMachineSize = currentStackMachine.getInstructions().size() + 1; // +1
+        updateSize();
+//        if (currentStackMachine != null) {
+//            int stackMachineSize = currentStackMachine.getInstructions().size() + 1; // +1
                                                                                      // to
                                                                                      // add
                                                                                      // extra
@@ -277,19 +278,23 @@ public class BlockUI extends JPanel {
                                                                                      // for
                                                                                      // 1
                                                                                      // command
-            setPreferredSize(new Dimension(CELLWIDTH, stackMachineSize * CELLHEIGHT));
-        } else
-            setPreferredSize(new Dimension(CELLWIDTH, CELLHEIGHT));
+//            setPreferredSize(new Dimension(CELLWIDTH, stackMachineSize * CELLHEIGHT));
+//        } else
+//            setPreferredSize(new Dimension(CELLWIDTH, CELLHEIGHT));
         updateEventHandler();
         repaint();
     }
     
-    public void updateSize(){
-        this.setSize(new Dimension(CELLWIDTH, CELLHEIGHT*(currentStackMachine.getInstructions().size()+1)));
+    public Dimension updateSize(){
+        System.out.println("updating size");
+        int stackMachineSize = (currentStackMachine == null ? 0 : currentStackMachine.getInstructions().size());
+        Dimension size = new Dimension(CELLWIDTH, CELLHEIGHT*(stackMachineSize+1));
+        this.setPreferredSize(size);
+        return size;
     }
 
     public void paintComponent(Graphics g) {
-        updateSize();
+        Dimension size = updateSize();
         
         Graphics2D g2d = (Graphics2D) g;
 
@@ -298,21 +303,17 @@ public class BlockUI extends JPanel {
 
         // background
         g2d.setColor(Color.WHITE);
-        g2d.fillRect(0, 0, getWidth(), getHeight());
+        g2d.fillRect(0, 0, size.width, size.height);
 
         // the stuff
         if (currentStackMachine != null) {
-            int codeLength = currentStackMachine.getInstructions().size();
-            int height = codeLength + 1;
-            Dimension viewSize = new Dimension(CELLWIDTH, CELLHEIGHT * height);
-
             g2d.setColor(Color.WHITE);
-            g2d.fillRect(0, 0, viewSize.width, viewSize.height);
+            g2d.fillRect(0, 0, size.width, size.height);
             g2d.setColor(Color.BLACK);
-            g2d.drawRect(0, 0, viewSize.width, viewSize.height);
+            g2d.drawRect(0, 0, size.width, size.height);
 
             // paint mask
-            g2d.clipRect(1, 1, viewSize.width - 2, viewSize.height - 2);
+            g2d.clipRect(1, 1, size.width - 2, size.height - 2);
 
             // paint instructions
 //TODO: run highlighting
@@ -334,6 +335,31 @@ public class BlockUI extends JPanel {
         // restore the original state of the Graphics object
         g2d.setColor(oldColor);
         g2d.setClip(oldClip);
+    }
+
+    @Override
+    public Dimension getPreferredScrollableViewportSize() {
+        return updateSize();
+    }
+
+    @Override
+    public int getScrollableBlockIncrement(Rectangle arg0, int arg1, int arg2) {
+        return CELLHEIGHT;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportHeight() {
+        return false;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportWidth() {
+        return false;
+    }
+
+    @Override
+    public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {
+        return CELLHEIGHT;
     }
 
 }

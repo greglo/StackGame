@@ -2,6 +2,7 @@ package ox.stackgame.blockUI;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /** manages communication between block-based visual components (components in the BlockUI header) **/
 public class BlockManager {
@@ -12,6 +13,10 @@ public class BlockManager {
 	public static final String EDIT = "edit";
 	public static final String CREATE = "create";
 	private String mode = EDIT;
+
+	//available instructions in the CREATE mode
+    public Map<String,Integer> availableInstructions = null;
+
 	
 	public String getMode(){return mode;}
 	
@@ -39,6 +44,12 @@ public class BlockManager {
 		for (BlockManagerListener l : listeners)
 			l.instructionCleared();
 	}
+	
+	//signals that the instruction has been used - to inform CreatePanel
+	public void useInstruction(){
+        for (BlockManagerListener l : listeners)
+            l.instructionUsed(instruction);
+	}
 
 	
 	//listener boilerplate
@@ -60,10 +71,11 @@ public class BlockManager {
 		public void instructionChanged(String s);
 		/** Instruction set to null **/
 		public void instructionCleared();
+        /** On use of instruction.**/
+        public void instructionUsed(String s);
 
-		/** On change of mode.**/
-		public void modeChanged(String s);
-
+        /** On change of mode.**/
+        public void modeChanged(String s);
 	}
 	
 }

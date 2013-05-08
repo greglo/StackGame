@@ -53,6 +53,12 @@ public class EditPanel extends JPanel implements BlockManagerListener {
 		g2d.setColor(oldColor);
 		g2d.setClip(oldClip);
 	}
+
+    @Override
+    public void instructionUsed(String s) {
+        // TODO Auto-generated method stub
+        
+    }
 	
 //TODO: mouse clicks
 	
