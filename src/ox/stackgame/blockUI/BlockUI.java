@@ -269,24 +269,11 @@ public class BlockUI extends JPanel implements Scrollable{
         }
 
         updateSize();
-//        if (currentStackMachine != null) {
-//            int stackMachineSize = currentStackMachine.getInstructions().size() + 1; // +1
-                                                                                     // to
-                                                                                     // add
-                                                                                     // extra
-                                                                                     // space
-                                                                                     // for
-                                                                                     // 1
-                                                                                     // command
-//            setPreferredSize(new Dimension(CELLWIDTH, stackMachineSize * CELLHEIGHT));
-//        } else
-//            setPreferredSize(new Dimension(CELLWIDTH, CELLHEIGHT));
         updateEventHandler();
         repaint();
     }
     
     public Dimension updateSize(){
-        System.out.println("updating size");
         int stackMachineSize = (currentStackMachine == null ? 0 : currentStackMachine.getInstructions().size());
         Dimension size = new Dimension(CELLWIDTH, CELLHEIGHT*(stackMachineSize+1));
         this.setPreferredSize(size);

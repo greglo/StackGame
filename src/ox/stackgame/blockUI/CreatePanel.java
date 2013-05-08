@@ -151,14 +151,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
                 g2d.setColor(color);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
             }
-    
-            // gray mask on inactivity
-            if (stateManager.getActiveMode().getClass() == RunMode.class || manager.getMode() != BlockManager.CREATE) {
-                Color color = new Color(0.75f, 0.75f, 0.75f, 0.25f); // Transparent
-                                                                     // gray
-                g2d.setColor(color);
-                g2d.fillRect(0, 0, getWidth(), getHeight());
-            }
+
     
             // restore the original state of the Graphics object
             g2d.setColor(oldColor);
@@ -211,16 +204,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
         }
 
         public void visit(FreeDesignMode m) {
-            //create a map of all possible instructions
-            //notice the use of a TreeMap to keep the stuff sorted
-            Iterator<String> it = Operations.names();
-            manager.availableInstructions = new TreeMap<String,Integer>();
-            while(it.hasNext()){
-                String name = it.next();
-                if (Operations.get(name).argTypes() != null)
-                    name += " *";
-                manager.availableInstructions.put(name, -1);
-            }
+            allowAllInstructions();
             selected = -1;
             updateSize();
             revalidate();repaint();
@@ -228,6 +212,8 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
     };
 
     private void allowAllInstructions() {
+        //create a map of all possible instructions
+        //notice the use of a TreeMap to keep the stuff sorted
         Iterator<String> it = Operations.names();
         manager.availableInstructions = new TreeMap<String, Integer>();
         while (it.hasNext()) {

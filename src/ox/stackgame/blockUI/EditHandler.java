@@ -84,7 +84,6 @@ class EditHandler extends AbstractStretchBoxHandler {
 
     }
     
-//TODO: make this method more elegant, more efficient
     protected void dragFinished(Point dragOrigin2, Point dragTarget2) {
         Iterator<Instruction> i = blockUI.getSelectionManager().getSelection();
 
@@ -122,10 +121,8 @@ class EditHandler extends AbstractStretchBoxHandler {
     
     public void paint(Graphics2D g) {
         // If dragging is active, then paint the outlines of the dragged elements and the original selection
-//      int moveX = 0;
         int moveY = 0;
         if (dragOrigin != null){
-//          moveX = dragTarget.x - dragOrigin.x;
             moveY = dragTarget.y - dragOrigin.y;
         }
         List<Instruction> list = blockUI.getCurrentStackMachine().getInstructions();
