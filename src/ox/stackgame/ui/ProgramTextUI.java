@@ -106,9 +106,12 @@ public class ProgramTextUI extends JLayeredPane {
         stateManager.stackMachine.addListener(l);
 
         this.add(createScrollPane(), new Integer(0)); // fills container
-        jta.setText(antiLex(stateManager.stackMachine.getInstructions()));
+        reloadInstructions();
     }
     
+    public void reloadInstructions(){
+        jta.setText(antiLex(sm.stackMachine.getInstructions()));
+    }
 
     private void highlight(int line) {
         try {

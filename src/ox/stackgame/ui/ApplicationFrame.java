@@ -52,7 +52,7 @@ public class ApplicationFrame {
         ErrorUI eui = new ErrorUI();
 
         // initialise modes
-        StateManager modeManager = new StateManager(machine);
+        final StateManager modeManager = new StateManager(machine);
         RunMode runMode = new RunMode(machine,eui);
         FreeDesignMode freeDesignMode = new FreeDesignMode();
         ChallengeMode challengeMode = new ChallengeMode();
@@ -92,7 +92,7 @@ public class ApplicationFrame {
         }
 
         // ProgramUI
-        ProgramTextUI programUI = new ProgramTextUI(modeManager, runMode, eui);
+        final ProgramTextUI programUI = new ProgramTextUI(modeManager, runMode, eui);
         programUI.setBounds( LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT,
                 CENTER_PANEL_WIDTH, PROGRAMTEXTUI_HEIGHT );
         contentPane.add(programUI, new Integer(0));
@@ -105,11 +105,17 @@ public class ApplicationFrame {
         }
 
         
+        // ButtonUI
+        final ButtonUI Buttons = new ButtonUI(modeManager, programUI, runMode, eui);
+        Buttons.setBounds(LEFT_PANEL_WIDTH, 0, CENTER_PANEL_WIDTH, BUTTONUI_HEIGHT);
+        contentPane.add(Buttons,new Integer(1));
+
+
         // BlockUI
         int BlockUIWidth = CENTER_PANEL_WIDTH;
         int BlockUIHeight = PROGRAMTEXTUI_HEIGHT;
         Color BlockUIBGColor = caBlue;
-        BlockUIPane BlockUI= new BlockUIPane(modeManager,BlockUIWidth,BlockUIHeight,BlockUIBGColor);
+        final BlockUIPane BlockUI= new BlockUIPane(modeManager,BlockUIWidth,BlockUIHeight,BlockUIBGColor);
         BlockUI.setBounds(LEFT_PANEL_WIDTH, BUTTONUI_HEIGHT, BlockUIWidth, BlockUIHeight);
         contentPane.add(BlockUI, new Integer(2));
         //Whether or not BlockUI starts off as visible
@@ -121,18 +127,31 @@ public class ApplicationFrame {
         // BlockUI switch
         int SwitchWidth = 100;
         int SwitchHeight = 40;
-        BlockUIButton BlockUIButton = new BlockUIButton(BlockUI,modeManager);
-        contentPane.add(BlockUIButton,new Integer(100));
-        BlockUIButton.setBounds(LEFT_PANEL_WIDTH+CENTER_PANEL_WIDTH+(RIGHT_PANEL_WIDTH - SwitchWidth)/2, PROGRAMTEXTUI_HEIGHT-SwitchHeight, SwitchWidth, SwitchHeight);
+        final BlockUIButton BlockSwitch = new BlockUIButton(BlockUI,modeManager);
+        contentPane.add(BlockSwitch,new Integer(100));
+        BlockSwitch.setBounds(LEFT_PANEL_WIDTH+CENTER_PANEL_WIDTH+(RIGHT_PANEL_WIDTH - SwitchWidth)/2, PROGRAMTEXTUI_HEIGHT-SwitchHeight, SwitchWidth, SwitchHeight);
+
+        BlockSwitch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                if(modeManager.isBlockUIActive()){
+                    //reload text from stack
+                    programUI.reloadInstructions();
+                }else{
+                    //lex text
+                    modeManager.stackMachine.loadInstructions(programUI.getProgram());
+                    Buttons.updateButtons();
+                    
+//TODO: if error occurred, return
+                    
+                }
+                
+                modeManager.toggleBlockUIActive();
+                BlockUI.setVisible(modeManager.isBlockUIActive());
+                BlockSwitch.updateText();
+            }
+        });
 
         
-        // ButtonUI
-        {
-            JComponent u = new ButtonUI(modeManager, programUI, runMode, eui);
-            u.setBounds(LEFT_PANEL_WIDTH, 0, CENTER_PANEL_WIDTH, BUTTONUI_HEIGHT);
-            contentPane.add(u,new Integer(1));
-        }
-
         // TapeUI
         
         TapeUI tape = new TapeUI(modeManager, eui);
@@ -170,14 +189,6 @@ public class ApplicationFrame {
             this.setForeground(new Color(0, 133, 200));
             updateText();
         
-            addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-//TODO: check if text successfully lexes before switching
-                    manager.toggleBlockUIActive();
-                    blockUI.setVisible(manager.isBlockUIActive());
-                    updateText();
-                }
-            });
         }
         
         public void updateText(){
