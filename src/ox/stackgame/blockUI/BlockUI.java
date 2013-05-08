@@ -26,6 +26,7 @@ import ox.stackgame.stackmachine.StackMachine.EvaluationStack;
 import ox.stackgame.stackmachine.StackMachineListener;
 import ox.stackgame.stackmachine.StackValue;
 import ox.stackgame.stackmachine.instructions.Instruction;
+import ox.stackgame.ui.RunMode;
 import ox.stackgame.ui.StateManager;
 
 /**
@@ -302,11 +303,12 @@ public class BlockUI extends JPanel implements Scrollable{
             // paint mask
             g2d.clipRect(1, 1, size.width - 2, size.height - 2);
 
-            // paint instructions
-//TODO: run highlighting
+            // paint instructions starting from the about-to-be-run instruction in run mode.
+            int high = (stateManager.getActiveMode().getClass() == RunMode.class ? currentStackMachine.getProgramCounter() : 0);
             int j = 0;
             for (Instruction i : currentStackMachine.getInstructions()) {
-                InstructionPainter.INSTANCE.paint(g2d, i, 0, j);
+                if(j >= high)
+                    InstructionPainter.INSTANCE.paint(g2d, i, 0, j-high);
                 j += 1;
             }
 
