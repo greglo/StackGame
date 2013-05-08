@@ -72,7 +72,6 @@ public class CreateHandler extends AbstractStretchBoxHandler{
 		    if(i == null) break;
 		    blockUI.getCurrentStackMachine().addInstruction(boxOrigin.y + curY, i);
 		}
-
  	}
 	
 }

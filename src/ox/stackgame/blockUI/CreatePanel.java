@@ -108,8 +108,6 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
             else throw new IllegalArgumentException("Wrong mode");
     }
     
-
-    
     public void paintComponent(Graphics g) {
         updateSize();
 
@@ -327,5 +325,7 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
     public int getScrollableUnitIncrement(Rectangle arg0, int arg1, int arg2) {
         return CELLHEIGHT;
     }
+
+
 
 }
