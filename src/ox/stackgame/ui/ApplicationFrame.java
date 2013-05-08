@@ -49,7 +49,7 @@ public class ApplicationFrame {
         StackMachine machine = new StackMachine(instructions);
         
         // UIs
-        ErrorUI eui = new ErrorUI();
+        final ErrorUI eui = new ErrorUI();
 
         // initialise modes
         final StateManager modeManager = new StateManager(machine);
@@ -141,8 +141,8 @@ public class ApplicationFrame {
                     modeManager.stackMachine.loadInstructions(programUI.getProgram());
                     Buttons.updateButtons();
                     
-//TODO: if error occurred, return
-                    
+                    //if there is an error, do nothing
+                    if(eui.hasError())return;
                 }
                 
                 modeManager.toggleBlockUIActive();
