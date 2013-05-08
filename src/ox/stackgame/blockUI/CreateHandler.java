@@ -35,6 +35,7 @@ public class CreateHandler extends AbstractStretchBoxHandler{
 	        String toLex = strs[0];
 	        if(strs[1].equals("*")){
 	            String input = JOptionPane.showInputDialog(null, "Enter argument: ", "", 1);
+	            if(input==null)return null;
 	            toLex += " " + input;
 	            
 	        }else toLex = str;
