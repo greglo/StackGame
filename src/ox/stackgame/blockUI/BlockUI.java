@@ -276,8 +276,16 @@ public class BlockUI extends JPanel implements Scrollable{
     
     public Dimension updateSize(){
         int stackMachineSize = (currentStackMachine == null ? 0 : currentStackMachine.getInstructions().size());
-        Dimension size = new Dimension(CELLWIDTH, CELLHEIGHT*(stackMachineSize+1));
+        
+        Boolean bol = stateManager.getActiveMode() != null && stateManager.getActiveMode().getClass() == RunMode.class;
+        //about-to-be-run line of code
+        int high = (bol ? currentStackMachine.getProgramCounter() : 0);
+        //one more line depending on whether it is RunMode or not
+        int one = (bol ? 0 : 1);
+        
+        Dimension size = new Dimension(CELLWIDTH, CELLHEIGHT*(stackMachineSize-high+one));
         this.setPreferredSize(size);
+        if(bol)revalidate();
         return size;
     }
 
