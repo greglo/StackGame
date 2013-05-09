@@ -29,8 +29,9 @@ public class CreateHandler extends AbstractStretchBoxHandler{
 	    String[] strs = str.split(" ");
         if(strs.length == 0)throw new IllegalArgumentException("No Instruction");
 	    
+        Instruction instruction;
 	    if(strs.length == 1){
-	        return new Instruction(strs[0]);
+	        instruction = new Instruction(strs[0]);
 	    }else{
 	        String toLex = strs[0];
 	        if(strs[1].equals("*")){
@@ -40,7 +41,7 @@ public class CreateHandler extends AbstractStretchBoxHandler{
 	            
 	        }else toLex = str;
 	        
-	        Instruction instruction = null;
+	        instruction = null;
             try {
                 instruction = Lexer.lex(toLex).get(0);
             } catch (LexerException e) {
@@ -48,19 +49,18 @@ public class CreateHandler extends AbstractStretchBoxHandler{
                 return null;
             }
             
-            //decrease the amount of this instruction available
-            Map<String, Integer> available = blockUI.getBlockManager().availableInstructions;
-            int count = available.get(str);
-            if(count>0)
-                available.put(str, count-1);
-            
-            //inform about its use
-            blockUI.getBlockManager().useInstruction();
-	        
-	        return instruction;    
-
 	    }
 	        
+        //decrease the amount of this instruction available
+        Map<String, Integer> available = blockUI.getBlockManager().availableInstructions;
+        int count = available.get(str);
+        if(count>0)
+            available.put(str, count-1);
+        
+        //inform about its use
+        blockUI.getBlockManager().useInstruction();
+        
+        return instruction;    
 	
 	}
 	
