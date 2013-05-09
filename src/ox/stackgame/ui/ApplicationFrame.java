@@ -134,6 +134,8 @@ public class ApplicationFrame {
 
         BlockSwitch.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+                if(modeManager.getActiveMode().getClass() == RunMode.class)return;
+                
                 if(modeManager.isBlockUIActive()){
                     //reload text from stack
                     programUI.reloadInstructions();
@@ -184,7 +186,7 @@ public class ApplicationFrame {
     }
     
     @SuppressWarnings("serial")
-    private static class BlockUIButton extends JButton{
+    private static class BlockUIButton extends JButton implements ModeVisitor{
         private final StateManager manager;
         
         public BlockUIButton(final StateManager manager){
@@ -192,11 +194,21 @@ public class ApplicationFrame {
             this.manager=manager;
             this.setForeground(new Color(0, 133, 200));
             updateText();
-        
+            manager.registerModeActivationVisitor(this);
         }
         
         public void updateText(){
             this.setText((manager.isBlockUIActive() ? "Text Mode" : "Block Mode"));
+        }
+
+        public void visit(ChallengeMode m) {
+            setEnabled(true);
+        }
+        public void visit(RunMode m) {
+            setEnabled(false);
+        }
+        public void visit(FreeDesignMode m) {
+            setEnabled(true);
         }
     }
     

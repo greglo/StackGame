@@ -58,7 +58,6 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
 
         // pay attention to mode changes
         stateManager.registerModeActivationVisitor(modeActivationVisitor);
-        stateManager.registerModeDeactivationVisitor(modeDeactivationVisitor);
 
         // mouse listener
         addMouseListener(new PanelMouseListener());
@@ -202,7 +201,6 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
         }
 
         public void visit(RunMode m) {
-            // TODO: do something here?
             repaint();
         }
 
@@ -227,19 +225,6 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
         }
         selected = -1;
     }
-
-    // code to be executed when a mode is deactivated
-    // TODO: is it necessary at all?
-    private ModeVisitor modeDeactivationVisitor = new ModeVisitor() {
-        public void visit(RunMode m) {
-        }
-
-        public void visit(ChallengeMode m) {
-        }
-
-        public void visit(FreeDesignMode m) {
-        }
-    };
 
     class PanelMouseListener implements MouseListener {
         // Mouse actions

@@ -11,6 +11,10 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import ox.stackgame.blockUI.BlockManager.BlockManagerListener;
+import ox.stackgame.ui.ChallengeMode;
+import ox.stackgame.ui.FreeDesignMode;
+import ox.stackgame.ui.ModeVisitor;
+import ox.stackgame.ui.RunMode;
 import ox.stackgame.ui.StateManager;
 
 @SuppressWarnings("serial")
@@ -20,6 +24,9 @@ public class BlockUIPane extends JLayeredPane{
     static final int scrollBarSize = ((Integer)UIManager.get("ScrollBar.width")).intValue();
     static final int CREATEPANELWIDTH = BlockUI.CELLWIDTH+scrollBarSize;
     static final int BLOCKUIWIDTH = BlockUI.CELLWIDTH+scrollBarSize;
+    
+    final EditButton editButton;
+    final DeleteButton deleteButton;
     
     private final BlockManager blockManager;
     
@@ -62,21 +69,19 @@ public class BlockUIPane extends JLayeredPane{
         add(jsp2, new Integer(1));
         
         
-//TODO: disable buttons on RunMode
-        
         //Buttons
         //editButton
-        final JButton editButton = new EditButton("Edit Mode", blockManager);
+        editButton = new EditButton("Edit Mode", blockManager);
         add(editButton);
         editButton.setBounds(BLOCKUIGAPWIDTH, 1, CREATEPANELWIDTH, BlockUI.CELLHEIGHT-2);
         
         //deleteButton
-        final JButton deleteButton = new DeleteButton("Delete Mode", blockManager);
+        deleteButton = new DeleteButton("Delete Mode", blockManager);
         add(deleteButton);
         deleteButton.setBounds(BLOCKUIGAPWIDTH, BlockUI.CELLHEIGHT+1, CREATEPANELWIDTH, BlockUI.CELLHEIGHT-2);
         
-
-//TODO: add Labels?
+        //disable buttons on RunMode
+        modeManager.registerModeActivationVisitor(new UpdateButtonVisitor());
 
     }
     
@@ -128,5 +133,24 @@ public class BlockUIPane extends JLayeredPane{
                 }
             });
         }
+    }
+    
+    //disables buttons on runMode
+    class UpdateButtonVisitor implements ModeVisitor{
+        public void visit(ChallengeMode m) {
+            deleteButton.setEnabled(true);
+            editButton.setEnabled(true);
+        }
+
+        public void visit(RunMode m) {
+            deleteButton.setEnabled(false);
+            editButton.setEnabled(false);
+        }
+
+        public void visit(FreeDesignMode m) {
+            deleteButton.setEnabled(true);
+            editButton.setEnabled(true);
+        }
+        
     }
 }
