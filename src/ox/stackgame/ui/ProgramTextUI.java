@@ -189,6 +189,7 @@ public class ProgramTextUI extends JLayeredPane {
 
             private void textChanged() {
                 highlighter.removeAllHighlights();
+                eui.clearError();
                 dirtyText = true;
             }
 
