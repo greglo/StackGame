@@ -38,6 +38,7 @@ public class BlockUIPane extends JLayeredPane{
 
         //gap between the two and on the sides
         final int BLOCKUIGAPWIDTH = (width - CREATEPANELWIDTH - BLOCKUIWIDTH)/3;
+        final int FRAME = 5;
         
         //background colour
         setBackground(bgColor);
@@ -51,7 +52,7 @@ public class BlockUIPane extends JLayeredPane{
 
         // A scroll pane for CreatePanel
         JScrollPane jsp1 = new JScrollPane();
-        jsp1.setBounds(BLOCKUIGAPWIDTH, 2*BlockUI.CELLHEIGHT, CREATEPANELWIDTH, height-2*BlockUI.CELLHEIGHT);
+        jsp1.setBounds(BLOCKUIGAPWIDTH, 2*BlockUI.CELLHEIGHT+FRAME, CREATEPANELWIDTH, height-2*BlockUI.CELLHEIGHT-2*FRAME);
         jsp1.setBorder(new EmptyBorder(0, 0, 0, 0));
         jsp1.setViewportView(createPanel);
         jsp1.getViewport().setBackground(bgColor);
@@ -62,7 +63,7 @@ public class BlockUIPane extends JLayeredPane{
 
         // A scroll pane for BlockUI
         JScrollPane jsp2 = new JScrollPane();
-        jsp2.setBounds(2*BLOCKUIGAPWIDTH+CREATEPANELWIDTH, 0, BlockUI.CELLWIDTH+scrollBarSize, height);
+        jsp2.setBounds(2*BLOCKUIGAPWIDTH+CREATEPANELWIDTH, FRAME, BlockUI.CELLWIDTH+scrollBarSize, height-2*FRAME);
         jsp2.setBorder(new EmptyBorder(0, 0, 0, 0));
         jsp2.setViewportView(blockUI);
         jsp2.getViewport().setBackground(bgColor);
@@ -73,12 +74,12 @@ public class BlockUIPane extends JLayeredPane{
         //editButton
         editButton = new EditButton("Edit Mode", blockManager);
         add(editButton);
-        editButton.setBounds(BLOCKUIGAPWIDTH, 1, CREATEPANELWIDTH, BlockUI.CELLHEIGHT-2);
+        editButton.setBounds(BLOCKUIGAPWIDTH, 1+FRAME, CREATEPANELWIDTH, BlockUI.CELLHEIGHT-2);
         
         //deleteButton
         deleteButton = new DeleteButton("Delete Mode", blockManager);
         add(deleteButton);
-        deleteButton.setBounds(BLOCKUIGAPWIDTH, BlockUI.CELLHEIGHT+1, CREATEPANELWIDTH, BlockUI.CELLHEIGHT-2);
+        deleteButton.setBounds(BLOCKUIGAPWIDTH, BlockUI.CELLHEIGHT+1+FRAME, CREATEPANELWIDTH, BlockUI.CELLHEIGHT-2);
         
         //disable buttons on RunMode
         modeManager.registerModeActivationVisitor(new UpdateButtonVisitor());
