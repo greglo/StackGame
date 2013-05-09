@@ -193,9 +193,13 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
     // code to be executed when a mode is activated.
     private ModeVisitor modeActivationVisitor = new ModeVisitor() {
         public void visit(ChallengeMode m) {
-            if (m.getChallenge().instructionSet != null)
+            if (m.getChallenge().instructionSet != null){
                 manager.availableInstructions = new HashMap<String, Integer>(m.getChallenge().instructionSet);
-            else
+                //translate all nulls to -1
+                for(String i : manager.availableInstructions.keySet())
+                    if(manager.availableInstructions.get(i) == null)
+                        manager.availableInstructions.put(i,-1);
+            }else
                 allowAllInstructions();
             selected = -1;
             updateSize();
