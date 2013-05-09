@@ -80,7 +80,7 @@ public class ChallengeUI extends JPanel {
 
     private class SelectorPanel extends JPanel {
         final Color listItemBg = new Color(250, 250, 250);
-        final Color listItemBgHover = new Color(250, 210, 250);
+        final Color listItemBgHover = new Color(250, 250, 210);
 
         SelectorPanel() {
             this.setBackground(Color.white);
