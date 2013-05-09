@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import ox.stackgame.blockUI.BlockManager.BlockSyncer;
+import ox.stackgame.blockUI.BlockManager;
 import ox.stackgame.blockUI.BlockUIPane;
 import ox.stackgame.stackmachine.IntStackValue;
 import ox.stackgame.stackmachine.StackMachine;
@@ -151,6 +152,9 @@ public class ApplicationFrame {
                 modeManager.toggleBlockUIActive();
                 BlockUI.setVisible(modeManager.isBlockUIActive());
                 BlockSwitch.updateText();
+                
+                //turn on edit mode
+                if(modeManager.isBlockUIActive())BlockUI.getBlockManager().setMode(BlockManager.EDIT);
             }
         });
         

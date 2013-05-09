@@ -131,8 +131,10 @@ public class BlockUI extends JPanel implements Scrollable{
             currentEventHandler = NullHandler.INSTANCE;
         else {
             String mode = blockManager.getMode();
-            if (mode == BlockManager.EDIT)
+            if (mode == BlockManager.EDIT){
                 currentEventHandler = editHandler;
+                requestFocusInWindow();
+            }
             else if (mode == BlockManager.CREATE)
                 currentEventHandler = createHandler;
             else if (mode == BlockManager.DELETE)

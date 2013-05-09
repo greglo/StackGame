@@ -26,7 +26,7 @@ public class BlockUIPane extends JLayeredPane{
     static final int BLOCKUIWIDTH = BlockUI.CELLWIDTH+scrollBarSize;
     
     final EditButton editButton;
-    final DeleteButton deleteButton;
+//    final DeleteButton deleteButton;
     
     private final BlockManager blockManager;
     
@@ -52,7 +52,7 @@ public class BlockUIPane extends JLayeredPane{
 
         // A scroll pane for CreatePanel
         JScrollPane jsp1 = new JScrollPane();
-        jsp1.setBounds(BLOCKUIGAPWIDTH, 2*BlockUI.CELLHEIGHT+FRAME, CREATEPANELWIDTH, height-2*BlockUI.CELLHEIGHT-2*FRAME);
+        jsp1.setBounds(BLOCKUIGAPWIDTH, BlockUI.CELLHEIGHT+FRAME, CREATEPANELWIDTH, height-BlockUI.CELLHEIGHT-2*FRAME);
         jsp1.setBorder(new EmptyBorder(0, 0, 0, 0));
         jsp1.setViewportView(createPanel);
         jsp1.getViewport().setBackground(bgColor);
@@ -77,13 +77,15 @@ public class BlockUIPane extends JLayeredPane{
         editButton.setBounds(BLOCKUIGAPWIDTH, 1+FRAME, CREATEPANELWIDTH, BlockUI.CELLHEIGHT-2);
         
         //deleteButton
-        deleteButton = new DeleteButton("Delete Mode", blockManager);
+/*        deleteButton = new DeleteButton("Delete Mode", blockManager);
         add(deleteButton);
         deleteButton.setBounds(BLOCKUIGAPWIDTH, BlockUI.CELLHEIGHT+1+FRAME, CREATEPANELWIDTH, BlockUI.CELLHEIGHT-2);
-        
+*/        
         //disable buttons on RunMode
         modeManager.registerModeActivationVisitor(new UpdateButtonVisitor());
 
+        //default mode
+        blockManager.setMode(BlockManager.EDIT);
     }
     
     class EditButton extends JButton implements BlockManagerListener{
@@ -139,17 +141,17 @@ public class BlockUIPane extends JLayeredPane{
     //disables buttons on runMode
     class UpdateButtonVisitor implements ModeVisitor{
         public void visit(ChallengeMode m) {
-            deleteButton.setEnabled(true);
+//            deleteButton.setEnabled(true);
             editButton.setEnabled(true);
         }
 
         public void visit(RunMode m) {
-            deleteButton.setEnabled(false);
+//            deleteButton.setEnabled(false);
             editButton.setEnabled(false);
         }
 
         public void visit(FreeDesignMode m) {
-            deleteButton.setEnabled(true);
+//            deleteButton.setEnabled(true);
             editButton.setEnabled(true);
         }
         

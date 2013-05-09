@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import ox.stackgame.stackmachine.StackMachine;
@@ -18,7 +19,7 @@ import ox.stackgame.stackmachine.instructions.Instruction;
  * A MouseHandler that creates cave elements based on stretchbox regions.
  * Belongs to both, the View and the Controller
  */
-class EditHandler extends AbstractStretchBoxHandler {
+class EditHandler extends AbstractStretchBoxHandler{
     /** Holds the dragging origin. */
     protected Point dragOrigin;
     /** Holds the dragging target. */
@@ -156,6 +157,53 @@ class EditHandler extends AbstractStretchBoxHandler {
         // Call the superclass to paint the stretching box
         super.paint(g);
     }
+    
+    public void keyPressed(KeyEvent event) {
+        if(event.getKeyCode()==KeyEvent.VK_DELETE){
+            
+            Iterator<Instruction> i = blockUI.getSelectionManager().getSelection();
+            StackMachine machine = blockUI.getCurrentStackMachine();
+            List<Instruction> instructions = machine.getInstructions();
+            i = blockUI.getSelectionManager().getSelection();
+            while (i.hasNext()) {
+                Instruction e = i.next();
+                //instead of the nice: moved.put(instructions.indexOf(e),e);
+                //due to overriding of Instruction.equals
+                //I have to do it the hard way:
+                int index = 0;
+                for(Instruction in : instructions)
+                    if(in==e)break;
+                    else index+=1;
+
+                Instruction inst = machine.getInstruction(index);
+                
+                //increase the amount of this instruction available
+                Map<String, Integer> available = blockUI.getBlockManager().availableInstructions;
+                String s = inst.toString();
+                String toEdit = (available.containsKey(s) ? s : s.split(" ")[0] + " *");
+                
+                if(!available.containsKey(toEdit))throw new IllegalArgumentException("Invalid Instruction");
+    
+                int count = available.get(toEdit);
+                if(count>-1)
+                    available.put(toEdit, count+1);            
+                
+                //inform about the deletion
+                blockUI.getBlockManager().useInstruction();
+    
+                
+                machine.removeInstruction(index);
+            }
+            
+            //clear the selection
+            blockUI.getSelectionManager().clear();
+            
+            //Evoke synchronisation with TextUI
+            blockUI.getBlockManager().sync();
+
+        }
+    }
+
     
 
 }
