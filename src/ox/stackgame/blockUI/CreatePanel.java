@@ -135,7 +135,9 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
     
             // paint instructions
             int j = 0;
-            for (String s : manager.availableInstructions.keySet()) {
+            ArrayList<String> keyList = new ArrayList<String>(manager.availableInstructions.keySet());
+            java.util.Collections.sort(keyList);
+            for (String s : keyList) {
                 InstructionSelectionPainter.INSTANCE.paint(g2d, s, manager.availableInstructions.get(s), 0, j);
                 j += 1;
             }
