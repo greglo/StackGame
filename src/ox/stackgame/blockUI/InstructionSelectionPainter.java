@@ -21,6 +21,14 @@ public class InstructionSelectionPainter{
 		g.setColor(Color.BLACK);
         g.drawString(name, realLocation.x+10, realLocation.y+25);
         if(count != -1)g.drawString("x"+count, realLocation.x+80, realLocation.y+25);
+        
+        //gray mask if 0 available
+        if(count == 0){
+            Color color = new Color(0.75f, 0.75f, 0.75f, 0.25f); //Transparent gray 
+            g.setColor(color);
+            g.fillRect(realLocation.x+1, realLocation.y+1, BlockUI.CELLWIDTH-2, BlockUI.CELLHEIGHT-2);
+        }
+
 	}
 
 	
