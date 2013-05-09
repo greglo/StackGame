@@ -130,7 +130,7 @@ public class ApplicationFrame {
         int SwitchWidth = 100;
         int SwitchHeight = 30;
         final BlockUIButton BlockSwitch = new BlockUIButton(modeManager);
-        contentPane.add(BlockSwitch,new Integer(100));
+        //contentPane.add(BlockSwitch,new Integer(100));
         BlockSwitch.setBounds(LEFT_PANEL_WIDTH+CENTER_PANEL_WIDTH+(RIGHT_PANEL_WIDTH - SwitchWidth)/2, BUTTONUI_HEIGHT+PROGRAMTEXTUI_HEIGHT-SwitchHeight-5, SwitchWidth, SwitchHeight);
 
         BlockSwitch.addActionListener(new ActionListener() {
