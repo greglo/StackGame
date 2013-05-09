@@ -18,10 +18,10 @@ public class InstructionPainter{
 		c = Color.GREEN;
 		
 		g.setColor(c);
-		g.fillRect(realLocation.x+1, realLocation.y+1, BlockUI.CELLWIDTH-2, BlockUI.CELLHEIGHT-2);
+		g.fillRect(realLocation.x+3, realLocation.y+1, BlockUI.CELLWIDTH-5, BlockUI.CELLHEIGHT-2);
 
 		g.setColor(Color.BLACK);
-		g.drawString(e.toString(), realLocation.x+10, realLocation.y+20);
+		g.drawString(e.toString(), realLocation.x+10, realLocation.y+25);
 	}
 
 	

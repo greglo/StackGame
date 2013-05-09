@@ -16,7 +16,7 @@ public class InstructionSelectionPainter{
 		c = Color.GREEN;
 		
 		g.setColor(c);
-		g.fillRect(realLocation.x+1, realLocation.y+1, BlockUI.CELLWIDTH-2, BlockUI.CELLHEIGHT-2);
+        g.fillRect(realLocation.x+3, realLocation.y+1, BlockUI.CELLWIDTH-5, BlockUI.CELLHEIGHT-2);
 
 		g.setColor(Color.BLACK);
         g.drawString(name, realLocation.x+10, realLocation.y+25);
@@ -26,7 +26,7 @@ public class InstructionSelectionPainter{
         if(count == 0){
             Color color = new Color(0.75f, 0.75f, 0.75f, 0.25f); //Transparent gray 
             g.setColor(color);
-            g.fillRect(realLocation.x+1, realLocation.y+1, BlockUI.CELLWIDTH-2, BlockUI.CELLHEIGHT-2);
+            g.fillRect(realLocation.x+3, realLocation.y+1, BlockUI.CELLWIDTH-5, BlockUI.CELLHEIGHT-2);
         }
 
 	}

@@ -298,15 +298,13 @@ public class BlockUI extends JPanel implements Scrollable{
         Shape oldClip = g2d.getClip();
 
         // background
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(0, 0, size.width, size.height);
+//        g2d.setColor(Color.WHITE);
+//        g2d.fillRect(0, 0, size.width, size.height);
 
         // the stuff
         if (currentStackMachine != null) {
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(new Color(35, 44, 49));
             g2d.fillRect(0, 0, size.width, size.height);
-            g2d.setColor(Color.BLACK);
-            g2d.drawRect(0, 0, size.width, size.height);
 
             // paint mask
             g2d.clipRect(1, 1, size.width - 2, size.height - 2);
@@ -319,6 +317,11 @@ public class BlockUI extends JPanel implements Scrollable{
                     InstructionPainter.INSTANCE.paint(g2d, i, 0, j-high);
                 j += 1;
             }
+            
+            //the empty slot at the end
+            Point realLocation = BlockUI.getLocationOfCell(0, j-high);
+            g.setColor(new Color(0, 100, 0));
+            g.fillRect(realLocation.x+3, realLocation.y+1, BlockUI.CELLWIDTH-5, BlockUI.CELLHEIGHT-2);
 
         } else {
             g2d.setColor(Color.BLACK);

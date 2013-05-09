@@ -125,10 +125,8 @@ public class CreatePanel extends JPanel implements BlockManagerListener, Scrolla
 
             Dimension viewSize = new Dimension(CELLWIDTH, CELLHEIGHT * height);
     
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(new Color(35, 44, 49));
             g2d.fillRect(0, 0, viewSize.width, viewSize.height);
-            g2d.setColor(Color.BLACK);
-            g2d.drawRect(0, 0, viewSize.width, viewSize.height);
     
             // paint mask
             g2d.clipRect(1, 1, viewSize.width - 2, viewSize.height - 2);
