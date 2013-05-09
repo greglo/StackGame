@@ -129,6 +129,9 @@ class EditHandler extends AbstractStretchBoxHandler{
         
         //Evoke synchronisation with TextUI
         blockUI.getBlockManager().sync();
+        
+        //Ad hoc fix
+        blockUI.getSelectionManager().clear();
     }
     
     
