@@ -23,4 +23,4 @@ We created a small language and an accompanying stack machine with:
 * 4 read/write memory locations
 * a readonly input tape and a write-only output tape
 
-These features, along with labels, jumps and conditional statements allow users to create small but interesting.
+These features, along with labels, jumps and conditional statements allow users to create small but interesting programs.
